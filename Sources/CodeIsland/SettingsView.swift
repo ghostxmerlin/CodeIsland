@@ -57,7 +57,7 @@ private struct SidebarGroup: Hashable {
 
 private let sidebarGroups: [SidebarGroup] = [
     SidebarGroup(title: nil, pages: [.general, .behavior, .appearance, .mascots, .sound, .shortcuts]),
-    SidebarGroup(title: "CodeIsland", pages: [.remote, .hooks, .buddy, .about]),
+    SidebarGroup(title: AppBrand.name, pages: [.remote, .hooks, .buddy, .about]),
 ]
 
 // MARK: - Main View
@@ -2343,10 +2343,12 @@ private struct AboutPage: View {
             Spacer()
 
             VStack(spacing: 24) {
-                AppLogoView(size: 100)
+                Image(nsImage: SettingsWindowController.bundleAppIcon())
+                    .resizable()
+                    .frame(width: 100, height: 100)
 
                 VStack(spacing: 6) {
-                    Text("CodeIsland")
+                    Text(AppBrand.name)
                         .font(.system(size: 26, weight: .bold))
                     Text("Version \(AppVersion.current)")
                         .font(.system(size: 13))

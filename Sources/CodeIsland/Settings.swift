@@ -11,6 +11,12 @@ enum AppVersion {
     }
 }
 
+/// The name the user sees. Internals (bundle id, ~/.codeisland, hook markers,
+/// wire names) keep "CodeIsland" so settings and installed hooks carry over.
+enum AppBrand {
+    static let name = "AISM"
+}
+
 enum NotchHeightMode: String, CaseIterable {
     case matchNotch = "matchNotch"
     case matchMenuBar = "matchMenuBar"

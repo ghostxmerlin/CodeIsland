@@ -11,7 +11,8 @@ if [ -z "${DEVELOPER_DIR:-}" ]; then
     done
 fi
 
-APP_NAME="CodeIsland"
+APP_NAME="AISM"              # bundle and executable the user sees
+PRODUCT_NAME="CodeIsland"    # SwiftPM executable product
 BUILD_DIR=".build/release"
 APP_BUNDLE="$BUILD_DIR/$APP_NAME.app"
 ICON_CATALOG="Assets.xcassets"
@@ -87,7 +88,7 @@ build_mac() {
     mkdir -p "$APP_BUNDLE/Contents/Resources"
     mkdir -p "$APP_BUNDLE/Contents/Frameworks"
 
-    cp "$ARM_DIR/$APP_NAME" "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
+    cp "$ARM_DIR/$PRODUCT_NAME" "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
     cp "$ARM_DIR/codeisland-bridge" "$APP_BUNDLE/Contents/Helpers/codeisland-bridge"
     cp Info.plist "$APP_BUNDLE/Contents/Info.plist"
 

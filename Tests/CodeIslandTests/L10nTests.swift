@@ -49,7 +49,7 @@ final class L10nTests: XCTestCase {
         XCTAssertEqual(L10n.shared["behavior"], "Davranış")
         XCTAssertEqual(L10n.shared["appearance"], "Görünüm")
         XCTAssertEqual(L10n.shared["language"], "Dil")
-        XCTAssertEqual(L10n.shared["settings_title"], "CodeIsland Ayarları")
+        XCTAssertEqual(L10n.shared["settings_title"], "AISM Ayarları")
         XCTAssertEqual(L10n.shared["quit"], "Çık")
     }
 
@@ -60,7 +60,7 @@ final class L10nTests: XCTestCase {
         XCTAssertEqual(L10n.shared["behavior"], "동작")
         XCTAssertEqual(L10n.shared["appearance"], "외관")
         XCTAssertEqual(L10n.shared["language"], "언어")
-        XCTAssertEqual(L10n.shared["settings_title"], "CodeIsland 설정")
+        XCTAssertEqual(L10n.shared["settings_title"], "AISM 설정")
         XCTAssertEqual(L10n.shared["quit"], "종료")
     }
 
@@ -71,7 +71,7 @@ final class L10nTests: XCTestCase {
         XCTAssertEqual(L10n.shared["behavior"], "動作")
         XCTAssertEqual(L10n.shared["appearance"], "外観")
         XCTAssertEqual(L10n.shared["language"], "言語")
-        XCTAssertEqual(L10n.shared["settings_title"], "CodeIsland 設定")
+        XCTAssertEqual(L10n.shared["settings_title"], "AISM 設定")
         XCTAssertEqual(L10n.shared["quit"], "終了")
     }
 
@@ -82,7 +82,7 @@ final class L10nTests: XCTestCase {
         XCTAssertEqual(L10n.shared["behavior"], "Verhalten")
         XCTAssertEqual(L10n.shared["appearance"], "Darstellung")
         XCTAssertEqual(L10n.shared["language"], "Sprache")
-        XCTAssertEqual(L10n.shared["settings_title"], "CodeIsland-Einstellungen")
+        XCTAssertEqual(L10n.shared["settings_title"], "AISM-Einstellungen")
         XCTAssertEqual(L10n.shared["quit"], "Beenden")
     }
 
@@ -137,7 +137,7 @@ final class L10nTests: XCTestCase {
 
         let updateAvailable = L10n.shared["update_available_body"]
         let formattedUpdate = String(format: updateAvailable, "1.0.19", "1.0.18")
-        XCTAssertEqual(formattedUpdate, "CodeIsland 1.0.19 mevcut (şimdiki: 1.0.18). İndirmek ister misiniz?")
+        XCTAssertEqual(formattedUpdate, "AISM 1.0.19 mevcut (şimdiki: 1.0.18). İndirmek ister misiniz?")
     }
 
     func testKoreanNumericPlaceholdersWork() {
@@ -149,7 +149,7 @@ final class L10nTests: XCTestCase {
 
         let updateAvailable = L10n.shared["update_available_body"]
         let formattedUpdate = String(format: updateAvailable, "1.0.19", "1.0.18")
-        XCTAssertEqual(formattedUpdate, "CodeIsland 1.0.19 버전을 사용할 수 있습니다(현재: 1.0.18). 다운로드하시겠습니까?")
+        XCTAssertEqual(formattedUpdate, "AISM 1.0.19 버전을 사용할 수 있습니다(현재: 1.0.18). 다운로드하시겠습니까?")
     }
 
     func testJapaneseNumericPlaceholdersWork() {
@@ -161,7 +161,7 @@ final class L10nTests: XCTestCase {
 
         let updateAvailable = L10n.shared["update_available_body"]
         let formattedUpdate = String(format: updateAvailable, "1.0.19", "1.0.18")
-        XCTAssertEqual(formattedUpdate, "CodeIsland 1.0.19 が利用可能です (現在: 1.0.18)。ダウンロードしますか？")
+        XCTAssertEqual(formattedUpdate, "AISM 1.0.19 が利用可能です (現在: 1.0.18)。ダウンロードしますか？")
     }
 
     func testGermanNumericPlaceholdersWork() {
@@ -173,7 +173,7 @@ final class L10nTests: XCTestCase {
 
         let updateAvailable = L10n.shared["update_available_body"]
         let formattedUpdate = String(format: updateAvailable, "1.0.19", "1.0.18")
-        XCTAssertEqual(formattedUpdate, "CodeIsland 1.0.19 ist verfügbar (aktuell: 1.0.18). Möchtest du es herunterladen?")
+        XCTAssertEqual(formattedUpdate, "AISM 1.0.19 ist verfügbar (aktuell: 1.0.18). Möchtest du es herunterladen?")
     }
 
     // MARK: - reply_complete_placeholder
