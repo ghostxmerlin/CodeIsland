@@ -1,0 +1,89 @@
+{
+  "method": "Official chroma removal and connected_components; source components separated by object and ordered in x. Signal classified as tall component beginning above y=200.",
+  "frames": [
+    {
+      "frame": 0,
+      "cat_bbox": [
+        75,
+        357,
+        402,
+        545
+      ],
+      "signal_bbox": [
+        408,
+        166,
+        520,
+        534
+      ],
+      "cat_width": 327,
+      "cat_height": 188,
+      "signal_height": 368,
+      "cat_width_over_signal_height": 0.8886,
+      "cat_height_over_signal_height": 0.5109,
+      "pair_width_over_signal_height": 1.2092
+    },
+    {
+      "frame": 1,
+      "cat_bbox": [
+        619,
+        348,
+        947,
+        544
+      ],
+      "signal_bbox": [
+        948,
+        166,
+        1060,
+        534
+      ],
+      "cat_width": 328,
+      "cat_height": 196,
+      "signal_height": 368,
+      "cat_width_over_signal_height": 0.8913,
+      "cat_height_over_signal_height": 0.5326,
+      "pair_width_over_signal_height": 1.1984
+    },
+    {
+      "frame": 2,
+      "cat_bbox": [
+        1157,
+        347,
+        1491,
+        545
+      ],
+      "signal_bbox": [
+        1492,
+        166,
+        1603,
+        534
+      ],
+      "cat_width": 334,
+      "cat_height": 198,
+      "signal_height": 368,
+      "cat_width_over_signal_height": 0.9076,
+      "cat_height_over_signal_height": 0.538,
+      "pair_width_over_signal_height": 1.212
+    },
+    {
+      "frame": 3,
+      "cat_bbox": [
+        1710,
+        356,
+        2033,
+        544
+      ],
+      "signal_bbox": [
+        2033,
+        166,
+        2145,
+        534
+      ],
+      "cat_width": 323,
+      "cat_height": 188,
+      "signal_height": 368,
+      "cat_width_over_signal_height": 0.8777,
+      "cat_height_over_signal_height": 0.5109,
+      "pair_width_over_signal_height": 1.1821
+    }
+  ]
+}

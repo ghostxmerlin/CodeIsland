@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "chroma_key": {
+    "hex": "#00FFFF",
+    "rgb": [
+      0,
+      255,
+      255
+    ],
+    "threshold": 96.0
+  },
+  "rows": [
+    {
+      "state": "waving",
+      "frames": [
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/qa/rows/waving/revision-02/frames/waving/00.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/qa/rows/waving/revision-02/frames/waving/01.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/qa/rows/waving/revision-02/frames/waving/02.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/qa/rows/waving/revision-02/frames/waving/03.png"
+      ],
+      "method": "components"
+    }
+  ]
+}

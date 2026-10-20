@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "frames_root": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/qa/rows/jumping/frames",
+  "states": [
+    "jumping"
+  ],
+  "errors": [],
+  "warnings": [],
+  "rows": [
+    {
+      "state": "jumping",
+      "expected_frames": 5,
+      "actual_frames": 5,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/qa/rows/jumping/frames/jumping/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15064,
+          "bbox": [
+            7,
+            44,
+            185,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 178
+        },
+        {
+          "index": 1,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/qa/rows/jumping/frames/jumping/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15625,
+          "bbox": [
+            5,
+            22,
+            186,
+            178
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 198
+        },
+        {
+          "index": 2,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/qa/rows/jumping/frames/jumping/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15876,
+          "bbox": [
+            5,
+            5,
+            187,
+            161
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 211
+        },
+        {
+          "index": 3,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/qa/rows/jumping/frames/jumping/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15814,
+          "bbox": [
+            5,
+            22,
+            187,
+            178
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 178
+        },
+        {
+          "index": 4,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/qa/rows/jumping/frames/jumping/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 15448,
+          "bbox": [
+            5,
+            44,
+            187,
+            203
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 242
+        }
+      ]
+    }
+  ]
+}

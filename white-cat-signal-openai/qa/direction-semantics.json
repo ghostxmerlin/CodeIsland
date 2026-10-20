@@ -1,0 +1,123 @@
+{
+  "atlas": "final/spritesheet-extended.png",
+  "atlas_sha256": "70e29571e915275e687dd7618b0a47c2733779722b7b145fe3dd5d1e2dcdf3e5",
+  "reviewer": "parent",
+  "basis": "Parent viewed final encoded labeled normal-cell look-directions.png and contact-sheet-extended.png after complete-row compact-layout repairs. All16 actual head/nose directions rechecked.",
+  "directions": [
+    {
+      "label": "000",
+      "expected": "up",
+      "observed": "Centered face tipped upward; nose is above muzzle with exposed chin and eyes raised toward the top.",
+      "verdict": "pass",
+      "evidence": "Nose at top of face and symmetrical upward eye line. Torso stays prone."
+    },
+    {
+      "label": "022.5",
+      "expected": "up-right",
+      "observed": "Chin stays lifted while nose and both eyes begin pointing screen-right.",
+      "verdict": "pass",
+      "evidence": "Vertical evidence: nose elevated, chin exposed. Horizontal evidence: nose displaced right of face center."
+    },
+    {
+      "label": "045",
+      "expected": "up-right",
+      "observed": "Head yaws right with a high nose, elevated rightward profile.",
+      "verdict": "pass",
+      "evidence": "Nose rises above the nearer cheek, toward upper-right; ear placement follows head yaw."
+    },
+    {
+      "label": "067.5",
+      "expected": "up-right",
+      "observed": "Near right profile, with nose still pitched slightly upward.",
+      "verdict": "warning",
+      "evidence": "Rightward muzzle clear; lower chin remains exposed. Elevation is subtle relative to 045 but does not reverse the ordered sweep."
+    },
+    {
+      "label": "090",
+      "expected": "right",
+      "observed": "Unmistakable side-facing head, muzzle and nose point screen-right at near-level pitch.",
+      "verdict": "pass",
+      "evidence": "Nose projects beyond the right facial outline, eye looks toward the right lamp side."
+    },
+    {
+      "label": "112.5",
+      "expected": "down-right",
+      "observed": "Right-facing head tips down, forehead forward and nose aimed toward the right side of tail.",
+      "verdict": "pass",
+      "evidence": "Rightward muzzle remains beyond the cheek while the snout falls below the eye line and chin tucks in."
+    },
+    {
+      "label": "135",
+      "expected": "down-right",
+      "observed": "Head pitches further down-right, with nose close to curled tail.",
+      "verdict": "pass",
+      "evidence": "Visible rightward nose and lowered face/eye line show both axes."
+    },
+    {
+      "label": "157.5",
+      "expected": "down-right",
+      "observed": "Almost front-facing low head retains a slight rightward nose and gaze.",
+      "verdict": "warning",
+      "evidence": "Nose low near paws; slight rightward displacement remains visible. Horizontal component is subtle as this pose approaches straight down."
+    },
+    {
+      "label": "180",
+      "expected": "down",
+      "observed": "Face directed down between front paws, ears above broad forehead, chin tucked and gaze lowered.",
+      "verdict": "pass",
+      "evidence": "Centered pink nose at bottom of facial triangle, close to paws; no upward chin exposure."
+    },
+    {
+      "label": "202.5",
+      "expected": "down-left",
+      "observed": "Low head begins yawing left, nose points down-left toward the left paw.",
+      "verdict": "warning",
+      "evidence": "Nose lower than eye line and slightly left of center. Horizontal component subtle near down cardinal."
+    },
+    {
+      "label": "225",
+      "expected": "down-left",
+      "observed": "Head and snout turn farther left with forehead inclined downward.",
+      "verdict": "pass",
+      "evidence": "Leftward nose projects toward paw; chin remains tucked and eye line slopes down toward nose."
+    },
+    {
+      "label": "247.5",
+      "expected": "down-left",
+      "observed": "Near left profile with slightly lowered muzzle.",
+      "verdict": "warning",
+      "evidence": "Nose projects left of head and sits slightly below the level-left pose; vertical component subtle but still down, no reversal."
+    },
+    {
+      "label": "270",
+      "expected": "left",
+      "observed": "Unmistakable left-facing profile, nose projects screen-left and near eye looks left.",
+      "verdict": "pass",
+      "evidence": "Leftmost facial feature is the projecting pink nose; level head distinct from bowed/down pose."
+    },
+    {
+      "label": "292.5",
+      "expected": "up-left",
+      "observed": "Left profile lifts nose and chin to upper-left.",
+      "verdict": "pass",
+      "evidence": "Nose projects left and higher than the preceding level-left frame; throat begins to show."
+    },
+    {
+      "label": "315",
+      "expected": "up-left",
+      "observed": "Face rises and yaws left, with clear upper-left snout and upward eyes.",
+      "verdict": "pass",
+      "evidence": "Nose left of facial center and tilted upward; lifted chin verifies vertical direction. Previous wrong-right source was rejected."
+    },
+    {
+      "label": "337.5",
+      "expected": "up-left",
+      "observed": "Head nearly straight up with a remaining leftward yaw.",
+      "verdict": "warning",
+      "evidence": "Nose high and slightly left of center, exposed chin, eyes raised. Small horizontal component intentionally approaches up cardinal."
+    }
+  ],
+  "loop_review": "All16 follow correct clockwise head-gaze order. Signal now sits closer behind the right shoulder in the look family; three lenses remain readable. Full-pair width decreases because of prop overlap, with prone torso and baseline stable. Both row boundaries retain intended down/up transitions; moderate pixel-diff outliers correspond to head-pitch changes, not reversed gazes.",
+  "warning_policy": "Intermediate near-axis components are subtle but both intended axes remain visible; no wrong cardinal/quadrant accepted.",
+  "geometry_repair": "Both coherent source rows regenerated to reduce natural head-to-signal negative space. No single final cell splice or procedural painted filler."
+}

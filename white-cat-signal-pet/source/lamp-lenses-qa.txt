@@ -1,0 +1,8 @@
+Built-in image_gen output copied byte-for-byte; original preserved.
+Mode: RGBA
+Dimensions: (2172, 724)
+Alpha range: (0, 255)
+Fully transparent pixels: 654174 (41.6%)
+Four corners alpha: 0
+Disc bounds alpha > 16: [(95, 49, 708, 669), (777, 48, 1395, 672), (1461, 45, 2076, 671)]
+Visual QA: exactly three separate illuminated glass discs, left-to-right red, green, blue; concentric painted glass texture; upper-left reflections; no housing, cat, text, or external glow. Disc diameters are visually equal; bounding boxes differ only slightly.

@@ -1,0 +1,594 @@
+{
+  "schema_version": 1,
+  "artifact_type": "openai-pet-v2-integration-contract",
+  "package_name": "white-cat-signal-openai",
+  "asset_id": "white-cat-signal",
+  "display_name": "白猫信号员",
+  "path_base": "All package asset paths are relative to this integration.json directory.",
+  "delivery_status": {
+    "record": "DELIVERY.json",
+    "when_missing": "Delivery is incomplete; this contract alone does not claim validation, upload, pet creation or selection.",
+    "authority": "Read DELIVERY.json for completed checks and any actual stable Pets service ID. asset_id is a local asset identifier, not a Pets service ID."
+  },
+  "atlas": {
+    "path": "final/spritesheet-extended.png",
+    "role": "Authoritative runtime image; use the exact final encoded PNG associated with the delivery record.",
+    "format": "PNG",
+    "pixel_mode": "RGBA",
+    "width": 1536,
+    "height": 2288,
+    "columns": 8,
+    "rows": 11,
+    "cell_width": 192,
+    "cell_height": 208,
+    "origin": "top-left",
+    "x_axis": "right",
+    "y_axis": "down",
+    "rect_order": [
+      "x",
+      "y",
+      "width",
+      "height"
+    ],
+    "rect_formula": "[column * 192, row * 208, 192, 208]",
+    "required_frames": 73,
+    "unused_cells": 15
+  },
+  "frame_policy": {
+    "root": "final-frames",
+    "source": "Exact whole-cell crops decoded from final/spritesheet-extended.png.",
+    "size": [
+      192,
+      208
+    ],
+    "preserve": [
+      "full transparent cell padding",
+      "relative registration",
+      "jump vertical displacement",
+      "alpha"
+    ],
+    "uniform_display_scaling": true,
+    "per_frame_crop_to_visible_bounds": false,
+    "per_frame_independent_resize": false,
+    "horizontal_mirroring": false,
+    "reason_no_mirror": "The signal must remain on screen-right; separate running-left artwork is supplied.",
+    "reduced_motion_frame": "final-frames/idle/00.png"
+  },
+  "standard_states": [
+    {
+      "name": "idle",
+      "row": 0,
+      "first_column": 0,
+      "frame_count": 6,
+      "frame_durations_ms": [
+        280,
+        110,
+        110,
+        140,
+        140,
+        320
+      ],
+      "cycle_duration_ms": 1100,
+      "active_lamp": "blue",
+      "meaning": "calm sleeping and breathing",
+      "frame_path_pattern": "final-frames/idle/{index:02d}.png"
+    },
+    {
+      "name": "running-right",
+      "row": 1,
+      "first_column": 0,
+      "frame_count": 8,
+      "frame_durations_ms": [
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220
+      ],
+      "cycle_duration_ms": 1060,
+      "active_lamp": "blue",
+      "meaning": "directional movement toward screen-right",
+      "frame_path_pattern": "final-frames/running-right/{index:02d}.png"
+    },
+    {
+      "name": "running-left",
+      "row": 2,
+      "first_column": 0,
+      "frame_count": 8,
+      "frame_durations_ms": [
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220
+      ],
+      "cycle_duration_ms": 1060,
+      "active_lamp": "blue",
+      "meaning": "directional movement toward screen-left; signal remains screen-right",
+      "frame_path_pattern": "final-frames/running-left/{index:02d}.png"
+    },
+    {
+      "name": "waving",
+      "row": 3,
+      "first_column": 0,
+      "frame_count": 4,
+      "frame_durations_ms": [
+        140,
+        140,
+        140,
+        280
+      ],
+      "cycle_duration_ms": 700,
+      "active_lamp": "blue",
+      "meaning": "greeting with an attached forepaw",
+      "frame_path_pattern": "final-frames/waving/{index:02d}.png"
+    },
+    {
+      "name": "jumping",
+      "row": 4,
+      "first_column": 0,
+      "frame_count": 5,
+      "frame_durations_ms": [
+        140,
+        140,
+        140,
+        140,
+        280
+      ],
+      "cycle_duration_ms": 840,
+      "active_lamp": "blue",
+      "meaning": "whole-pair lift and landing",
+      "frame_path_pattern": "final-frames/jumping/{index:02d}.png"
+    },
+    {
+      "name": "failed",
+      "row": 5,
+      "first_column": 0,
+      "frame_count": 8,
+      "frame_durations_ms": [
+        140,
+        140,
+        140,
+        140,
+        140,
+        140,
+        140,
+        240
+      ],
+      "cycle_duration_ms": 1220,
+      "active_lamp": "red",
+      "meaning": "failure reaction",
+      "frame_path_pattern": "final-frames/failed/{index:02d}.png"
+    },
+    {
+      "name": "waiting",
+      "row": 6,
+      "first_column": 0,
+      "frame_count": 6,
+      "frame_durations_ms": [
+        150,
+        150,
+        150,
+        150,
+        150,
+        260
+      ],
+      "cycle_duration_ms": 1010,
+      "active_lamp": "red",
+      "meaning": "expectant request for approval, help or input",
+      "frame_path_pattern": "final-frames/waiting/{index:02d}.png"
+    },
+    {
+      "name": "running",
+      "row": 7,
+      "first_column": 0,
+      "frame_count": 6,
+      "frame_durations_ms": [
+        120,
+        120,
+        120,
+        120,
+        120,
+        220
+      ],
+      "cycle_duration_ms": 820,
+      "active_lamp": "green",
+      "meaning": "active task work; not locomotion",
+      "frame_path_pattern": "final-frames/running/{index:02d}.png"
+    },
+    {
+      "name": "review",
+      "row": 8,
+      "first_column": 0,
+      "frame_count": 6,
+      "frame_durations_ms": [
+        150,
+        150,
+        150,
+        150,
+        150,
+        280
+      ],
+      "cycle_duration_ms": 1030,
+      "active_lamp": "green",
+      "meaning": "inspection of completed work",
+      "frame_path_pattern": "final-frames/review/{index:02d}.png"
+    }
+  ],
+  "unused_cell_locations": [
+    {
+      "row": 0,
+      "columns": [
+        6,
+        7
+      ]
+    },
+    {
+      "row": 3,
+      "columns": [
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "row": 4,
+      "columns": [
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "row": 6,
+      "columns": [
+        6,
+        7
+      ]
+    },
+    {
+      "row": 7,
+      "columns": [
+        6,
+        7
+      ]
+    },
+    {
+      "row": 8,
+      "columns": [
+        6,
+        7
+      ]
+    }
+  ],
+  "directions": {
+    "count": 16,
+    "ordering": "clockwise in screen coordinates",
+    "step_degrees": 22.5,
+    "active_lamp": "blue",
+    "neutral_is_idle": true,
+    "000_is_up_not_neutral": true,
+    "runtime_playback": "Choose one pose from pointer direction; continuous sweep is a preview, not required runtime behavior.",
+    "pointer_selection": {
+      "delta": "dx = pointer_x - reference_x; dy = pointer_y - reference_y, in screen coordinates",
+      "reference": "Application-selected point in the displayed pet.",
+      "dead_zone": "Application-selected radius; return idle inside it.",
+      "angle_degrees": "(degrees(atan2(dx, -dy)) + 360) % 360",
+      "nearest_index": "floor((angle_degrees + 11.25) / 22.5) % 16"
+    },
+    "poses": [
+      {
+        "index": 0,
+        "degrees": 0.0,
+        "label": "000",
+        "screen_direction": "up",
+        "row": 9,
+        "column": 0,
+        "rect_xywh": [
+          0,
+          1872,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/00.png"
+      },
+      {
+        "index": 1,
+        "degrees": 22.5,
+        "label": "022.5",
+        "screen_direction": "up-right",
+        "row": 9,
+        "column": 1,
+        "rect_xywh": [
+          192,
+          1872,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/01.png"
+      },
+      {
+        "index": 2,
+        "degrees": 45.0,
+        "label": "045",
+        "screen_direction": "up-right",
+        "row": 9,
+        "column": 2,
+        "rect_xywh": [
+          384,
+          1872,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/02.png"
+      },
+      {
+        "index": 3,
+        "degrees": 67.5,
+        "label": "067.5",
+        "screen_direction": "up-right",
+        "row": 9,
+        "column": 3,
+        "rect_xywh": [
+          576,
+          1872,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/03.png"
+      },
+      {
+        "index": 4,
+        "degrees": 90.0,
+        "label": "090",
+        "screen_direction": "right",
+        "row": 9,
+        "column": 4,
+        "rect_xywh": [
+          768,
+          1872,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/04.png"
+      },
+      {
+        "index": 5,
+        "degrees": 112.5,
+        "label": "112.5",
+        "screen_direction": "down-right",
+        "row": 9,
+        "column": 5,
+        "rect_xywh": [
+          960,
+          1872,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/05.png"
+      },
+      {
+        "index": 6,
+        "degrees": 135.0,
+        "label": "135",
+        "screen_direction": "down-right",
+        "row": 9,
+        "column": 6,
+        "rect_xywh": [
+          1152,
+          1872,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/06.png"
+      },
+      {
+        "index": 7,
+        "degrees": 157.5,
+        "label": "157.5",
+        "screen_direction": "down-right",
+        "row": 9,
+        "column": 7,
+        "rect_xywh": [
+          1344,
+          1872,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/07.png"
+      },
+      {
+        "index": 8,
+        "degrees": 180.0,
+        "label": "180",
+        "screen_direction": "down",
+        "row": 10,
+        "column": 0,
+        "rect_xywh": [
+          0,
+          2080,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/08.png"
+      },
+      {
+        "index": 9,
+        "degrees": 202.5,
+        "label": "202.5",
+        "screen_direction": "down-left",
+        "row": 10,
+        "column": 1,
+        "rect_xywh": [
+          192,
+          2080,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/09.png"
+      },
+      {
+        "index": 10,
+        "degrees": 225.0,
+        "label": "225",
+        "screen_direction": "down-left",
+        "row": 10,
+        "column": 2,
+        "rect_xywh": [
+          384,
+          2080,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/10.png"
+      },
+      {
+        "index": 11,
+        "degrees": 247.5,
+        "label": "247.5",
+        "screen_direction": "down-left",
+        "row": 10,
+        "column": 3,
+        "rect_xywh": [
+          576,
+          2080,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/11.png"
+      },
+      {
+        "index": 12,
+        "degrees": 270.0,
+        "label": "270",
+        "screen_direction": "left",
+        "row": 10,
+        "column": 4,
+        "rect_xywh": [
+          768,
+          2080,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/12.png"
+      },
+      {
+        "index": 13,
+        "degrees": 292.5,
+        "label": "292.5",
+        "screen_direction": "up-left",
+        "row": 10,
+        "column": 5,
+        "rect_xywh": [
+          960,
+          2080,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/13.png"
+      },
+      {
+        "index": 14,
+        "degrees": 315.0,
+        "label": "315",
+        "screen_direction": "up-left",
+        "row": 10,
+        "column": 6,
+        "rect_xywh": [
+          1152,
+          2080,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/14.png"
+      },
+      {
+        "index": 15,
+        "degrees": 337.5,
+        "label": "337.5",
+        "screen_direction": "up-left",
+        "row": 10,
+        "column": 7,
+        "rect_xywh": [
+          1344,
+          2080,
+          192,
+          208
+        ],
+        "frame_path": "final-frames/look/15.png"
+      }
+    ]
+  },
+  "existing_agent_status_mapping": {
+    "idle": "idle",
+    "processing": "running",
+    "running": "running",
+    "waitingApproval": "waiting",
+    "waitingQuestion": "waiting"
+  },
+  "application_integration": {
+    "code_modified": false,
+    "scope": "Artwork and metadata only; Claude implements resource loading and playback in the application.",
+    "preserve_status_text": true,
+    "preserve_status_text_reason": "processing/running and waitingApproval/waitingQuestion intentionally share artwork.",
+    "additional_animation_names_are_not_new_agent_statuses": [
+      "running-right",
+      "running-left",
+      "waving",
+      "jumping",
+      "failed",
+      "review",
+      "look"
+    ],
+    "offline": {
+      "atlas_state": null,
+      "note": "This atlas has no offline/unlit row. An offline image is available in the separate static package if the application chooses that fallback."
+    },
+    "display": "Fit the complete 192x208 cell uniformly; use a display area appropriate for the full cat and tall signal.",
+    "scheduling": "Respect reduced motion, visibility and sleep controls; frame durations are in milliseconds, not a required global timer rate."
+  },
+  "static_source_package": {
+    "name": "white-cat-signal-pet",
+    "included_in_this_atlas_package": false,
+    "format": "codeisland-layered-png-v1",
+    "manifest_relative_to_that_package": "pet-manifest.json",
+    "offline_image_relative_to_that_package": "states/offline.png",
+    "relationship": "Separate 1600x1120 layered static source package. Its layers, anchors and status-switch GIF are not v2 animation cells."
+  },
+  "preview": {
+    "manifest": "preview/preview-manifest.json",
+    "atlas_sha256_location": "preview-manifest.json -> atlas.sha256",
+    "state_gif_pattern": "preview/{state}.gif",
+    "all_states_gif": "preview/all-states.gif",
+    "all_states_mp4": "preview/all-states.mp4",
+    "look_loop": "preview/look-loop.gif",
+    "idle_jump_idle": "preview/idle-jump-idle.gif",
+    "evidence_stills": "preview/evidence-stills.png",
+    "runtime_asset": false,
+    "timing_source": "OpenAI work-pets 0.1.6 create-pet/scripts/render_animation_previews.py ROW_DURATIONS",
+    "look_preview_frame_duration_ms": 160,
+    "look_preview_timing_is_not_runtime_requirement": true
+  },
+  "authoring_material": {
+    "request": "pet_request.json",
+    "jobs": "imagegen-jobs.json",
+    "generated_strips": "decoded",
+    "prompts": [
+      "prompts",
+      "source"
+    ],
+    "qa": "qa",
+    "not_runtime_images": [
+      "decoded",
+      "references/layout-guides"
+    ],
+    "note": "Generated strips can contain cyan chroma backgrounds and source margins; use final atlas or its exact final-frames crops for display."
+  }
+}

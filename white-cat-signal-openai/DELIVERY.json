@@ -1,0 +1,77 @@
+{
+  "status": "assets_complete_desktop_selection_pending",
+  "name": "白猫信号员",
+  "description": "一只圆滚滚的纯白卧猫，守着高大的红绿蓝铁路信号灯，陪伴编程并提示工作状态。",
+  "pet_id": "pet_6ad6fb5cb244819195b7aee2bbf84e30",
+  "is_custom": true,
+  "service_verification": {
+    "create_pet": true,
+    "select_pet": true,
+    "list_pets": true,
+    "active_pet_id": "pet_6ad6fb5cb244819195b7aee2bbf84e30",
+    "scope": "ChatGPT Work cloud pet library only; separate from desktop selection",
+    "is_active": true
+  },
+  "atlas": {
+    "path": "final/spritesheet-extended.png",
+    "sha256": "70e29571e915275e687dd7618b0a47c2733779722b7b145fe3dd5d1e2dcdf3e5",
+    "encoded_bytes": 2264517,
+    "width": 1536,
+    "height": 2288,
+    "cell_width": 192,
+    "cell_height": 208,
+    "required_frames": 73,
+    "sprite_version": 2
+  },
+  "entrypoints": {
+    "claude_readme": "README-CLAUDE.md",
+    "integration_contract": "integration.json",
+    "frames": "final-frames",
+    "animation": "preview/all-states.gif",
+    "video": "preview/all-states.mp4",
+    "contact_sheet": "qa/contact-sheet-extended.png",
+    "desktop_instructions": "desktop/README.md"
+  },
+  "checks": {
+    "atlas_validation": "final/validation-extended.json",
+    "pet_quality": "qa/pet-quality.json",
+    "blind_directions": "qa/blind-validation.json",
+    "mcp_preflight": "qa/mcp-preflight.json",
+    "media_verification": "qa/media-verification.json",
+    "motion_preview_shown_before_upload": true,
+    "desktop_atlas_validation": "qa/desktop-atlas-validation.json",
+    "desktop_adaptation": "qa/desktop-adaptation.json"
+  },
+  "workflow": {
+    "artwork": "OpenAI imagegen; coherent source strips and full-row repairs",
+    "assembly": "Official work-pets 0.1.6 creation scripts; exact final bytes validated",
+    "local_archive": "../white-cat-signal-openai.zip",
+    "library": "Library file tools were not available in this session; complete source, revisions, frames, QA and previews are retained in this local folder. The final sprite sheet is also stored in the created Pets record.",
+    "codeisland_integration": "Not performed: artwork and handoff only, as requested. Claude can use README-CLAUDE.md.",
+    "desktop_installation": "Official local hatch-pet package with spriteVersionNumber 2 and required neutral frame, separate from cloud Work Pets activation."
+  },
+  "completed_at_utc": "2026-10-20T05:27:38.935827+00:00",
+  "desktop": {
+    "status": "installed_selection_pending",
+    "pet_id": "white-cat-signal",
+    "package": "desktop/white-cat-signal",
+    "installed_path": "/Users/ghostxmerlin/.codex/pets/white-cat-signal",
+    "installed_files_verified": true,
+    "spriteVersionNumber": 2,
+    "spritesheet_sha256": "11757198599f4c49f12128def0468f086b1ce56de29f3dbf657108a69463df4e",
+    "populated_cells": 74,
+    "blank_cells": 14,
+    "neutral_frame": {
+      "row": 0,
+      "column": 6,
+      "source_row": 0,
+      "source_column": 0
+    },
+    "original_73_frames_unchanged": true,
+    "client_selected": null,
+    "client_visual_verified": false,
+    "client_verification_limit": "Computer Use refuses control of com.openai.codex for safety reasons; no alternate UI automation attempted.",
+    "next_action": "Settings > Pets > Refresh > 白猫信号员 > Show pet",
+    "installed_at_utc": "2026-10-20T05:37:14.219353+00:00"
+  }
+}

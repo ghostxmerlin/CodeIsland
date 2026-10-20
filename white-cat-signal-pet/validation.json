@@ -1,0 +1,75 @@
+{
+  "format": "codeisland-layered-png-v1",
+  "structuralChecksPassed": true,
+  "checks": [
+    "RGBA and common 1600x1120 canvas",
+    "24px outer transparent safety border",
+    "zero hidden RGB under fully transparent pixels",
+    "source cat/signal split exactly reconstructs original visible pixels",
+    "each lit state changes only its corresponding generated lamp overlay",
+    "saved state images equal documented layer composition"
+  ],
+  "scope": "Local asset checks, not ChatGPT Pets v2 validation or application integration testing",
+  "assets": [
+    {
+      "file": "master.png",
+      "sha256": "71b816e0401ef1f8e6db28ef7039234e871dff52354c5484872067dd3208988e",
+      "sizeBytes": 1577724,
+      "transparentPixelFraction": 0.5487935267857142
+    },
+    {
+      "file": "states/offline.png",
+      "sha256": "71b816e0401ef1f8e6db28ef7039234e871dff52354c5484872067dd3208988e",
+      "sizeBytes": 1577724,
+      "transparentPixelFraction": 0.5487935267857142
+    },
+    {
+      "file": "states/idle-blue.png",
+      "sha256": "fa598ec4c0c0c241fe25936831ebd300b98a6f43094b27b5ae098356800a5454",
+      "sizeBytes": 1585988,
+      "transparentPixelFraction": 0.5487935267857142
+    },
+    {
+      "file": "states/working-green.png",
+      "sha256": "086775193a8ddf639d2bb9a33b61d3eb19208cca4d021979c3f30f9a85bc3d5d",
+      "sizeBytes": 1585373,
+      "transparentPixelFraction": 0.5487935267857142
+    },
+    {
+      "file": "states/attention-red.png",
+      "sha256": "46073e568aa5dbe1e2a3121d4d5735d157e5a149821b24eebac285fd6f444b87",
+      "sizeBytes": 1585835,
+      "transparentPixelFraction": 0.5487935267857142
+    },
+    {
+      "file": "layers/cat.png",
+      "sha256": "876ce674595ea0d0cf2ee85ca0ae4d8f5c071f006063260b928a7e664c3bd765",
+      "sizeBytes": 946488,
+      "transparentPixelFraction": 0.6908147321428572
+    },
+    {
+      "file": "layers/signal-off.png",
+      "sha256": "94619c306cc4835960552d42d5a3154ec2011868d9fb0c3457efc3094497a6db",
+      "sizeBytes": 633535,
+      "transparentPixelFraction": 0.8579787946428571
+    },
+    {
+      "file": "layers/light-red.png",
+      "sha256": "17654dfc90d11de218c83d4ef4d3efd1c807add141bbe0f50963e2bb28126e7d",
+      "sizeBytes": 52189,
+      "transparentPixelFraction": 0.9899553571428571
+    },
+    {
+      "file": "layers/light-green.png",
+      "sha256": "5325a0dfa009a0d849efd8d33f4f5ebdc96551c62ed0754c9ede6cc09a3d6a5d",
+      "sizeBytes": 53553,
+      "transparentPixelFraction": 0.9905814732142857
+    },
+    {
+      "file": "layers/light-blue.png",
+      "sha256": "51c00c53770656c68416eeee75fcd4b77009fb438b08f2f5dc79b007411c712b",
+      "sizeBytes": 53326,
+      "transparentPixelFraction": 0.9903989955357143
+    }
+  ]
+}

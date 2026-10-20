@@ -1,0 +1,9 @@
+{
+  "review_scope": "worker cardinal anchors, awaiting parent review",
+  "directions": [
+    {"direction":"000","expected":"up","observed":"up","verdict":"pass","evidence":"Raised chin and muzzle underside, pink nose elevated and eyes aimed above; body and signal anchored."},
+    {"direction":"090","expected":"screen-right","observed":"screen-right","verdict":"pass","evidence":"Right-facing profile with nose at right edge of face and right-projecting muzzle, natural one-eye profile."},
+    {"direction":"180","expected":"down","observed":"down","verdict":"pass","evidence":"Lowered muzzle and nose near front paws, broad upper forehead visible, eyes narrowed downward; face retained."},
+    {"direction":"270","expected":"screen-left","observed":"screen-left","verdict":"pass","evidence":"Left-facing profile with nose at left face edge and leftward muzzle; signal remains screen-right."}
+  ]
+}

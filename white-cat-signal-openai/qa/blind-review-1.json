@@ -1,0 +1,19 @@
+{
+  "reviewer": "final-blind1",
+  "pairs": [
+    {"pair": "horizontal-1", "A": "screen-right", "B": "screen-left", "reason": "A's pink nose and projecting muzzle lie to the right of its visible eye; B's nose and muzzle project left of its prominent eye."},
+    {"pair": "horizontal-2", "A": "screen-right", "B": "screen-left", "reason": "A shows a right-facing cheek profile with its nose at the right edge of the face. B's nose is at the left edge, ahead of its visible eye."},
+    {"pair": "horizontal-3", "A": "screen-right", "B": "screen-left", "reason": "A's muzzle extends rightward from the eye and cheek. B's visible eye sits behind a muzzle extending toward the left."},
+    {"pair": "horizontal-4", "A": "screen-right", "B": "screen-left", "reason": "A's nose is on the right-facing outline of its head; B's pink nose projects from the left-facing outline."},
+    {"pair": "horizontal-5", "A": "screen-left", "B": "screen-right", "reason": "A's lowered head has its nose at the far left of the face. B's lowered head presents its nose on the right beyond its visible eye."},
+    {"pair": "horizontal-6", "A": "screen-left", "B": "screen-right", "reason": "A's nose and short muzzle are displaced left of the central face, while B's visible eye and muzzle form a right-facing profile."},
+    {"pair": "horizontal-7", "A": "screen-left", "B": "screen-right", "reason": "A's nose lies left of the more exposed eye and its face turns left. B's muzzle extends right of its prominent eye, showing a rightward head turn."},
+    {"pair": "vertical-1", "A": "up", "B": "down", "reason": "A raises its nose with the chin and lower face exposed beneath it. B bows its forehead toward the viewer and lowers its nose between the front paws."},
+    {"pair": "vertical-2", "A": "up", "B": "down", "reason": "A's muzzle is lifted above its rounded cheek with an exposed underside. B's nose points toward the forepaw and its face rests low against it."},
+    {"pair": "vertical-3", "A": "up", "B": "down", "reason": "A carries its muzzle high relative to the cheek and neck, with the chin lifted. B bows its head, placing its muzzle close to the front paw."},
+    {"pair": "vertical-4", "A": "up", "B": "down", "reason": "A's nose is carried at the upper front of the head with the chin raised away from the paw. B's nose and muzzle angle toward the paw beneath the face."},
+    {"pair": "vertical-5", "A": "down", "B": "up", "reason": "A's face is bowed and its nose nearly touches the paw level. B tips its nose upward and exposes the broad lower face and chin."},
+    {"pair": "vertical-6", "A": "down", "B": "up", "reason": "A's forehead slopes toward a low nose beside its paws. B raises the nose above the main cheek mass and presents the underside of its muzzle."},
+    {"pair": "vertical-7", "A": "down", "B": "up", "reason": "A's left-facing muzzle descends toward the front paw, with the head resting low. B holds its left-facing muzzle higher on the head and lifts its chin clear of the paw."}
+  ]
+}

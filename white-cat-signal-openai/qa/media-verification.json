@@ -1,0 +1,114 @@
+{
+  "atlas_sha256": "70e29571e915275e687dd7618b0a47c2733779722b7b145fe3dd5d1e2dcdf3e5",
+  "gifs": {
+    "all-states.gif": {
+      "frames": 187,
+      "duration_ms": 29080,
+      "size": [
+        320,
+        256
+      ],
+      "loop": 0
+    },
+    "failed.gif": {
+      "frames": 8,
+      "duration_ms": 1220,
+      "size": [
+        192,
+        208
+      ],
+      "loop": 0
+    },
+    "idle-jump-idle.gif": {
+      "frames": 17,
+      "duration_ms": 3040,
+      "size": [
+        192,
+        208
+      ],
+      "loop": 0
+    },
+    "idle.gif": {
+      "frames": 6,
+      "duration_ms": 1100,
+      "size": [
+        192,
+        208
+      ],
+      "loop": 0
+    },
+    "jumping.gif": {
+      "frames": 5,
+      "duration_ms": 840,
+      "size": [
+        192,
+        208
+      ],
+      "loop": 0
+    },
+    "look-loop.gif": {
+      "frames": 16,
+      "duration_ms": 2560,
+      "size": [
+        192,
+        208
+      ],
+      "loop": 0
+    },
+    "review.gif": {
+      "frames": 6,
+      "duration_ms": 1030,
+      "size": [
+        192,
+        208
+      ],
+      "loop": 0
+    },
+    "running-left.gif": {
+      "frames": 8,
+      "duration_ms": 1060,
+      "size": [
+        192,
+        208
+      ],
+      "loop": 0
+    },
+    "running-right.gif": {
+      "frames": 8,
+      "duration_ms": 1060,
+      "size": [
+        192,
+        208
+      ],
+      "loop": 0
+    },
+    "running.gif": {
+      "frames": 6,
+      "duration_ms": 820,
+      "size": [
+        192,
+        208
+      ],
+      "loop": 0
+    },
+    "waiting.gif": {
+      "frames": 6,
+      "duration_ms": 1010,
+      "size": [
+        192,
+        208
+      ],
+      "loop": 0
+    },
+    "waving.gif": {
+      "frames": 4,
+      "duration_ms": 700,
+      "size": [
+        192,
+        208
+      ],
+      "loop": 0
+    }
+  },
+  "final_png_frames": 73
+}

@@ -1,0 +1,125 @@
+{
+  "ok": true,
+  "chroma_key": {
+    "hex": "#00FFFF",
+    "rgb": [
+      0,
+      255,
+      255
+    ],
+    "threshold": 32.0
+  },
+  "rows": [
+    {
+      "state": "idle",
+      "frames": [
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/idle/00.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/idle/01.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/idle/02.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/idle/03.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/idle/04.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/idle/05.png"
+      ],
+      "method": "components"
+    },
+    {
+      "state": "running-right",
+      "frames": [
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-right/00.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-right/01.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-right/02.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-right/03.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-right/04.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-right/05.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-right/06.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-right/07.png"
+      ],
+      "method": "components"
+    },
+    {
+      "state": "running-left",
+      "frames": [
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-left/00.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-left/01.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-left/02.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-left/03.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-left/04.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-left/05.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-left/06.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running-left/07.png"
+      ],
+      "method": "components"
+    },
+    {
+      "state": "waving",
+      "frames": [
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/waving/00.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/waving/01.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/waving/02.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/waving/03.png"
+      ],
+      "method": "components"
+    },
+    {
+      "state": "jumping",
+      "frames": [
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/jumping/00.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/jumping/01.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/jumping/02.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/jumping/03.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/jumping/04.png"
+      ],
+      "method": "components"
+    },
+    {
+      "state": "failed",
+      "frames": [
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/failed/00.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/failed/01.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/failed/02.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/failed/03.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/failed/04.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/failed/05.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/failed/06.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/failed/07.png"
+      ],
+      "method": "components"
+    },
+    {
+      "state": "waiting",
+      "frames": [
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/waiting/00.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/waiting/01.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/waiting/02.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/waiting/03.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/waiting/04.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/waiting/05.png"
+      ],
+      "method": "components"
+    },
+    {
+      "state": "running",
+      "frames": [
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running/00.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running/01.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running/02.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running/03.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running/04.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/running/05.png"
+      ],
+      "method": "components"
+    },
+    {
+      "state": "review",
+      "frames": [
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/review/00.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/review/01.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/review/02.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/review/03.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/review/04.png",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames-extracted/review/05.png"
+      ],
+      "method": "components"
+    }
+  ]
+}

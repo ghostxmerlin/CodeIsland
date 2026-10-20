@@ -1,0 +1,15 @@
+Waving revision 02: targeted cat-to-signal proportion repair
+Selected source: decoded/waving.png
+Preserved original: qa/rows/waving/revision-01.png
+Prior notes: qa/rows/waving/revision-01-notes.txt
+Exact revision prompt: qa/rows/waving/revision-02-prompt.txt
+
+Visual review: four complete coherent pairs, same plump white cat and right-hand tall vintage signal. Poses remain paw down, paw raised, pink pad facing viewer, paw returned with eyes-closed smile. Entire lying body and thick wrapped tail preserved; no new effects/props, clipping or guide marks. Bottom blue illuminated and red/green off in all four. Cat is clearly smaller relative to unchanged tall signal, much closer to idle/waiting. All four native extracted frames visually inspected.
+
+Official component extraction and require-components inspection return ok:true, errors:[], warnings:[]. Official save_preview rendered revision-02/previews/waving.gif. No atlas or final despill changed.
+
+Source metrics from official connected_components after official chroma removal: signals are 368 pixels high in every pose, bboxes y=166..534. Cat width/signal height = 0.8886, 0.8913, 0.9076, 0.8777. Resting cat height/signal height = 0.5109 in first and last; raised gesture frames reach 0.5326 and 0.5380. Full pair width/signal height = 1.2092, 1.1984, 1.2120, 1.1821. Separate metrics JSON saved.
+
+Pale-fur connected-component proxy: first resting cat width decreased from 354 to 291 pixels (17.8%); last from 354 to 288 (18.6%). This proxy excludes dark edges/tail shadow and is documented in pale-fur-metrics.json. It measures relative source repair, not final acceptance.
+
+Residual difference: corrected whole-cat width is near 0.89 signal height rather than exact target 0.85; full pair width remains approximately 1.20 rather than 1.10, partly due to preserving the original wider signal geometry. Cat-to-signal scale is consistently corrected; parent notified for visual acceptance. Minor cyan edge spill remains for final one-time cleanup.
