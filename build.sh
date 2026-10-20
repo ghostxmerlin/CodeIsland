@@ -2,8 +2,13 @@
 set -euo pipefail
 
 # Ensure Xcode.app toolchain is used even if xcode-select points at CLT
-if [ -d /Applications/Xcode.app/Contents/Developer ]; then
-    export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+if [ -z "${DEVELOPER_DIR:-}" ]; then
+    for xcode in /Applications/Xcode.app /Applications/Xcode-beta.app; do
+        if [ -d "$xcode/Contents/Developer" ]; then
+            export DEVELOPER_DIR="$xcode/Contents/Developer"
+            break
+        fi
+    done
 fi
 
 APP_NAME="CodeIsland"
@@ -72,7 +77,8 @@ build_mac() {
     echo "Building $APP_NAME (arm64 only)..."
     swift build -c release --arch arm64
 
-    ARM_DIR=".build/arm64-apple-macosx/release"
+    # Native and swiftbuild build systems write products to different dirs.
+    ARM_DIR="$(swift build -c release --arch arm64 --show-bin-path)"
 
     echo "Creating app bundle..."
     rm -rf "$APP_BUNDLE"
@@ -117,7 +123,7 @@ build_mac() {
     cp "Sources/CodeIsland/Resources/AppIcon.icns" "$APP_BUNDLE/Contents/Resources/AppIcon.icns"
 
     # Copy SPM resource bundles into Contents/Resources/ (required for code signing)
-    for bundle in .build/*/release/*.bundle; do
+    for bundle in "$ARM_DIR"/*.bundle; do
         if [ -e "$bundle" ]; then
             cp -R "$bundle" "$APP_BUNDLE/Contents/Resources/"
             break

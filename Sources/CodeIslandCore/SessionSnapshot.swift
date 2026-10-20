@@ -176,6 +176,10 @@ public struct SessionSnapshot: Sendable {
     /// failed AiWork stream or Cowork turn); the card's status reads ERROR
     /// until the next prompt. Set by AppState.enqueueCompletion. Transient.
     public var lastTurnFailed: Bool = false
+    /// The last turn finished and the user has not looked at it yet — no
+    /// jump to its terminal, no hover on its completion card, no new prompt.
+    /// Set by AppState.enqueueCompletion. Transient.
+    public var completionUnseen: Bool = false
     /// Cline-specific: true after TaskComplete/TaskCancel until the next TaskStart/TaskResume.
     /// Cline runs hooks asynchronously (background bridge), so events from prior tools can
     /// arrive after a TaskCancel and revive the session. This flag drops those stale events.
@@ -1181,6 +1185,7 @@ public func reduceEvent(
     case "UserPromptSubmit":
         sessions[sessionId]?.interrupted = false
         sessions[sessionId]?.lastTurnFailed = false
+        sessions[sessionId]?.completionUnseen = false
         sessions[sessionId]?.taskRoundEnded = false
         sessions[sessionId]?.clearRecapIfSuperseded(byPromptAt: Date())
         if sessions[sessionId]?.source == "codex" {

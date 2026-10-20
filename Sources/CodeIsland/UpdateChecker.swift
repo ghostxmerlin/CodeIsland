@@ -61,12 +61,9 @@ final class UpdateChecker: NSObject, ObservableObject {
         }
         #endif
 
-        if isHomebrewInstall {
-            Self.log.info("Homebrew install detected — disabling Sparkle auto-checks")
-            updater.automaticallyChecksForUpdates = false
-        } else {
-            updater.automaticallyChecksForUpdates = true
-        }
+        // Fork build: the feed points at upstream releases, which would replace
+        // local modifications. Auto-checks stay off; manual checks still work.
+        updater.automaticallyChecksForUpdates = false
         controller.startUpdater()
     }
 

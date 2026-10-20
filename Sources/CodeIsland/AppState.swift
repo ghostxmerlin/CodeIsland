@@ -304,6 +304,12 @@ final class AppState {
             if surface != oldValue {
                 followUps.surfaceChanged(surface)
             }
+            // The session list shows every finished turn: all of them are seen.
+            if surface == .sessionList, surface != oldValue {
+                for (sid, session) in sessions where session.completionUnseen {
+                    sessions[sid]?.completionUnseen = false
+                }
+            }
             switch surface {
             case .approvalCard(let sid): cardRequestId = pendingPermission(forSession: sid)?.id
             case .questionCard(let sid): cardRequestId = pendingQuestion(forSession: sid)?.id
@@ -380,6 +386,7 @@ final class AppState {
         didSet {
             if completionHasBeenEntered, let sid = justCompletedSessionId {
                 followUps.completionSeen(sessionId: sid)
+                markCompletionSeen(sessionId: sid)
             }
         }
     }
@@ -1295,6 +1302,8 @@ final class AppState {
     func enqueueCompletion(_ sessionId: String, turnFailed: Bool = false) {
         // The session card reads ERROR until the next prompt.
         sessions[sessionId]?.lastTurnFailed = turnFailed
+        // The desktop signal-cat lights for it until the user looks.
+        sessions[sessionId]?.completionUnseen = true
         let style = Self.completionStyle()
         // Follow-ups only chase completions the user asked to hear about.
         if style != .off {
@@ -1562,6 +1571,13 @@ final class AppState {
             guard !Task.isCancelled else { return }
             showNextCompletionOrCollapse()
         }
+    }
+
+    /// The user looked at this session's finished turn (jumped to it, hovered
+    /// its completion card): the desktop signal-cat stops lighting for it.
+    func markCompletionSeen(sessionId: String) {
+        guard sessions[sessionId]?.completionUnseen == true else { return }
+        sessions[sessionId]?.completionUnseen = false
     }
 
     func cancelCompletionQueue() {
