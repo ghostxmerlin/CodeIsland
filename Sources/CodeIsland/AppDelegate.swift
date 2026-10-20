@@ -192,6 +192,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    /// Opening AISM again (Finder, Dock, Spotlight) while it runs shows the
+    /// real Settings window rather than letting SwiftUI open its empty
+    /// placeholder scene.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        SettingsWindowController.shared.show()
+        return false
+    }
+
     func applicationWillTerminate(_ notification: Notification) {
         hookRecoveryTimer?.invalidate()
         teardownGlobalShortcut()
