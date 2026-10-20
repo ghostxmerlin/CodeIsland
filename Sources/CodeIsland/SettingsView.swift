@@ -331,6 +331,7 @@ private struct GeneralPage: View {
     @AppStorage(SettingsKey.displayChoice) private var displayChoice = SettingsDefaults.displayChoice
     @AppStorage(SettingsKey.allowHorizontalDrag) private var allowHorizontalDrag = SettingsDefaults.allowHorizontalDrag
     @AppStorage(SettingsKey.avoidMenuBarIcons) private var avoidMenuBarIcons = SettingsDefaults.avoidMenuBarIcons
+    @AppStorage(SettingsKey.showSignalPet) private var showSignalPet = SettingsDefaults.showSignalPet
     @State private var launchAtLogin: Bool
 
     init() {
@@ -365,6 +366,10 @@ private struct GeneralPage: View {
                     .foregroundStyle(.secondary)
                 Toggle(l10n["avoid_menu_bar_icons"], isOn: $avoidMenuBarIcons)
                 Text(l10n["avoid_menu_bar_icons_desc"])
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Toggle(l10n["show_signal_pet"], isOn: $showSignalPet)
+                Text(l10n["show_signal_pet_desc"])
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Picker(l10n["display"], selection: $displayChoice) {

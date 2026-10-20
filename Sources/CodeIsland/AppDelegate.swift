@@ -8,7 +8,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     nonisolated private static let log = Logger(subsystem: "com.codeisland", category: "AppDelegate")
 
     var panelController: PanelWindowController?
-    var signalPetController: SignalPetWindowController?
+    var signalPet: SignalPetSwitch?
     private var hookServer: HookServer?
     private var hookRecoveryTimer: Timer?
     private var lastHookCheck: Date = .distantPast
@@ -74,8 +74,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         panelController = PanelWindowController(appState: appState)
         panelController?.showPanel()
-        signalPetController = SignalPetWindowController(appState: appState)
-        signalPetController?.show()
+        signalPet = SignalPetSwitch { [appState] in SignalPetWindowController(appState: appState) }
+        signalPet?.start()
 
         appState.startSessionDiscovery()
         appState.startCodexAppServerWatcher()

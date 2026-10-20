@@ -26,6 +26,7 @@ enum SettingsKey {
     static let displayChoice = "displayChoice"             // "auto", "builtin", "main"
     static let allowHorizontalDrag = "allowHorizontalDrag"
     static let avoidMenuBarIcons = "avoidMenuBarIcons"
+    static let showSignalPet = "showSignalPet"             // desktop signal-cat window
     static let panelHorizontalOffset = "panelHorizontalOffset"
 
     // General - Behavior
@@ -170,6 +171,7 @@ struct SettingsDefaults {
     static let displayChoice = "auto"
     static let allowHorizontalDrag = false
     static let avoidMenuBarIcons = true  // #219: dodge Bartender & friends on external screens
+    static let showSignalPet = true
     static let panelHorizontalOffset = 0.0
     static let hideInFullscreen = true
     static let hideWhenNoSession = false
@@ -276,6 +278,7 @@ class SettingsManager {
             SettingsKey.displayChoice: SettingsDefaults.displayChoice,
             SettingsKey.allowHorizontalDrag: SettingsDefaults.allowHorizontalDrag,
             SettingsKey.avoidMenuBarIcons: SettingsDefaults.avoidMenuBarIcons,
+            SettingsKey.showSignalPet: SettingsDefaults.showSignalPet,
             SettingsKey.panelHorizontalOffset: SettingsDefaults.panelHorizontalOffset,
             SettingsKey.hideInFullscreen: SettingsDefaults.hideInFullscreen,
             SettingsKey.hideWhenNoSession: SettingsDefaults.hideWhenNoSession,

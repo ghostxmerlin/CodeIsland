@@ -63,7 +63,7 @@ private final class SignalPetImageView: NSImageView {
 /// Lives in its own always-on-top window, independent of the notch panel, and
 /// remembers where the user dragged it.
 @MainActor
-final class SignalPetWindowController {
+final class SignalPetWindowController: SignalPetPresenting {
     private static let frameAutosaveName = "SignalPetWindow"
     private static let displaySize = NSSize(width: SignalPetFrame.cellWidth, height: SignalPetFrame.cellHeight)
 
@@ -140,6 +140,14 @@ final class SignalPetWindowController {
 
         updateState()
         armSessionObservation()
+    }
+
+    func hide() {
+        frameTimer?.invalidate()
+        frameTimer = nil
+        gateSubscription = nil
+        panel?.orderOut(nil)
+        panel = nil
     }
 
     // MARK: - State
