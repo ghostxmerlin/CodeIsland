@@ -5,12 +5,54 @@ import os.log
 
 private let log = Logger(subsystem: "com.codeisland", category: "SignalPet")
 
-/// Image view that drags its borderless window from anywhere on the pet.
+/// Image view that drags its borderless window from anywhere on the pet and
+/// reports the gesture, so the cat can run along or react to a click.
+/// A press that moves less than `SignalPetDragDirection.clickSlop` is a click
+/// and leaves the window where it was.
 private final class SignalPetImageView: NSImageView {
-    override var mouseDownCanMoveWindow: Bool { true }
+    var onDrag: (_ dx: CGFloat) -> Void = { _ in }
+    var onDragEnd: () -> Void = {}
+    var onClick: () -> Void = {}
+
+    private var pressLocation: NSPoint?
+    private var pressOrigin: NSPoint = .zero
+    private var lastLocation: NSPoint = .zero
+    private var isDragging = false
+
+    override var mouseDownCanMoveWindow: Bool { false }
+    override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
 
     override func mouseDown(with event: NSEvent) {
-        window?.performDrag(with: event)
+        pressLocation = NSEvent.mouseLocation
+        lastLocation = NSEvent.mouseLocation
+        pressOrigin = window?.frame.origin ?? .zero
+        isDragging = false
+    }
+
+    override func mouseDragged(with event: NSEvent) {
+        guard let pressLocation, let window else { return }
+        let location = NSEvent.mouseLocation
+        if !isDragging {
+            guard !SignalPetDragDirection.isClick(dx: location.x - pressLocation.x, dy: location.y - pressLocation.y) else { return }
+            isDragging = true
+        }
+        window.setFrameOrigin(NSPoint(
+            x: pressOrigin.x + location.x - pressLocation.x,
+            y: pressOrigin.y + location.y - pressLocation.y
+        ))
+        onDrag(location.x - lastLocation.x)
+        lastLocation = location
+    }
+
+    override func mouseUp(with event: NSEvent) {
+        guard pressLocation != nil else { return }
+        pressLocation = nil
+        if isDragging {
+            isDragging = false
+            onDragEnd()
+        } else {
+            onClick()
+        }
     }
 }
 
@@ -36,7 +78,10 @@ final class SignalPetWindowController {
     private var transition: [SignalPetFrame] = []
     private var hold: SignalPetFrame?
     private var position = 0
+    private var loops = false
     private var frameTimer: Timer?
+    /// Set while the user drags the cat; state changes then only swap `hold`.
+    private var dragDirection: SignalPetDragDirection?
     private var animates = true
     private var isSessionObservationArmed = false
     private var gateSubscription: AnyCancellable?
@@ -65,12 +110,15 @@ final class SignalPetWindowController {
         panel.backgroundColor = .clear
         panel.isOpaque = false
         panel.hasShadow = false
-        panel.isMovableByWindowBackground = true
+        panel.isMovableByWindowBackground = false
         panel.hidesOnDeactivate = false
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .ignoresCycle]
 
         imageView.imageScaling = .scaleProportionallyUpOrDown
         imageView.frame = NSRect(origin: .zero, size: Self.displaySize)
+        imageView.onDrag = { [weak self] dx in self?.dragged(dx: dx) }
+        imageView.onDragEnd = { [weak self] in self?.dragEnded() }
+        imageView.onClick = { [weak self] in self?.clicked() }
         panel.contentView = imageView
 
         if !panel.setFrameUsingName(Self.frameAutosaveName) {
@@ -126,16 +174,24 @@ final class SignalPetWindowController {
 
     /// Plays the state's row once when the lamp changed, then holds still.
     private func show(_ state: SignalPetState, animated: Bool) {
-        frameTimer?.invalidate()
-        frameTimer = nil
         let timeline = SignalPetAnimation.timeline(for: state)
         hold = timeline.hold
-        transition = animated ? timeline.transition : []
+        // Keep running under the pointer; release shows the new still frame.
+        guard dragDirection == nil else { return }
+        play(animated ? timeline.transition : [], loops: false)
+    }
+
+    private func play(_ frames: [SignalPetFrame], loops: Bool) {
+        frameTimer?.invalidate()
+        frameTimer = nil
+        transition = frames
         position = 0
+        self.loops = loops
         advance()
     }
 
     private func advance() {
+        if loops, position >= transition.count { position = 0 }
         guard position < transition.count else {
             finishTransition()
             return
@@ -154,7 +210,28 @@ final class SignalPetWindowController {
         frameTimer?.invalidate()
         frameTimer = nil
         transition = []
+        loops = false
         if let hold { display(hold) }
+    }
+
+    // MARK: - Gestures
+
+    private func dragged(dx: CGFloat) {
+        let previous = dragDirection
+        let direction = (previous ?? (dx < 0 ? .left : .right)).updated(dx: dx)
+        dragDirection = direction
+        guard animates, direction != previous else { return }
+        play(SignalPetAnimation.dragLoop(direction), loops: true)
+    }
+
+    private func dragEnded() {
+        dragDirection = nil
+        finishTransition()
+    }
+
+    private func clicked() {
+        guard animates else { return }
+        play(SignalPetAnimation.poke, loops: false)
     }
 
     private func display(_ frame: SignalPetFrame) {

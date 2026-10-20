@@ -103,6 +103,36 @@ final class SignalPetStateTests: XCTestCase {
         XCTAssertFalse(SignalPetAnimation.animatesTransition(from: nil, to: .needsAttention))
     }
 
+    // MARK: - Dragging and clicking the cat
+
+    func testDraggingRunsTowardTheDragDirection() {
+        let right = SignalPetAnimation.dragLoop(.right)
+        XCTAssertEqual(right.map(\.row), Array(repeating: 1, count: 8))
+        XCTAssertEqual(right.map(\.column), Array(0..<8))
+        XCTAssertEqual(right.map(\.durationMs), [120, 120, 120, 120, 120, 120, 120, 220])
+        // Separate artwork, not a mirror: the signal stays on screen-right.
+        XCTAssertEqual(SignalPetAnimation.dragLoop(.left).map(\.row), Array(repeating: 2, count: 8))
+    }
+
+    func testClickJumpsOnce() {
+        let poke = SignalPetAnimation.poke
+        XCTAssertEqual(poke.map(\.row), Array(repeating: 4, count: 5))
+        XCTAssertEqual(poke.map(\.durationMs), [140, 140, 140, 140, 280])
+    }
+
+    func testHorizontalMotionPicksTheRunDirection() {
+        XCTAssertEqual(SignalPetDragDirection.right.updated(dx: -4), .left)
+        XCTAssertEqual(SignalPetDragDirection.left.updated(dx: 4), .right)
+        // Pure vertical drags and sub-point jitter keep the current direction.
+        XCTAssertEqual(SignalPetDragDirection.left.updated(dx: 0), .left)
+        XCTAssertEqual(SignalPetDragDirection.left.updated(dx: 0.5), .left)
+    }
+
+    func testOnlyAPressThatBarelyMovesIsAClick() {
+        XCTAssertTrue(SignalPetDragDirection.isClick(dx: 1, dy: -2))
+        XCTAssertFalse(SignalPetDragDirection.isClick(dx: 0, dy: 5))
+    }
+
     func testCellRectFollowsAtlasGrid() {
         let frame = SignalPetFrame(row: 6, column: 2, durationMs: 150)
         XCTAssertEqual(frame.cellOrigin.x, 384)

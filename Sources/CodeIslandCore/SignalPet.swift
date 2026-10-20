@@ -44,6 +44,27 @@ public enum SignalPetState: Sendable, Equatable {
     }
 }
 
+/// Which way the cat runs while the user drags it across the screen.
+public enum SignalPetDragDirection: Sendable, Equatable {
+    case left
+    case right
+
+    /// Movement under this many points between press and release is a click.
+    public static let clickSlop: CGFloat = 3
+
+    public static func isClick(dx: CGFloat, dy: CGFloat) -> Bool {
+        abs(dx) < clickSlop && abs(dy) < clickSlop
+    }
+
+    /// Clear horizontal motion picks a side; vertical drags and sub-point
+    /// jitter keep the cat running the way it already was.
+    public func updated(dx: CGFloat) -> SignalPetDragDirection {
+        if dx >= 1 { return .right }
+        if dx <= -1 { return .left }
+        return self
+    }
+}
+
 /// One cell of the white-cat-signal sprite atlas (8 × 11 grid of 192 × 208 cells).
 public struct SignalPetFrame: Sendable, Equatable {
     public static let cellWidth = 192
@@ -81,7 +102,10 @@ public enum SignalPetAnimation {
     }
 
     static let idle = row(0, [280, 110, 110, 140, 140, 320])
+    static let runningRight = row(1, [120, 120, 120, 120, 120, 120, 120, 220])
+    static let runningLeft = row(2, [120, 120, 120, 120, 120, 120, 120, 220])
     static let waving = row(3, [140, 140, 140, 280])
+    static let jumping = row(4, [140, 140, 140, 140, 280])
     static let failed = row(5, [140, 140, 140, 140, 140, 140, 140, 240])
     static let waiting = row(6, [150, 150, 150, 150, 150, 260])
     static let running = row(7, [120, 120, 120, 120, 120, 220])
@@ -95,6 +119,15 @@ public enum SignalPetAnimation {
         case .failed: return Timeline(transition: failed, hold: failed[0])
         }
     }
+
+    /// Loops while the user drags the cat. These rows are drawn with the blue
+    /// lamp lit; the state's own lamp comes back on release.
+    public static func dragLoop(_ direction: SignalPetDragDirection) -> [SignalPetFrame] {
+        direction == .right ? runningRight : runningLeft
+    }
+
+    /// Played once when the user clicks the cat (also a blue-lamp row).
+    public static let poke = jumping
 
     /// Only a lamp change moves the cat; the state shown at launch, or a
     /// switch between two states on the same lamp, just swaps the still frame.
