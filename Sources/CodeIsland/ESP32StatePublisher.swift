@@ -87,18 +87,13 @@ final class ESP32StatePublisher {
     private func flush(reason: String) {
         guard let appState else { return }
         guard bridge.status == .connected else { return }
-        guard bridge.selectedBuddyIdentifier != nil else { return }
         let session = appState.esp32DisplaySession()
         let displayIdentity = appState.esp32DisplayIdentity()
         let frame = appState.esp32DisplayFrame(session: session)
         bridge.send(frame)
 
-        if bridge.usesLegacyPairingFallback {
-            lastSentDisplay = SentDisplayState(identity: displayIdentity, status: frame.status)
-            Self.log.debug("push(\(reason), legacy): mascot=\(frame.mascot.sourceName) status=\(frame.status.rawValue) tool=\(frame.toolName ?? "")")
-            return
-        }
-
+        // The bridge fans each frame out to every connected Buddy and keeps
+        // the richer panels below away from legacy-firmware Buddies.
         bridge.sendWorkspace(appState.esp32WorkspacePayload(session: session))
         appState.esp32MessagePreviewPayloads(session: session).forEach { bridge.sendMessagePreview($0) }
         bridge.sendModel(appState.esp32ModelPayload(session: session))

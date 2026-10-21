@@ -1987,9 +1987,13 @@ private struct BuddyPage: View {
         }
     }
 
-    private var statusText: String {
+    private var statusText: String { statusText(for: bridge.status) }
+
+    private var statusColor: Color { statusColor(for: bridge.status) }
+
+    private func statusText(for status: ESP32BridgeStatus) -> String {
         _ = refreshTick // force recompute
-        switch bridge.status {
+        switch status {
         case .off: return l10n["buddy_status_disabled"]
         case .poweredOff: return localizedPowerError
         case .noSelection: return l10n["buddy_status_no_selection"]
@@ -2004,9 +2008,9 @@ private struct BuddyPage: View {
         }
     }
 
-    private var statusColor: Color {
+    private func statusColor(for status: ESP32BridgeStatus) -> Color {
         _ = refreshTick
-        switch bridge.status {
+        switch status {
         case .connected: return .green
         case .scanning, .connecting, .searchingSelected, .pairing: return .orange
         case .pairWaitingConfirm: return .blue
@@ -2053,7 +2057,7 @@ private struct BuddyPage: View {
                         .truncationMode(.tail)
                 }
 
-                if bridge.status == .pairWaitingConfirm {
+                if bridge.links.contains(where: { $0.status == .pairWaitingConfirm }) {
                     HStack(spacing: 6) {
                         Image(systemName: "hand.tap.fill")
                             .foregroundStyle(.blue)
@@ -2063,7 +2067,7 @@ private struct BuddyPage: View {
                     }
                 }
 
-                if bridge.status == .pairRejected {
+                if bridge.links.contains(where: { $0.status == .pairRejected }) {
                     HStack(spacing: 6) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .foregroundStyle(.red)
@@ -2089,41 +2093,55 @@ private struct BuddyPage: View {
                 } label: {
                     Label(l10n["buddy_reconnect"], systemImage: "arrow.triangle.2.circlepath")
                 }
-                .disabled(!enabled || bridge.selectedBuddyIdentifier == nil)
+                .disabled(!enabled || !bridge.hasSelection)
             }
 
-            Section(l10n["buddy_select_section"]) {
-                if let selectedId = bridge.selectedBuddyIdentifier {
-                    HStack {
-                        Image(systemName: "checkmark.circle.fill")
-                            .foregroundStyle(.green)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(l10n["buddy_selected_label"])
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                            Text(bridge.connectedPeripheralName ?? bridge.selectedBuddyName ?? selectedId.uuidString)
-                                .font(.body)
-                                .lineLimit(1)
-                                .truncationMode(.middle)
-                        }
-                        Spacer()
-                        Button(role: .destructive) {
-                            bridge.forgetSelection()
-                        } label: {
-                            Text(l10n["buddy_forget"])
+            // Selected Buddies get their own section: a Buddy that is both
+            // selected and still advertising has the same id in both lists,
+            // and SwiftUI mixes up rows that share an id within one section.
+            if !bridge.links.isEmpty {
+                Section(l10n["buddy_selected_label"]) {
+                    ForEach(bridge.links) { link in
+                        let linkStatus: ESP32BridgeStatus = enabled ? link.status : .off
+                        HStack {
+                            Circle()
+                                .fill(statusColor(for: linkStatus))
+                                .frame(width: 8, height: 8)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(link.displayName)
+                                    .font(.body)
+                                    .lineLimit(1)
+                                    .truncationMode(.middle)
+                                Text(statusText(for: linkStatus))
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                    .lineLimit(1)
+                            }
+                            Spacer()
+                            Button(role: .destructive) {
+                                bridge.forget(buddyId: link.id)
+                            } label: {
+                                Text(l10n["buddy_forget"])
+                            }
                         }
                     }
                 }
+            }
+
+            Section(l10n["buddy_select_section"]) {
+                Text(l10n["buddy_select_multi_hint"])
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
 
                 ForEach(bridge.discovered) { device in
                     Button {
                         bridge.select(buddyId: device.id)
                     } label: {
                         HStack {
-                            Image(systemName: device.id == bridge.selectedBuddyIdentifier
-                                  ? "largecircle.fill.circle"
+                            Image(systemName: bridge.isSelected(device.id)
+                                  ? "checkmark.circle.fill"
                                   : "circle")
-                                .foregroundStyle(device.id == bridge.selectedBuddyIdentifier ? Color.accentColor : .secondary)
+                                .foregroundStyle(bridge.isSelected(device.id) ? Color.accentColor : .secondary)
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(device.name)
                                     .font(.body)
@@ -2157,7 +2175,7 @@ private struct BuddyPage: View {
                     }
                     .disabled(!enabled)
                     Spacer()
-                    if bridge.status == .scanning {
+                    if bridge.isDiscovering {
                         HStack(spacing: 6) {
                             ProgressView().controlSize(.small)
                             Text(l10n["buddy_scanning"])

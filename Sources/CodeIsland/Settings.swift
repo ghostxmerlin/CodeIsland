@@ -131,6 +131,8 @@ enum SettingsKey {
     static let buddyScreenOrientation = "buddyScreenOrientation"
     static let selectedBuddyIdentifier = "selectedBuddyIdentifier"
     static let selectedBuddyName = "selectedBuddyName"
+    /// Selected Buddies as `[[String: String]]` (`id`, `name`); supersedes the two single-Buddy keys above.
+    static let selectedBuddies = "selectedBuddies"
 
     // Apple companion (iPhone / StandBy / Apple Watch prototype)
     static let appleCompanionEnabled = "appleCompanionEnabled"
