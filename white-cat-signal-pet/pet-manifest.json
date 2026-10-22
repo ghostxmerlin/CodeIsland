@@ -1,0 +1,163 @@
+{
+  "name": "White Cat Signal",
+  "format": "codeisland-layered-png-v1",
+  "canvas": {
+    "width": 1600,
+    "height": 1120,
+    "mode": "RGBA",
+    "origin": "top-left"
+  },
+  "recommendedDisplay": {
+    "widthPoints": 400,
+    "heightPoints": 280,
+    "fit": "contain"
+  },
+  "master": "master.png",
+  "layers": {
+    "cat": "layers/cat.png",
+    "signal": "layers/signal-off.png",
+    "lights": {
+      "red": "layers/light-red.png",
+      "green": "layers/light-green.png",
+      "blue": "layers/light-blue.png"
+    },
+    "drawOrder": [
+      "signal",
+      "cat",
+      "one active light, if connected"
+    ]
+  },
+  "anchors": {
+    "catBottomCenter": [
+      640,
+      1068
+    ],
+    "signalBottomCenter": [
+      1348,
+      1052
+    ]
+  },
+  "visibleBounds": {
+    "cat": [
+      93,
+      434,
+      1205,
+      1069
+    ],
+    "signal": [
+      1192,
+      52,
+      1502,
+      1054
+    ]
+  },
+  "visibleBoundsAlphaThreshold": 16,
+  "lampOrderTopToBottom": [
+    "red",
+    "green",
+    "blue"
+  ],
+  "lampOverlayRects": {
+    "red": [
+      1298,
+      162,
+      147,
+      153
+    ],
+    "green": [
+      1300,
+      377,
+      142,
+      148
+    ],
+    "blue": [
+      1299,
+      588,
+      142,
+      151
+    ]
+  },
+  "states": {
+    "idle": {
+      "image": "states/idle-blue.png",
+      "light": "blue"
+    },
+    "processing": {
+      "image": "states/working-green.png",
+      "light": "green"
+    },
+    "running": {
+      "image": "states/working-green.png",
+      "light": "green"
+    },
+    "waitingApproval": {
+      "image": "states/attention-red.png",
+      "light": "red"
+    },
+    "waitingQuestion": {
+      "image": "states/attention-red.png",
+      "light": "red"
+    }
+  },
+  "noSessionOrDisconnected": {
+    "image": "states/offline.png",
+    "light": null
+  },
+  "animation": {
+    "bakedCatFrames": false,
+    "previewGif": "preview/states.gif",
+    "previewMeaning": "Static-art status switching only; not a cat animation."
+  },
+  "generation": {
+    "engine": "OpenAI built-in image_gen",
+    "applicationIntegrated": false
+  },
+  "sourceRegistration": {
+    "offset": [
+      32,
+      48
+    ],
+    "lensCrops": {
+      "lamp-lenses-off.png": {
+        "red": [
+          92,
+          45,
+          710,
+          673
+        ],
+        "green": [
+          773,
+          43,
+          1398,
+          675
+        ],
+        "blue": [
+          1455,
+          41,
+          2077,
+          675
+        ]
+      },
+      "lamp-lenses.png": {
+        "red": [
+          93,
+          47,
+          710,
+          672
+        ],
+        "green": [
+          775,
+          45,
+          1397,
+          674
+        ],
+        "blue": [
+          1459,
+          43,
+          2078,
+          673
+        ]
+      }
+    }
+  }
+}

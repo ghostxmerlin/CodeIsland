@@ -1,0 +1,102 @@
+{
+  "scope": "Nine standard animation rows after shared per-row registration; no cardinal/look-direction review.",
+  "method": {
+    "evidence": [
+      "final/spritesheet.png",
+      "qa/contact-sheet.png",
+      "qa/row-registration.json",
+      "qa/review.json",
+      "Native 192x208 registered frames for idle, waving, failed, waiting, running, review and all five jumping poses",
+      "Ordered running-right and running-left poses in the sprite/contact sheets; source and extracted gait frames were also viewed during production"
+    ],
+    "playback_observed": false,
+    "limitation": "This is a still-frame and ordered-pose review. It does not certify GIF timing, perceived smoothness or runtime transitions.",
+    "source_edits_performed": false,
+    "snapshot_sha256": {
+      "final/spritesheet.png": "c04b218f7bf4b27c35d87bbb689b51ac5a80ab6df5f30b4567dc3755c18c12b2",
+      "qa/contact-sheet.png": "8d59e0787e50a4119cb7ceb35d9954611af5a4c928b93cea4d72709b2aa6636d",
+      "qa/row-registration.json": "e986ff17d553f2a20d7a2973ef99b9ce2940237383f77b992f4bcf9df2b622b5"
+    }
+  },
+  "official_inspection": {
+    "ok": true,
+    "errors": [],
+    "warnings": [],
+    "row_count": 9,
+    "note": "The supplied official report is a mechanical pass. It does not test cross-state cat-to-signal scale consistency."
+  },
+  "overall_verdict": "Standard action semantics are readable and usable as identity references, but the current standard atlas should not receive final visual sign-off until the material waving scale mismatch is resolved and the failed size change is reviewed.",
+  "ready_for_cardinal_generation": true,
+  "cardinal_reference_guidance": "Use the canonical base plus registered idle and waiting as body scale, signal scale and baseline references. Avoid waving and failed as scale references until their cross-state proportions are reconciled. Cardinal generation can proceed without waiting for these standard-row repairs.",
+  "observations": [
+    {
+      "state": "idle",
+      "verdict": "pass",
+      "detail": "At native cell size the sleeping face, white body and blue bottom lamp remain readable. Back height and body fullness visibly rise across the early ordered poses and settle again; this is visible breathing geometry, not six identical stills. Signal remains anchored."
+    },
+    {
+      "state": "running-right",
+      "verdict": "pass_with_minor_note",
+      "detail": "Whole feline body faces right, with front reach and gathered-leg poses. Direction does not rely on a head-only turn. Several stride poses are similar, but clear limb changes exist. Signal stays on screen right and blue remains the active lamp. Playback cadence has not been certified."
+    },
+    {
+      "state": "running-left",
+      "verdict": "pass_with_minor_note",
+      "detail": "Whole body, head, hips and paw reach face left while the signal remains on screen right. Extended and compressed poses are distinct. Small silhouette changes are appropriate gait variation. A few low-alpha right-edge pixels appear in the mechanical report; substantive registered bounds remain inside the cell, and the planned despill/edge cleanup should be followed by a final bounds check."
+    },
+    {
+      "state": "waving",
+      "verdict": "needs_scale_repair",
+      "detail": "Paw lift and pink pads are clear, and the final resting pose reads well. However the entire cat is already larger in the initial non-waving pose than in idle/waiting. This is a cross-state proportion mismatch rather than the raised paw changing the bounding box."
+    },
+    {
+      "state": "jumping",
+      "verdict": "pass",
+      "detail": "All five ordered poses show the whole pair leaving and returning to the baseline. Registered pair bottoms are approximately 189, 167, 152, 166, 189 px, giving roughly 37 px of airborne lift at the apex. Cat and signal both rise, and the final pair lands at its starting level. Minor body fullness changes read as pose change; no comparable material scale pop was seen."
+    },
+    {
+      "state": "failed",
+      "verdict": "needs_cross_state_size_review",
+      "detail": "Ears flatten outward, eyelids/brows droop and chin lowers onto the forepaws before a slight recovery. This is distinctly discouraged rather than ordinary contented sleep. The cat is also visibly narrower/smaller than waiting even in frame 00 before the slump, so the source cat-to-signal proportion merits correction or explicit acceptance."
+    },
+    {
+      "state": "waiting",
+      "verdict": "pass",
+      "detail": "Awake eyes, a head tilt, a lifted forepaw and a brief blink give a questioning/attentive sequence. Red top lamp is unambiguous. Body size closely matches idle."
+    },
+    {
+      "state": "running",
+      "verdict": "pass_with_semantic_note",
+      "detail": "Green middle lamp, low focused eyelids and small forepaw/body changes distinguish working from the more open-eyed waiting sequence. The action is deliberately subtle at native size; app status text should still distinguish semantic states."
+    },
+    {
+      "state": "review",
+      "verdict": "pass_with_semantic_note",
+      "detail": "The green-lamp row includes a visible head turn/gaze shift, especially frame 02, whereas working stays more front/downward focused. This difference is readable in the ordered poses. Some common resting frames overlap in expression; green alone cannot distinguish working from review."
+    }
+  ],
+  "findings": [
+    {
+      "id": "STANDARD-SCALE-01",
+      "severity": "material",
+      "affected_states": ["waving"],
+      "evidence": "Signal height is registered to about 138 px in both idle and waving. Solid pair width is about 150 px in idle versus 180 px in waving. A read-only bright-neutral connected-component proxy of frame 00 cat pixels yields idle bbox 115x69 px and waving 143x84 px; this proxy is not a formal semantic segmentation, but corroborates the visible larger body.",
+      "recommendation": "Reconcile waving cat-to-signal proportions against idle/waiting before final atlas approval. A whole-pair scale change alone would undo the matched signal height."
+    },
+    {
+      "id": "STANDARD-SCALE-02",
+      "severity": "moderate",
+      "affected_states": ["failed"],
+      "evidence": "Registered solid pair width is about 127 px for failed versus 150 px for idle with the same signal height. The frame 00 bright-neutral cat proxy is 101 px wide versus idle 115 px and waiting 113 px. The first failed pose is awake, so the width reduction cannot all be attributed to the later head slump.",
+      "recommendation": "Match the resting body/tail mass to idle/waiting while retaining the successful discouraged facial and ear animation, or explicitly accept the smaller failed silhouette as an intentional state change."
+    },
+    {
+      "id": "STANDARD-EDGE-03",
+      "severity": "known_pending_cleanup",
+      "affected_states": ["all"],
+      "evidence": "Cyan edge contamination is visible on dark viewing backgrounds. Parent has already planned a final one-time despill.",
+      "recommendation": "After despill, recheck white fur, dark signal rims, colored lenses and cell-edge alpha. No source regeneration is requested solely for this known issue."
+    }
+  ],
+  "identity_and_prop_summary": "The same soft painterly pure-white feline, pink inner ears/nose, fluffy tail and charcoal vintage three-lamp signal remain recognizable across all rows. Signal stays on screen right, lamp order is red top / green middle / blue bottom, and active colors match the intended state families. Most within-row size changes are acceptable limb/head/body posing. The material exceptions are cross-state waving enlargement and the smaller failed resting body."
+}

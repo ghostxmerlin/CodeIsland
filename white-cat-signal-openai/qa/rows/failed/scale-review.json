@@ -1,0 +1,23 @@
+{
+  "selected_revision": 4,
+  "selected_source": "decoded/failed.png",
+  "visual_gate": "pending_parent_source_review_and_atlas_registration",
+  "measurement_method": "First equal slot only. Cat proxy is largest four-connected bright-neutral region with min RGB >145 and channel spread <75. Signal height is non-cyan cap-to-base extent around active lens median x. Pixel measurements are read-only and are not formal semantic segmentation.",
+  "comparisons": [
+    {"source": "revision-01.png", "cat_width": 204, "cat_height": 134, "signal_height": 271, "cat_width_ratio": 0.753, "cat_height_ratio": 0.494, "pair_width_ratio": 0.908},
+    {"source": "revision-03.png", "cat_width": 219, "cat_height": 145, "signal_height": 275, "cat_width_ratio": 0.796, "cat_height_ratio": 0.527, "pair_width_ratio": 0.913},
+    {"source": "revision-04.png", "cat_width": 191, "cat_height": 127, "signal_height": 217, "cat_width_ratio": 0.880, "cat_height_ratio": 0.585, "pair_width_ratio": 1.083},
+    {"source": "decoded/idle.png", "cat_width": 243, "cat_height": 145, "signal_height": 289, "cat_width_ratio": 0.841, "cat_height_ratio": 0.502, "pair_width_ratio": 1.087},
+    {"source": "decoded/waiting.png", "cat_width": 239, "cat_height": 144, "signal_height": 290, "cat_width_ratio": 0.824, "cat_height_ratio": 0.497, "pair_width_ratio": 1.066}
+  ],
+  "assessment": "Selected revision corrects the narrow full-pair silhouette. Cat width is within roughly 5-7% of idle/waiting after signal normalization; whole-pair width is closely matched. Cat remains rounder/taller by the bright-region height proxy. Source and extracted frames were inspected, but final registered atlas transitions have not yet been reviewed.",
+  "mechanical_inspection": {
+    "ok": true,
+    "frames": 8,
+    "frame_size": [192, 208],
+    "errors": [],
+    "warnings": [],
+    "edge_pixels": [0, 0, 0, 0, 0, 0, 0, 0]
+  },
+  "changes_outside_owned_failed_paths": false
+}

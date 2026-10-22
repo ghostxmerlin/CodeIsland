@@ -1,0 +1,151 @@
+{
+  "method": "Read-only pale-fur connected-component bounding boxes. Measurement proxy excludes dark face details; not visual generation or extraction. RGB thresholds R>=205 G>=195 B>=180 R>=G G>=B-10.",
+  "results": {
+    "decoded/idle.png": [
+      {
+        "bbox": [
+          22,
+          356,
+          242,
+          494
+        ],
+        "width": 220,
+        "height": 138
+      },
+      {
+        "bbox": [
+          384,
+          349,
+          603,
+          494
+        ],
+        "width": 219,
+        "height": 145
+      },
+      {
+        "bbox": [
+          741,
+          340,
+          965,
+          494
+        ],
+        "width": 224,
+        "height": 154
+      },
+      {
+        "bbox": [
+          1108,
+          356,
+          1327,
+          494
+        ],
+        "width": 219,
+        "height": 138
+      },
+      {
+        "bbox": [
+          1469,
+          356,
+          1689,
+          494
+        ],
+        "width": 220,
+        "height": 138
+      },
+      {
+        "bbox": [
+          1832,
+          356,
+          2051,
+          494
+        ],
+        "width": 219,
+        "height": 138
+      }
+    ],
+    "qa/rows/waving/revision-01.png": [
+      {
+        "bbox": [
+          34,
+          309,
+          388,
+          531
+        ],
+        "width": 354,
+        "height": 222
+      },
+      {
+        "bbox": [
+          573,
+          309,
+          927,
+          516
+        ],
+        "width": 354,
+        "height": 207
+      },
+      {
+        "bbox": [
+          1137,
+          303,
+          1479,
+          517
+        ],
+        "width": 342,
+        "height": 214
+      },
+      {
+        "bbox": [
+          1659,
+          311,
+          2013,
+          531
+        ],
+        "width": 354,
+        "height": 220
+      }
+    ],
+    "decoded/waving.png": [
+      {
+        "bbox": [
+          77,
+          359,
+          368,
+          540
+        ],
+        "width": 291,
+        "height": 181
+      },
+      {
+        "bbox": [
+          648,
+          355,
+          915,
+          502
+        ],
+        "width": 267,
+        "height": 147
+      },
+      {
+        "bbox": [
+          1204,
+          361,
+          1461,
+          503
+        ],
+        "width": 257,
+        "height": 142
+      },
+      {
+        "bbox": [
+          1713,
+          357,
+          2001,
+          538
+        ],
+        "width": 288,
+        "height": 181
+      }
+    ]
+  }
+}

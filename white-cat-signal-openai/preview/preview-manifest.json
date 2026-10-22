@@ -1,0 +1,739 @@
+{
+  "schema_version": 1,
+  "purpose": "review previews only; not structural or visual acceptance",
+  "atlas": {
+    "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final/spritesheet-extended.png",
+    "sha256": "70e29571e915275e687dd7618b0a47c2733779722b7b145fe3dd5d1e2dcdf3e5",
+    "encoded_bytes": 2264517,
+    "size": [
+      1536,
+      2288
+    ],
+    "mode": "RGBA"
+  },
+  "cell_size": [
+    192,
+    208
+  ],
+  "frame_extraction": "exact decoded RGBA cell crops; no fitting, resizing or despill",
+  "frames_root": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames",
+  "frame_counts": {
+    "idle": 6,
+    "running-right": 8,
+    "running-left": 8,
+    "waving": 4,
+    "jumping": 5,
+    "failed": 8,
+    "waiting": 6,
+    "running": 6,
+    "review": 6,
+    "look": 16
+  },
+  "frame_paths": {
+    "idle": [
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/idle/00.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/idle/01.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/idle/02.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/idle/03.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/idle/04.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/idle/05.png"
+    ],
+    "running-right": [
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-right/00.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-right/01.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-right/02.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-right/03.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-right/04.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-right/05.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-right/06.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-right/07.png"
+    ],
+    "running-left": [
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-left/00.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-left/01.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-left/02.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-left/03.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-left/04.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-left/05.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-left/06.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running-left/07.png"
+    ],
+    "waving": [
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/waving/00.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/waving/01.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/waving/02.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/waving/03.png"
+    ],
+    "jumping": [
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/jumping/00.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/jumping/01.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/jumping/02.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/jumping/03.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/jumping/04.png"
+    ],
+    "failed": [
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/failed/00.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/failed/01.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/failed/02.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/failed/03.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/failed/04.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/failed/05.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/failed/06.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/failed/07.png"
+    ],
+    "waiting": [
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/waiting/00.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/waiting/01.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/waiting/02.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/waiting/03.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/waiting/04.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/waiting/05.png"
+    ],
+    "running": [
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running/00.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running/01.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running/02.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running/03.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running/04.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/running/05.png"
+    ],
+    "review": [
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/review/00.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/review/01.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/review/02.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/review/03.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/review/04.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/review/05.png"
+    ],
+    "look": [
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/00.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/01.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/02.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/03.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/04.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/05.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/06.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/07.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/08.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/09.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/10.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/11.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/12.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/13.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/14.png",
+      "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final-frames/look/15.png"
+    ]
+  },
+  "look_order_degrees": [
+    0.0,
+    22.5,
+    45.0,
+    67.5,
+    90.0,
+    112.5,
+    135.0,
+    157.5,
+    180.0,
+    202.5,
+    225.0,
+    247.5,
+    270.0,
+    292.5,
+    315.0,
+    337.5
+  ],
+  "official_preview_script": "/Users/ghostxmerlin/.codex/plugins/cache/openai-curated-remote/work-pets/0.1.6/skills/create-pet/scripts/render_animation_previews.py",
+  "outputs": [
+    {
+      "kind": "state-gif",
+      "state": "idle",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/idle.gif",
+      "size": [
+        192,
+        208
+      ],
+      "frames": 6,
+      "durations_ms": [
+        280,
+        110,
+        110,
+        140,
+        140,
+        320
+      ],
+      "cycle_duration_ms": 1100,
+      "loop": "infinite",
+      "background": "transparent; GIF uses binary alpha"
+    },
+    {
+      "kind": "state-gif",
+      "state": "running-right",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/running-right.gif",
+      "size": [
+        192,
+        208
+      ],
+      "frames": 8,
+      "durations_ms": [
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220
+      ],
+      "cycle_duration_ms": 1060,
+      "loop": "infinite",
+      "background": "transparent; GIF uses binary alpha"
+    },
+    {
+      "kind": "state-gif",
+      "state": "running-left",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/running-left.gif",
+      "size": [
+        192,
+        208
+      ],
+      "frames": 8,
+      "durations_ms": [
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220
+      ],
+      "cycle_duration_ms": 1060,
+      "loop": "infinite",
+      "background": "transparent; GIF uses binary alpha"
+    },
+    {
+      "kind": "state-gif",
+      "state": "waving",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/waving.gif",
+      "size": [
+        192,
+        208
+      ],
+      "frames": 4,
+      "durations_ms": [
+        140,
+        140,
+        140,
+        280
+      ],
+      "cycle_duration_ms": 700,
+      "loop": "infinite",
+      "background": "transparent; GIF uses binary alpha"
+    },
+    {
+      "kind": "state-gif",
+      "state": "jumping",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/jumping.gif",
+      "size": [
+        192,
+        208
+      ],
+      "frames": 5,
+      "durations_ms": [
+        140,
+        140,
+        140,
+        140,
+        280
+      ],
+      "cycle_duration_ms": 840,
+      "loop": "infinite",
+      "background": "transparent; GIF uses binary alpha"
+    },
+    {
+      "kind": "state-gif",
+      "state": "failed",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/failed.gif",
+      "size": [
+        192,
+        208
+      ],
+      "frames": 8,
+      "durations_ms": [
+        140,
+        140,
+        140,
+        140,
+        140,
+        140,
+        140,
+        240
+      ],
+      "cycle_duration_ms": 1220,
+      "loop": "infinite",
+      "background": "transparent; GIF uses binary alpha"
+    },
+    {
+      "kind": "state-gif",
+      "state": "waiting",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/waiting.gif",
+      "size": [
+        192,
+        208
+      ],
+      "frames": 6,
+      "durations_ms": [
+        150,
+        150,
+        150,
+        150,
+        150,
+        260
+      ],
+      "cycle_duration_ms": 1010,
+      "loop": "infinite",
+      "background": "transparent; GIF uses binary alpha"
+    },
+    {
+      "kind": "state-gif",
+      "state": "running",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/running.gif",
+      "size": [
+        192,
+        208
+      ],
+      "frames": 6,
+      "durations_ms": [
+        120,
+        120,
+        120,
+        120,
+        120,
+        220
+      ],
+      "cycle_duration_ms": 820,
+      "loop": "infinite",
+      "background": "transparent; GIF uses binary alpha"
+    },
+    {
+      "kind": "state-gif",
+      "state": "review",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/review.gif",
+      "size": [
+        192,
+        208
+      ],
+      "frames": 6,
+      "durations_ms": [
+        150,
+        150,
+        150,
+        150,
+        150,
+        280
+      ],
+      "cycle_duration_ms": 1030,
+      "loop": "infinite",
+      "background": "transparent; GIF uses binary alpha"
+    },
+    {
+      "kind": "state-gif",
+      "state": "look",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/look-loop.gif",
+      "size": [
+        192,
+        208
+      ],
+      "frames": 16,
+      "durations_ms": [
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160
+      ],
+      "cycle_duration_ms": 2560,
+      "loop": "infinite",
+      "background": "transparent; GIF uses binary alpha"
+    },
+    {
+      "kind": "transition-gif",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/idle-jump-idle.gif",
+      "size": [
+        192,
+        208
+      ],
+      "sequence": [
+        "idle",
+        "jumping",
+        "idle"
+      ],
+      "frames": 17,
+      "durations_ms": [
+        280,
+        110,
+        110,
+        140,
+        140,
+        320,
+        140,
+        140,
+        140,
+        140,
+        280,
+        280,
+        110,
+        110,
+        140,
+        140,
+        320
+      ],
+      "cycle_duration_ms": 3040,
+      "loop": "infinite",
+      "registration": "native whole-cell crops, no repositioning"
+    },
+    {
+      "kind": "all-states-gif",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/all-states.gif",
+      "size": [
+        320,
+        256
+      ],
+      "frames": 187,
+      "durations_ms": [
+        280,
+        110,
+        110,
+        140,
+        140,
+        320,
+        280,
+        110,
+        110,
+        140,
+        140,
+        320,
+        280,
+        110,
+        110,
+        140,
+        140,
+        320,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220,
+        140,
+        140,
+        140,
+        280,
+        140,
+        140,
+        140,
+        280,
+        140,
+        140,
+        140,
+        280,
+        140,
+        140,
+        140,
+        140,
+        280,
+        140,
+        140,
+        140,
+        140,
+        280,
+        140,
+        140,
+        140,
+        140,
+        280,
+        140,
+        140,
+        140,
+        140,
+        140,
+        140,
+        140,
+        240,
+        140,
+        140,
+        140,
+        140,
+        140,
+        140,
+        140,
+        240,
+        140,
+        140,
+        140,
+        140,
+        140,
+        140,
+        140,
+        240,
+        150,
+        150,
+        150,
+        150,
+        150,
+        260,
+        150,
+        150,
+        150,
+        150,
+        150,
+        260,
+        150,
+        150,
+        150,
+        150,
+        150,
+        260,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220,
+        120,
+        120,
+        120,
+        120,
+        120,
+        220,
+        150,
+        150,
+        150,
+        150,
+        150,
+        280,
+        150,
+        150,
+        150,
+        150,
+        150,
+        280,
+        150,
+        150,
+        150,
+        150,
+        150,
+        280,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160,
+        160
+      ],
+      "cycle_duration_ms": 29080,
+      "timeline": [
+        {
+          "state": "idle",
+          "cycles": 3,
+          "start_ms": 0,
+          "end_ms": 3300
+        },
+        {
+          "state": "running-right",
+          "cycles": 3,
+          "start_ms": 3300,
+          "end_ms": 6480
+        },
+        {
+          "state": "running-left",
+          "cycles": 3,
+          "start_ms": 6480,
+          "end_ms": 9660
+        },
+        {
+          "state": "waving",
+          "cycles": 3,
+          "start_ms": 9660,
+          "end_ms": 11760
+        },
+        {
+          "state": "jumping",
+          "cycles": 3,
+          "start_ms": 11760,
+          "end_ms": 14280
+        },
+        {
+          "state": "failed",
+          "cycles": 3,
+          "start_ms": 14280,
+          "end_ms": 17940
+        },
+        {
+          "state": "waiting",
+          "cycles": 3,
+          "start_ms": 17940,
+          "end_ms": 20970
+        },
+        {
+          "state": "running",
+          "cycles": 3,
+          "start_ms": 20970,
+          "end_ms": 23430
+        },
+        {
+          "state": "review",
+          "cycles": 3,
+          "start_ms": 23430,
+          "end_ms": 26520
+        },
+        {
+          "state": "look",
+          "cycles": 1,
+          "start_ms": 26520,
+          "end_ms": 29080
+        }
+      ],
+      "loop": "infinite",
+      "background_rgba": [
+        27,
+        30,
+        37,
+        255
+      ]
+    },
+    {
+      "kind": "evidence-stills",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/evidence-stills.png",
+      "panels": [
+        {
+          "state": "idle",
+          "frame": 0,
+          "state_timestamp_ms": 0
+        },
+        {
+          "state": "waiting",
+          "frame": 2,
+          "state_timestamp_ms": 300
+        },
+        {
+          "state": "running",
+          "frame": 2,
+          "state_timestamp_ms": 240
+        },
+        {
+          "state": "jumping",
+          "frame": 2,
+          "state_timestamp_ms": 280
+        },
+        {
+          "state": "failed",
+          "frame": 4,
+          "state_timestamp_ms": 560
+        },
+        {
+          "state": "review",
+          "frame": 2,
+          "state_timestamp_ms": 300
+        }
+      ]
+    },
+    {
+      "kind": "all-states-mp4",
+      "path": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/all-states.mp4",
+      "source_gif": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/all-states.gif",
+      "fps": 30,
+      "timing": "GIF timeline sampled at the stated constant frame rate",
+      "ffmpeg_command": [
+        "/opt/homebrew/Cellar/ffmpeg/8.0.1/bin/ffmpeg",
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-y",
+        "-ignore_loop",
+        "1",
+        "-i",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/all-states.gif",
+        "-an",
+        "-vf",
+        "fps=30",
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/preview/all-states.mp4"
+      ]
+    }
+  ]
+}

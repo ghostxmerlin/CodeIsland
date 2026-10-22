@@ -47,7 +47,7 @@ final class PushChannelPayloadTests: XCTestCase {
         XCTAssertEqual(body["subtitle"] as? String, "Needs approval: Bash")
         XCTAssertEqual(body["body"] as? String, "git push --force")
         XCTAssertEqual(body["level"] as? String, "timeSensitive")
-        XCTAssertEqual(body["group"] as? String, "CodeIsland")
+        XCTAssertEqual(body["group"] as? String, "AISM")
         XCTAssertNil(body["icon"])
         XCTAssertNil(body["sound"])
     }

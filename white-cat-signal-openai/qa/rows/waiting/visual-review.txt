@@ -1,0 +1,12 @@
+Waiting source visual review
+Source: decoded/waiting.png
+Dimensions: 2172x724
+Generator: built-in image_gen, supplied pet reference, canonical identity reference, six-slot waiting layout guide, and approved idle source as additional scale/identity reference.
+
+Observed: exactly six complete cat+signal pairs in one horizontal row. All cats retain plump white lying body, fluffy white fur, wrapped tail, pink nose and pink ears. Tall vintage signals remain screen-right and complete. Red top is visibly illuminated in all six frames; green middle and blue bottom are unpowered dark glass. No clipping, extra prop, scene, guide, loose effect or waving gesture is visible.
+
+Ordered action evidence: frame 1 lifts face to viewer with dark open eyes; frame 2 tilts head inquisitively; frame 3 raises an attached forepaw a little near chest; frame 4 returns to gentle tilt, frame 5 blinks, frame 6 returns close to frame 1. Body stays lying/anchored. This communicates patient need for input and is distinct from sleeping idle. Eyes are dark, contained within feline face and without bulging white sclera; the generation uses rounded stylized feline eyes rather than a strict narrow almond contour.
+
+Official checks: extract_strip_frames.py --method components --chroma-key #00FFFF returned ok:true. inspect_frames.py --require-components returned ok:true with no errors/warnings. All six extracted 192x208 frames were inspected visually. Original generated PNG retained and copied without art modification.
+
+Limitations: thin cyan edge contamination remains before the planned final once-only despill pass. Still-frame sequence inspected; parent will inspect actual motion preview. No final-atlas acceptance claimed.

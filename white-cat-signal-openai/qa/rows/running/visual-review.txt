@@ -1,0 +1,12 @@
+Active-work / running source visual review
+Source: decoded/running.png
+Dimensions: 2172x724
+Generator: built-in image_gen, supplied pet reference, canonical identity reference, six-slot running layout guide, and accepted waiting source for eye construction, scale and identity.
+
+Observed: exactly six complete cat+signal pairs in one horizontal row. Pure-white plump cat remains lying with belly anchored, front paws together near baseline and long wrapped tail. Tall complete charcoal vintage signal remains screen-right. Green middle lens is illuminated in all six; top red and bottom blue are dark unpowered glass. No new prop, upright pose, locomotion, scenery, shadow, detached effect, clipping or guide mark is visible.
+
+Action evidence: narrowed dark-brown focused eyes look slightly downward, head/nose position moves gently toward paws and back, front paw contacts alternate by a small amount, frame 5 blinks, frame 6 returns near frame 1. This is a quiet task-work motif rather than foot-running. The paw and nod changes are subtle at native cell size; parent should verify purposeful motion with the actual preview. Body, tail, signal and apparent scale remain consistent.
+
+Official checks: extract_strip_frames.py --method components --chroma-key #00FFFF returned ok:true. inspect_frames.py --require-components returned ok:true, errors:[], warnings:[]. All six 192x208 extracted frames inspected visually. Original generated PNG retained, selected PNG copied exactly.
+
+Limitations: thin cyan edge contamination remains for the planned final once-only despill pass. No final-atlas acceptance claimed.

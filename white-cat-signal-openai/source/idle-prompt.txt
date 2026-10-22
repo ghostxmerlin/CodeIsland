@@ -1,0 +1,18 @@
+Built-in image_gen generation.
+transparent_background: false
+references:
+/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/references/reference-01.png
+/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/references/canonical-base.png
+/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/references/layout-guides/idle.png
+Original generated image: /Users/ghostxmerlin/.codex/generated_images/01a1578c-386d-70e3-a37a-cc10efbdb487/exec-24b9d0b1-e43e-4229-b086-6a436b5ef08d.png
+
+Exact prompt:
+Create one horizontal animation strip for ChatGPT pet white-cat-signal, state IDLE. Inputs: image 1 is pet identity reference; image 2 is canonical identity reference; image 3 is the SIX-SLOT layout guide for spacing only, never render guide marks. Use the reference white cat and tall railway signal identity exactly.
+
+OUTPUT EXACTLY SIX COMPLETE CAT+SIGNAL PAIRS in ONE single horizontal row on perfectly uniform opaque pure cyan #00FFFF background. Six invisible equal-width slots, one compact complete pair centered in every slot. Within each pair the signal stands on SCREEN RIGHT, very close beside the white cat with only a NARROW gap. Between pairs leave WIDE EMPTY CYAN SEPARATION, visibly much wider than the cat-signal gap. All six cats and all six signals fully visible, intact and unclipped, with generous cyan top/bottom and outer margins. No second row. No text or guides.
+
+IDENTITY AND STYLE: plump pure-white fluffy sleeping cat lying curled down with paws together in front, pink inner ears, tiny pink nose, closed happy crescent feline eyes, rounded face, long thick tail wrapped around body; the exact approved soft hand-painted white fur and delicate charcoal pencil contours, gentle Japanese fantasy-animation charm from the reference. Each pair includes the same TALL vintage charcoal railway signal standing to the cat's SCREEN RIGHT, height 1.6 times the resting cat height. EXACTLY THREE round glass lenses: RED TOP, GREEN MIDDLE, BLUE BOTTOM. Only BLUE BOTTOM LENS IS BRIGHTLY LIT, saturated royal blue contained within the round glass. Red and green lenses very dark unpowered smoked glass. No illumination outside lens boundaries. Keep clear lens order and the entire signal including cap, housing, stalk and base visible. No cushions or extra props.
+
+ANIMATION: calm low-distraction sleeping loop with six distinct but subtle breathing poses. Frame 1 relaxed exhale and perfect default sleeping pose; frame 2 chest/back begins rising slightly; frame 3 gentle breathing high point with slight head bob and one very small ear shift; frame 4 breath easing, slight wrapped tail-tip microvariation; frame 5 gently returns toward exhale; frame 6 extremely close to frame 1. This must read as subtle genuine animation, not six identical copies, with small smooth changes in cat chest/back/head/ear and tail tip. Keep eyes peacefully closed, face consistent, body essentially same silhouette and facing, paws/body and signal base planted at one stable baseline, signal rigid and stationary, apparent scale identical through all six frames. Do not redraw different cat proportions. Do not animate the lamp or change lamp colors.
+
+Pet-safe sprite: clear compact whole-body forms, readable when fitted in 192x208 cells; simplified painterly detail and crisp opaque edges for clean chroma extraction. Uniform cyan background only, no scenery, no floor, no shadows, no glow, no motion blur, no loose hairs floating separately, no detached effects, no speed lines, no dust, no text, no labels, no frame borders, no checkerboard and no cyan color within the mascot. Exactly six cats, six tall signals, one pair per slot.

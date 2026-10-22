@@ -1,0 +1,465 @@
+{
+  "baseline": 190,
+  "referenceSignalHeight": 138.0,
+  "rows": [
+    {
+      "state": "idle",
+      "sourceBaseline": 185,
+      "sourceReferenceHeight": 163,
+      "scale": 0.8466257668711656,
+      "translation": [
+        27,
+        33
+      ],
+      "sameTransformForEveryFrame": true,
+      "bounds": [
+        [
+          33,
+          51,
+          183,
+          190
+        ],
+        [
+          34,
+          51,
+          184,
+          190
+        ],
+        [
+          33,
+          51,
+          184,
+          190
+        ],
+        [
+          33,
+          51,
+          184,
+          190
+        ],
+        [
+          33,
+          51,
+          184,
+          190
+        ],
+        [
+          33,
+          51,
+          184,
+          190
+        ]
+      ]
+    },
+    {
+      "state": "running-right",
+      "sourceBaseline": 183,
+      "sourceReferenceHeight": 159,
+      "scale": 0.8679245283018868,
+      "translation": [
+        23,
+        31
+      ],
+      "sameTransformForEveryFrame": true,
+      "bounds": [
+        [
+          29,
+          52,
+          184,
+          190
+        ],
+        [
+          30,
+          52,
+          183,
+          190
+        ],
+        [
+          30,
+          52,
+          183,
+          190
+        ],
+        [
+          30,
+          52,
+          183,
+          190
+        ],
+        [
+          30,
+          52,
+          183,
+          190
+        ],
+        [
+          31,
+          52,
+          183,
+          190
+        ],
+        [
+          30,
+          52,
+          183,
+          190
+        ],
+        [
+          29,
+          52,
+          183,
+          190
+        ]
+      ]
+    },
+    {
+      "state": "running-left",
+      "sourceBaseline": 180,
+      "sourceReferenceHeight": 153,
+      "scale": 0.9019607843137255,
+      "translation": [
+        17,
+        28
+      ],
+      "sameTransformForEveryFrame": true,
+      "bounds": [
+        [
+          28,
+          53,
+          178,
+          191
+        ],
+        [
+          26,
+          53,
+          181,
+          191
+        ],
+        [
+          24,
+          53,
+          182,
+          191
+        ],
+        [
+          24,
+          53,
+          183,
+          191
+        ],
+        [
+          25,
+          53,
+          182,
+          191
+        ],
+        [
+          24,
+          53,
+          183,
+          191
+        ],
+        [
+          24,
+          53,
+          182,
+          191
+        ],
+        [
+          25,
+          53,
+          181,
+          191
+        ]
+      ]
+    },
+    {
+      "state": "waving",
+      "sourceBaseline": 180,
+      "sourceReferenceHeight": 153,
+      "scale": 0.9019607843137255,
+      "translation": [
+        16,
+        28
+      ],
+      "sameTransformForEveryFrame": true,
+      "bounds": [
+        [
+          21,
+          52,
+          183,
+          191
+        ],
+        [
+          22,
+          52,
+          183,
+          191
+        ],
+        [
+          21,
+          52,
+          184,
+          191
+        ],
+        [
+          23,
+          52,
+          181,
+          190
+        ]
+      ]
+    },
+    {
+      "state": "jumping",
+      "sourceBaseline": 202,
+      "sourceReferenceHeight": 155,
+      "scale": 0.8903225806451613,
+      "translation": [
+        18,
+        10
+      ],
+      "sameTransformForEveryFrame": true,
+      "bounds": [
+        [
+          26,
+          51,
+          181,
+          189
+        ],
+        [
+          25,
+          31,
+          182,
+          166
+        ],
+        [
+          24,
+          16,
+          183,
+          151
+        ],
+        [
+          24,
+          31,
+          183,
+          166
+        ],
+        [
+          24,
+          51,
+          183,
+          189
+        ]
+      ]
+    },
+    {
+      "state": "failed",
+      "sourceBaseline": 181,
+      "sourceReferenceHeight": 156,
+      "scale": 0.8846153846153846,
+      "translation": [
+        20,
+        30
+      ],
+      "sameTransformForEveryFrame": true,
+      "bounds": [
+        [
+          31,
+          52,
+          178,
+          190
+        ],
+        [
+          30,
+          52,
+          180,
+          190
+        ],
+        [
+          29,
+          52,
+          181,
+          190
+        ],
+        [
+          28,
+          52,
+          181,
+          190
+        ],
+        [
+          28,
+          52,
+          181,
+          191
+        ],
+        [
+          27,
+          52,
+          182,
+          191
+        ],
+        [
+          27,
+          52,
+          184,
+          191
+        ],
+        [
+          31,
+          52,
+          178,
+          190
+        ]
+      ]
+    },
+    {
+      "state": "waiting",
+      "sourceBaseline": 187,
+      "sourceReferenceHeight": 167,
+      "scale": 0.8263473053892215,
+      "translation": [
+        31,
+        35
+      ],
+      "sameTransformForEveryFrame": true,
+      "bounds": [
+        [
+          37,
+          51,
+          184,
+          190
+        ],
+        [
+          36,
+          51,
+          185,
+          190
+        ],
+        [
+          36,
+          51,
+          184,
+          190
+        ],
+        [
+          37,
+          51,
+          184,
+          190
+        ],
+        [
+          36,
+          51,
+          185,
+          190
+        ],
+        [
+          36,
+          51,
+          184,
+          190
+        ]
+      ]
+    },
+    {
+      "state": "running",
+      "sourceBaseline": 186,
+      "sourceReferenceHeight": 164,
+      "scale": 0.8414634146341463,
+      "translation": [
+        28,
+        33
+      ],
+      "sameTransformForEveryFrame": true,
+      "bounds": [
+        [
+          34,
+          52,
+          184,
+          189
+        ],
+        [
+          34,
+          52,
+          184,
+          189
+        ],
+        [
+          34,
+          51,
+          184,
+          190
+        ],
+        [
+          34,
+          52,
+          184,
+          189
+        ],
+        [
+          34,
+          51,
+          184,
+          190
+        ],
+        [
+          34,
+          52,
+          185,
+          190
+        ]
+      ]
+    },
+    {
+      "state": "review",
+      "sourceBaseline": 186,
+      "sourceReferenceHeight": 163,
+      "scale": 0.8466257668711656,
+      "translation": [
+        27,
+        33
+      ],
+      "sameTransformForEveryFrame": true,
+      "bounds": [
+        [
+          35,
+          50,
+          181,
+          189
+        ],
+        [
+          34,
+          51,
+          183,
+          191
+        ],
+        [
+          33,
+          50,
+          184,
+          190
+        ],
+        [
+          34,
+          51,
+          183,
+          190
+        ],
+        [
+          34,
+          50,
+          183,
+          191
+        ],
+        [
+          34,
+          50,
+          183,
+          189
+        ]
+      ]
+    }
+  ]
+}

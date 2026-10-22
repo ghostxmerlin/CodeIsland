@@ -1,0 +1,28 @@
+{
+  "source": "decoded/look-cardinals.png",
+  "reviewed": true,
+  "observations": {
+    "000": {
+      "expected": "up",
+      "observed": "Head tipped backward, chin exposed, nose above mouth, both eyes aimed upward.",
+      "verdict": "pass"
+    },
+    "090": {
+      "expected": "right",
+      "observed": "Profile faces screen-right; pink nose at the rightmost face edge, near eye and muzzle follow right.",
+      "verdict": "pass"
+    },
+    "180": {
+      "expected": "down",
+      "observed": "Forehead forward, head low between forepaws, nose near paw level, downcast eyelids.",
+      "verdict": "pass"
+    },
+    "270": {
+      "expected": "left",
+      "observed": "Profile faces screen-left; nose at the leftmost face edge, visible eye and muzzle follow left.",
+      "verdict": "pass"
+    }
+  },
+  "identity": "Same white cat, wrapped tail, lying body and fixed signal to screen-right. Blue lower lens is lit.",
+  "scope": "Cardinal semantic anchors only; final sixteen-direction continuity still requires review."
+}

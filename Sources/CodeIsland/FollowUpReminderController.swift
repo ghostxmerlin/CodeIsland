@@ -201,6 +201,7 @@ final class FollowUpReminderController {
 
     /// The user jumped to this session's terminal: they are dealing with it.
     func userJumped(to sessionId: String) {
+        appState?.markCompletionSeen(sessionId: sessionId)
         hintedKeys = hintedKeys.filter { $0.sessionId != sessionId }
         guard scheduler.trackedKeys.contains(where: { $0.sessionId == sessionId }) else { return }
         scheduler.silenceAll(sessionId: sessionId)

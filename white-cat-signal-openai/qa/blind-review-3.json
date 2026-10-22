@@ -1,0 +1,89 @@
+{
+  "reviewer": "final-blind3",
+  "pairs": [
+    {
+      "pair": "horizontal-1",
+      "A": "screen-right",
+      "B": "screen-left",
+      "reason": "A's raised nose and muzzle are displaced to the right of the visible eye; B's raised nose lies left of its prominent eye."
+    },
+    {
+      "pair": "horizontal-2",
+      "A": "screen-right",
+      "B": "screen-left",
+      "reason": "A presents a right-facing muzzle profile with its nose beyond the eye to the right. B presents the corresponding left-facing nose and muzzle."
+    },
+    {
+      "pair": "horizontal-3",
+      "A": "screen-right",
+      "B": "screen-left",
+      "reason": "A's visible eye leads toward a protruding nose on the right; B's muzzle projects beyond the visible eye toward the left."
+    },
+    {
+      "pair": "horizontal-4",
+      "A": "screen-right",
+      "B": "screen-left",
+      "reason": "A has a clearly rightward facial profile. B's nose is the leftmost facial landmark and its eye looks toward that side."
+    },
+    {
+      "pair": "horizontal-5",
+      "A": "screen-left",
+      "B": "screen-right",
+      "reason": "A's low nose projects left of its visible eye. B's low muzzle projects right of its visible eye."
+    },
+    {
+      "pair": "horizontal-6",
+      "A": "screen-left",
+      "B": "screen-right",
+      "reason": "A's lowered face is turned left, with its nose toward the left paw. B shows a rightward cheek-to-muzzle profile with the nose on the right."
+    },
+    {
+      "pair": "horizontal-7",
+      "A": "screen-left",
+      "B": "ambiguous",
+      "reason": "A's lowered muzzle sits visibly left of the head center. B is nearly frontal with both eyes visible and the nose lowered between them; a horizontal turn is too subtle to classify confidently."
+    },
+    {
+      "pair": "vertical-1",
+      "A": "up",
+      "B": "down",
+      "reason": "A lifts its muzzle and nose with a broad exposed chin below. B lowers its nose almost to its paws and looks down beneath its brow."
+    },
+    {
+      "pair": "vertical-2",
+      "A": "up",
+      "B": "down",
+      "reason": "A's head tilts back with its nose raised toward the signal. B's face drops toward the front paw, with its low eye and muzzle beneath the forehead."
+    },
+    {
+      "pair": "vertical-3",
+      "A": "up",
+      "B": "down",
+      "reason": "A's muzzle angles upward and its chin is lifted clear of the paw. B angles its nose downward toward the paw with a bowed forehead."
+    },
+    {
+      "pair": "vertical-4",
+      "A": "up",
+      "B": "down",
+      "reason": "A holds its nose and muzzle raised with the lower jaw clear above the paw. B's forehead slopes down into a nose near the paw and its gaze is lowered."
+    },
+    {
+      "pair": "vertical-5",
+      "A": "down",
+      "B": "up",
+      "reason": "A's face is bowed and its nose nearly touches the paws. B's nose points upward and its lifted chin is prominent beneath the eyes."
+    },
+    {
+      "pair": "vertical-6",
+      "A": "down",
+      "B": "up",
+      "reason": "A tucks its muzzle low between the paws. B raises its nose in a leftward and upward profile, exposing the underside of its jaw."
+    },
+    {
+      "pair": "vertical-7",
+      "A": "down",
+      "B": "ambiguous",
+      "reason": "A lowers its muzzle to paw level. B clearly faces left, but its nose and head profile look approximately level; the visible landmarks do not establish a confident upward or downward pitch."
+    }
+  ]
+}

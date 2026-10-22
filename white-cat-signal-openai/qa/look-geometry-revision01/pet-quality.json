@@ -1,0 +1,79 @@
+{
+  "ok": false,
+  "atlas": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/final/spritesheet-extended.png",
+  "encoded_bytes": 2325037,
+  "sha256": "e9ebfe887c3f6d500cca90a3841db56f077c494cacddd102aee0aa572b948ca6",
+  "jump": {
+    "idle_baseline": 190,
+    "jump_baselines": [
+      189,
+      166,
+      151,
+      166,
+      189
+    ],
+    "airborne_lift_pixels": 38,
+    "landing_delta_pixels": 1
+  },
+  "look_registration": {
+    "neutral_center_x": 108.0,
+    "look_centers_x": [
+      110.0,
+      109.5,
+      109.0,
+      109.5,
+      110.0,
+      109.5,
+      109.5,
+      109.0,
+      110.5,
+      109.5,
+      109.0,
+      109.5,
+      109.5,
+      109.0,
+      109.0,
+      108.0
+    ],
+    "look_widths": [
+      122,
+      127,
+      128,
+      129,
+      128,
+      129,
+      127,
+      128,
+      123,
+      127,
+      130,
+      131,
+      131,
+      128,
+      128,
+      126
+    ],
+    "maximum_center_drift_pixels": 2.5,
+    "maximum_width_ratio": 1.0737704918032787
+  },
+  "errors": [
+    "look directions contain transparent interior holes or seam bands: 000, 022.5, 045, 270, 292.5, 315, 337.5"
+  ],
+  "warnings": [
+    "look direction 067.5 accepted with a reviewed warning",
+    "look direction 157.5 accepted with a reviewed warning",
+    "look direction 202.5 accepted with a reviewed warning",
+    "look direction 247.5 accepted with a reviewed warning",
+    "look direction 337.5 accepted with a reviewed warning",
+    "000 has transparent interior hole rows (y=112, y=113, y=114)",
+    "022.5 has transparent interior hole rows (y=113, y=114, y=115)",
+    "045 has transparent interior hole rows (y=105, y=106, y=107, y=108, +4 more)",
+    "247.5 has transparent interior hole rows (y=117, y=118)",
+    "270 has transparent interior hole rows (y=111, y=112, y=113, y=114, +1 more)",
+    "292.5 has transparent interior hole rows (y=106, y=107, y=108, y=109, +3 more)",
+    "315 has transparent interior hole rows (y=103, y=104, y=105, y=106, +5 more)",
+    "337.5 has transparent interior hole rows (y=99, y=100, y=101, y=102, +3 more)",
+    "157.5->180 diff is a local outlier (926 pixels vs neighbor average 637)",
+    "270->292.5 diff is a local outlier (1247 pixels vs neighbor average 775)"
+  ]
+}

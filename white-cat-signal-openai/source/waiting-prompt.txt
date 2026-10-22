@@ -1,0 +1,19 @@
+Built-in image_gen generation.
+transparent_background: false
+references:
+/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/references/reference-01.png
+/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/references/canonical-base.png
+/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/references/layout-guides/waiting.png
+/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/decoded/idle.png
+Original generated image: /Users/ghostxmerlin/.codex/generated_images/01a1578c-386d-70e3-a37a-cc10efbdb487/exec-f0fb9575-a841-4746-94d7-9bd45c56072e.png
+
+Exact prompt:
+Create one horizontal animation strip for ChatGPT pet white-cat-signal, state WAITING / NEEDS USER INPUT. Inputs: image 1 pet reference, image 2 canonical identity reference, image 3 SIX-SLOT spacing-only layout guide, image 4 APPROVED IDLE ROW AND SCALE REFERENCE. Never draw guide lines. Preserve the exact white cat, softly painterly style, natural rounded face, body volume, wrapped tail and SCREEN-RIGHT tall signal from the approved idle row.
+
+OUTPUT EXACTLY SIX COMPLETE CAT+SIGNAL PAIRS in ONE single horizontal row, on flat perfectly uniform opaque pure cyan #00FFFF. Six invisible equal-width slots, a centered complete pair in every slot. Each cat and its own signal are close together with a NARROW intra-pair gap. Between pairs leave WIDE EMPTY CYAN gutters, clearly much wider than the cat-signal gap. Safe top/bottom and outer margins; no overlap, no clipping, no extra cats or signals, no second row, no labels or borders.
+
+IDENTITY: plump fluffy pure-white cat LYING CURLED DOWN as in approved idle, paws in front, pink inner ears, tiny pink nose, rounded feline face and long thick wrapped white tail. Same soft hand-painted fur and delicate charcoal contours, gentle Japanese fantasy-animation charm. The cat is awake in WAITING: natural SMALL DARK FELINE EYES, almond shaped, no big round eyeballs or googly eyes. Signal remains tall rigid stationary SCREEN RIGHT in every frame, identical proportions, base, cap and charcoal vintage housing to idle reference. Exactly THREE circular glass lenses: RED TOP, GREEN MIDDLE, BLUE BOTTOM. For WAITING ONLY RED TOP LENS BRIGHTLY LIT, vivid red contained within glass; green middle and blue bottom very dark unpowered smoked glass. Do not change lamp color during the row. No external glow, no extra props, no cushions.
+
+WAITING ACTION: patient expectant asking gesture that clearly means awaiting input. Cat's lying body, belly and wrapped tail remain anchored at the idle baseline, same size throughout. Lift only head and a forepaw slightly; do not sit, stand or rise on hindquarters. Head faces viewer with ears forward and small dark eyes expectantly open. Frame 1 head lifted slightly with both paws near floor; frame 2 gentle inquisitive head tilt; frame 3 one forepaw lifts only a little near chest, elbow remains attached, patiently asking; frame 4 hold the small lifted paw with a tiny opposite head tilt and soft attentive expression; frame 5 paw gently lowers and eyes briefly blink; frame 6 returns very close to frame 1 open attentive eyes. Small calm loop, no waving, no big gestures, no sleep, no work or review, no distress. Body silhouette, tail, ground baseline and signal stay stable, same apparent scale across frames.
+
+Clean sprite extraction: compact full-body mascot readable in 192x208 cells, crisp opaque edges, stable palette and simplified painterly detail. Entire cat and entire signal with base and cap visible in every frame. NO scenery, floor, shadows, halos, glow, motion blur, speed lines, dust, marks, detached effects, floating punctuation, text, guide pixels, checkerboard or cyan inside the pet. Exactly six complete pairs, red top lamp ON in all six.

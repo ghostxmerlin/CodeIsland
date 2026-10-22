@@ -1,0 +1,25 @@
+Preserved original waving source before targeted cat:signal proportion repair. Independent review found cat approximately 20% too large relative to unchanged signal, compared with idle.
+
+Previous prompt.txt:
+Use case: identity-preserve. Asset: one horizontal animation sprite strip, state waving, exactly FOUR complete cat-plus-signal pairs arranged left to right. Generate this one row only, with no atlas.
+Grounding: image 1 is approved reference-01 artwork, image 2 is canonical-base with the exact approved identity, image 3 is the four-slot layout guide FOR SPACING ONLY. Do not copy any guide lines, background, labels, borders or marks.
+Preserve the exact reference's fluffy PURE WHITE broad plump lying cat, round face, delicate charcoal pencil outlines, white hand-painted fur, soft pink inner ears and small pink nose, long thick wrapped tail curved across the foreground. When open, eyes are SMALL natural dark feline eyes, not round googly eyes. All four cat bodies remain lying low on their bellies, never upright or bipedal. Same face, tail, size and proportions in all four frames. No extra limbs.
+The tall vintage charcoal railway signal stands immediately to the SCREEN RIGHT of the cat in every frame. Same tall signal geometry and narrow cylindrical post, hooded round lamps, metal base and texture as reference. Signal height about 1.6 times the resting cat's height. Exactly THREE lamps vertically ordered red TOP, green MIDDLE, blue BOTTOM; only BOTTOM BLUE illuminated, without glow or halo. Preserve its upright position, shape, baseline and scale in all frames. Signal must remain slender so the broad cat silhouette has substantially more visible area than signal.
+Four frames: 1 cat lies with both front paws resting and head slightly raised, awake small dark eyes looking forward; 2 cat remains lying and lifts ONE front paw beside its cheek in a friendly hello, all other limbs planted/tucked; 3 same raised paw tilts softly outward with a small visible paw pad, head friendly subtle tilt; 4 paw returns to rest and head relaxes, ready to loop. Keep the raised paw naturally connected to its foreleg. This is a low lying cat greeting, not a standing humanlike cat. Motion is entirely the connected paw and slight head expression.
+Composition: exactly FOUR whole paired poses in one left-to-right horizontal row. All four signals equally tall; all four cats equally broad. Complete cat plus complete signal fits each invisible slot. Very NARROW gap inside each cat-signal pair; very WIDE empty gutters between one complete pair and the next. Stable shared baseline, generous outer padding, no clipping or overlaps. All parts stay inside their pair, no detached fur chunks.
+Background: solid uniform pure cyan #00FFFF over the entire canvas, completely flat and untextured, NOT transparent. Crisp opaque foreground edges for chroma extraction. No cyan inside the pet.
+Do not add text, labels, grid, borders, ground, shadows, scenery, cushion, extra props, decorative particles, hearts, wave marks, motion arcs, lines, sparkles, symbols, floating effects, blur, or glow. Artwork closely matches the supplied hand-painted reference.
+
+Previous visual-review.md:
+# Waving row review
+
+- Selected source: decoded/waving.png; generated using built-in imagegen with all three manifest input images attached (reference-01, canonical-base, four-slot waving layout).
+- Exactly four complete cat+signal poses, with stable pair scale and baseline. Cat remains lying; no standing/bipedal pose or extra limbs observed.
+- Frames: 00 both paws down, small dark awake eyes; 01 one connected forepaw lifted beside face; 02 same paw tilts outward showing pink pads; 03 paw down and content closed eyes.
+- Identity retained: broad fluffy white cat, round face, pink nose/ears, long wrapped tail; vintage tall slender signal always screen-right, red/green/blue vertical order, blue bottom lamp illuminated.
+- No clipped body parts, extra props, guide marks, text, motion arcs or detached decorative effects observed.
+- Official extraction: extract_strip_frames.py --states waving --method components --chroma-key '#00FFFF' returned ok:true.
+- Official inspection: inspect_frames.py --states waving --require-components returned ok:true, errors:[], warnings:[]. Review report: review.json.
+- All four extracted 192x208 PNGs were visually inspected. Blue lamp and connected paw gesture remain readable. Some chroma-colored edge fringe remains at this stage; parent final official despill pass is still required.
+- Full render_animation_previews.py CLI requires all nine state folders and failed with 'idle preview needs 6 frames, found 0'. No missing states were fabricated. Single-state GIF was made using the same unmodified script's load_frames and save_preview functions and its own waving durations [140,140,140,280].
+- make_contact_sheet.py requires an atlas; parent full-row assembly owns that artifact.

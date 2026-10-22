@@ -1,0 +1,78 @@
+{
+  "scope": "Fresh review of the rebuilt nine standard rows after accepted waving revision 02, failed revision 04 and maximum-right-edge row registration. Cardinal/look rows are outside this review.",
+  "verdict": "pass_with_nonblocking_notes",
+  "ready_for_cardinal_generation": true,
+  "material_scale_or_baseline_pop_found": false,
+  "method": {
+    "visually_viewed": [
+      "Updated qa/contact-sheet.png",
+      "Updated final/spritesheet.png",
+      "Native 192x208 frames: idle 00/02, waving 00/01/02/03, failed 00/04/07, waiting 00"
+    ],
+    "additional_evidence": [
+      "Ordered poses for all nine rows in the updated sheets",
+      "qa/row-registration.json",
+      "qa/review.json",
+      "Native GIF preview dimensions, frame counts and duration metadata for idle/waving/failed/jumping"
+    ],
+    "playback_observed": false,
+    "limitation": "The verdict covers still-frame readability, ordered-pose semantics and geometric continuity. Actual playback smoothness and runtime state transitions were not watched.",
+    "files_modified": [
+      "qa/standard-visual-review-final.json",
+      "qa/standard-visual-review-final.md"
+    ],
+    "prior_review_preserved": true
+  },
+  "snapshot": {
+    "local_timestamp": "2026-10-20T12:51:28+08:00",
+    "sha256": {
+      "qa/contact-sheet.png": "ceb8744fec29cc2b28fc1ed29f87b32ceaa768ca96901ab0b0a8a3445024ea06",
+      "final/spritesheet.png": "6a4b0febe8e4f643480b05de22685beeee3f0845e7d33e5a9632b113d78dbb6c",
+      "qa/row-registration.json": "b608b4a76b7e1ace9f05d468dbcf1a9dbb66f46071708ccb8f565f5f3fb33be5",
+      "qa/review.json": "5bb707c6f21ac13bf3e2f9c0b1db948626ad060eb9db46b4f25172c8abfdc373"
+    }
+  },
+  "scale_and_baseline": {
+    "assessment": "The previously conspicuous large waving cat and small failed cat are resolved. At native size the three states read as the same-sized character with mild pose and fullness differences, without a material scale or landing-height discontinuity.",
+    "first_frame_bright_cat_proxy": {
+      "method": "Largest four-connected bright-neutral component, alpha >128, min RGB >145 and channel spread <75; a read-only corroborating proxy, not semantic segmentation.",
+      "idle": {"bbox": [36, 120, 151, 189], "size": [115, 69], "pixels": 5923},
+      "waving": {"bbox": [22, 122, 140, 190], "size": [118, 68], "pixels": 5874},
+      "failed": {"bbox": [32, 110, 151, 189], "size": [119, 79], "pixels": 6908}
+    },
+    "interpretation": "Cat width differs by about 3% across these frame-00 proxies. Failed remains rounder with a higher awake-ear/head silhouette; this is visible but mild rather than the old smaller-body pop. Waving has similar body height and mass to idle.",
+    "solid_registered_bottom_ranges": {"idle": [189, 190], "waving": [190, 191], "failed": [190, 191]},
+    "signal_reference_height_px": 138,
+    "nonblocking_position_notes": [
+      "Waving cat sits approximately 14 px farther left than idle at the bright-component left boundary, leaving room for the lifted paw. This is a modest lateral pose/layout change, not scale or baseline pop.",
+      "Failed signal/pair right edge drifts about 5 px across the row while its vertical level remains stable. The prop remains on screen right and no material jump is visible in the ordered poses."
+    ]
+  },
+  "state_semantics": {
+    "idle": "Closed contented eyes and visible back/fullness changes retain breathing geometry with blue bottom light.",
+    "running-right": "Right-facing whole-body gait with alternating reached/gathered legs; signal stays screen right and blue.",
+    "running-left": "Left-facing whole-body gait with corresponding front reach and rear push; signal remains screen right rather than being scene-mirrored.",
+    "waving": "Raised forepaw and pink pads remain clear after scale repair, with a resting return pose.",
+    "jumping": "Ordered frames still show the entire pair rising, reaching an airborne apex and returning to its baseline; no apparent loss of the preserved jump offset.",
+    "failed": "Flattened outward ears, sad brows, lowered chin and slight recovery remain clear after proportion repair. Red top lamp is correct.",
+    "waiting": "Open attentive eyes, head tilt and lifted forepaw remain distinguishable from the slumped failed sequence despite sharing red.",
+    "running": "Low focused eyelids and subtle forepaw/body changes accompany the green middle lamp.",
+    "review": "Visible head/gaze turn distinguishes the ordered sequence from the more front/downward working row; both use green and some resting poses overlap."
+  },
+  "identity_and_prop": "Pure-white fluffy cat identity, natural dark eyes, pink nose/ears, wrapped tail and vintage charcoal three-lamp signal remain consistent. Red/green/blue lamp order and active state-family colors are correct. The right-side prop convention is preserved throughout.",
+  "mechanical_inspection": {
+    "ok": true,
+    "rows": 9,
+    "all_extraction_methods": "components",
+    "errors": [],
+    "warnings": [],
+    "all_frames_edge_pixels_zero": true,
+    "frame_counts": {"idle": 6, "running-right": 8, "running-left": 8, "waving": 4, "jumping": 5, "failed": 8, "waiting": 6, "running": 6, "review": 6}
+  },
+  "remaining_nonblocking_work": [
+    "Apply the already planned final cyan despill and recheck fur edges, signal rims, lenses and bounds.",
+    "Retain app status text for semantic distinctions between shared-color states.",
+    "Watch final runtime or GIF playback separately if temporal smoothness certification is required."
+  ],
+  "regeneration_requested": false
+}

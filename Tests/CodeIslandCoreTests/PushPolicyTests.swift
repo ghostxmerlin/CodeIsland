@@ -452,5 +452,7 @@ final class PushMessageFormatterTests: XCTestCase {
         let message = PushMessage.test(strings: strings)
         XCTAssertTrue(message.kind.blocksAgent)
         XCTAssertEqual(message.headline, "Test notification")
+        XCTAssertEqual(message.title, "🔔 AISM")
+        XCTAssertFalse(PushStrings.english.testBody.contains("CodeIsland"))
     }
 }

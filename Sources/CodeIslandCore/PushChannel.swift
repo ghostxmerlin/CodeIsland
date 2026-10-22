@@ -303,7 +303,7 @@ public enum PushRequestBuilder {
             "device_key": deviceKey,
             "title": PushMessageFormatter.truncated(message.title, limit: barkTitleLimit),
             "level": message.blocksAgent ? "timeSensitive" : "active",
-            "group": nonEmpty(channel.group) ?? "CodeIsland",
+            "group": nonEmpty(channel.group) ?? "AISM",
         ]
         let headline = PushMessageFormatter.truncated(message.headline, limit: barkSubtitleLimit)
         // Bark requires a body; an empty one falls back to the headline.

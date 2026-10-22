@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "source_png_sha256": "70e29571e915275e687dd7618b0a47c2733779722b7b145fe3dd5d1e2dcdf3e5",
+  "desktop_webp_sha256": "11757198599f4c49f12128def0468f086b1ce56de29f3dbf657108a69463df4e",
+  "pixel_changes_only_in_cells": [
+    [
+      0,
+      6
+    ]
+  ],
+  "neutral_frame_source": {
+    "row": 0,
+    "column": 0
+  },
+  "neutral_frame_destination": {
+    "row": 0,
+    "column": 6
+  },
+  "existing_73_frames_unchanged": true,
+  "lossless_encode_verified": true,
+  "sprite_version_number": 2,
+  "width": 1536,
+  "height": 2288,
+  "populated_cells": 74,
+  "blank_cells": 14,
+  "adapter": "Official hatch-pet assemble_extended_atlas.base_neutral_cell + paste_neutral_cell; no generation or further despill"
+}

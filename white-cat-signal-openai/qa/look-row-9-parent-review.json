@@ -1,0 +1,25 @@
+{
+  "verdict": "pass",
+  "artifacts": [
+    "decoded/look-row-9.png",
+    "decoded/look-row-9-registered.png"
+  ],
+  "registration": "Official assemble_extended_atlas.py completed with default edge gates.",
+  "reviewer": "parent",
+  "directions": {
+    "000": "up: nose tipped toward top, chin under nose exposed, pupils high",
+    "022.5": "up-right: nose begins shifting right while chin remains lifted",
+    "045": "up-right: head yaw toward screen-right, nose elevated",
+    "067.5": "up-right: profile nose points right and slightly up",
+    "090": "right: side profile nose directed screen-right, head pitched level",
+    "112.5": "down-right: nose right and below level, forehead advances",
+    "135": "down-right: nose tipped right-down toward wrapped tail",
+    "157.5": "down-right: face nearly frontal, nose low and subtly right, gaze toward right paw"
+  },
+  "continuity": "Head tilts continuously through the eight intended angles; prone body and screen-right signal retain the same orientation. No visible clipping or direction reversal.",
+  "reviewed_notes": [
+    "Signal base consistently slightly higher than front paws due source perspective; no within-row jump.",
+    "The complete look pair is slightly narrower than idle but remains legible; final look-registration quality gate pending."
+  ],
+  "next": "Row10 may be generated using this approved row9 as reference."
+}

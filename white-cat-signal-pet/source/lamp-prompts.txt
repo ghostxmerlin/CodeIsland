@@ -1,0 +1,20 @@
+Lamp lens artwork generation provenance
+Mode: built-in image_gen tool. No CLI/API fallback.
+
+ON / illuminated lenses
+Output: source/lamp-lenses.png
+Original generated PNG: /Users/ghostxmerlin/.codex/generated_images/01a1578c-386d-70e3-a37a-cc10efbdb487/exec-7fe46e5f-6615-423a-befb-d9aa7141286b.png
+Input reference supplied via referenced_image_paths:
+/Users/ghostxmerlin/.codex/generated_images/01a15789-9832-7533-a64b-f2acd147767e/exec-59fb0f7b-4b96-418a-9dfc-09501ebb7837.png
+transparent_background: true
+Exact prompt:
+Use case: stylized-concept. Asset type: transparent game sprite compositing insert, horizontal 3:1 strip. Input image 1 is STYLE REFERENCE ONLY: reference its hand-painted vintage railway signal glass textures. Create exactly THREE separate perfectly circular glass lens discs, equal diameters, centers horizontally aligned, widely separated on genuinely transparent background. Left-to-right colors: vivid RED, vivid GREEN, vivid BLUE. Show only colored glass disks, viewed straight-on, no holders or casings. Match the reference's finely painted concentric pressed-glass ridges and lightly mottled glass texture, with one tiny upper-left reflection on each disc. All three lamps are illuminated internally, bright saturated colored cores with darker saturated glass edges; much brighter than the unlit reference lenses, but strongly and unequivocally RED, GREEN, BLUE, never white cores or white circles. Lighting must stay contained inside each circular lens boundary. No outer glows, no shadows, no housings, no black metal rims, no signal pole, no cat, no extra objects, no text, no grid. Each circle about 60 percent of canvas height. Generous completely transparent outer margins and transparent gaps, suitable for individual extraction. Painted texture and crisp clean antialiased circular cutout edges. Do not replicate the entire input composition. Deliver wide 3:1 RGBA strip of exactly three glass lens discs on actual alpha transparency, no opaque backdrop.
+
+OFF / unpowered lenses
+Output: source/lamp-lenses-off.png
+Original generated PNG: /Users/ghostxmerlin/.codex/generated_images/01a1578c-386d-70e3-a37a-cc10efbdb487/exec-cc5f7a94-aa8e-4893-8c2e-3b5e897728fe.png
+Input reference/edit target supplied via referenced_image_paths:
+/Users/ghostxmerlin/tab5/starlight/white-cat-signal-pet/source/lamp-lenses.png
+transparent_background: true
+Exact prompt:
+Use case: lighting-weather. Asset type: transparent 3:1 game sprite strip, OFF-state paired artwork. EDIT INPUT IMAGE EXACTLY: preserve these exact three separate equal round glass discs, their diameters and geometry, their horizontal positions, same left to right order RED, GREEN, BLUE, their concentric painted pressed glass texture and clean circular cutout boundaries, the wide canvas composition and all transparent background and gaps. Change only illumination: ALL THREE LAMPS COMPLETELY UNPOWERED AND OFF. They must become very dark, nearly black smoked glass. Left disc subtle deep wine-red tint, middle subtle deep forest-green tint, right subtle deep midnight-navy-blue tint. Interiors almost black and absolutely not self-luminous; no internal light or brightness, no lit core, no shining colored ring. Preserve just faint visible concentric textures. Upper left reflection becomes a TINY DIM low contrast grey tinted reflection, NO WHITE HOTSPOTS. These are truly OFF lenses for a signal lamp next to brightly illuminated on-state lenses; at 32 pixels each they must read unequivocally DARK OFF. Please make them very much darker, about 10 percent the apparent brightness of the source. Do not add housing, poles, rims, objects, text, glow, shadow, opaque backdrop or checkerboard. Keep the intact separated three discs and genuine RGBA background transparency. Use exact input geometry, rendering style, 3:1 framing, and no changes except turning the lights fully OFF with dim smoked glass.

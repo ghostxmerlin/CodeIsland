@@ -1,0 +1,16 @@
+{
+  "verdict": "pass",
+  "artifact": "qa/contact-sheet.png",
+  "reviewer": "parent",
+  "review_scope": "actual rebuilt 9-row standard contact sheet and selected repaired source strips",
+  "observations": [
+    "All 57 action frames occupied, expected unused cells empty.",
+    "Signal remains screen-right throughout both locomotion directions.",
+    "Waving revision02: four readable attached-paw greeting stages with blue bottom lamp; former oversized cat corrected.",
+    "Failed revision04: ears sink, brows sad, head drops and blink/recovery with red top lamp; former undersized cat corrected.",
+    "Idle, waving, failed now visually comparable at same signal height; small natural pose differences remain.",
+    "Jumping row has clear rise and land; normal other state baselines consistent.",
+    "Work/review remain prone with green middle lamp and distinct focused/inspection head-paw movement."
+  ],
+  "pending": "Full v2 final encoded sheet, chroma cleanup, direction QA and motion acceptance"
+}

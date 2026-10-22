@@ -8,6 +8,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     nonisolated private static let log = Logger(subsystem: "com.codeisland", category: "AppDelegate")
 
     var panelController: PanelWindowController?
+    var signalPet: SignalPetSwitch?
     private var hookServer: HookServer?
     private var hookRecoveryTimer: Timer?
     private var lastHookCheck: Date = .distantPast
@@ -73,6 +74,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         panelController = PanelWindowController(appState: appState)
         panelController?.showPanel()
+        signalPet = SignalPetSwitch { [appState] in SignalPetWindowController(appState: appState) }
+        signalPet?.start()
 
         appState.startSessionDiscovery()
         appState.startCodexAppServerWatcher()
@@ -187,6 +190,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
             }
         }
+    }
+
+    /// Opening AISM again (Finder, Dock, Spotlight) while it runs shows the
+    /// real Settings window rather than letting SwiftUI open its empty
+    /// placeholder scene.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        SettingsWindowController.shared.show()
+        return false
     }
 
     func applicationWillTerminate(_ notification: Notification) {

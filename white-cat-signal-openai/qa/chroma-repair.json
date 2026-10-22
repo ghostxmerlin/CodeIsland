@@ -1,0 +1,8 @@
+{
+  "issue": "Default96 key threshold erased a few blue/green lamp highlight pixels, creating local transparency and chroma-fringe failures.",
+  "evidence": "qa/chroma-revision01/validation-extended.json",
+  "correction": "Re-extracted ORIGINAL generated source strips with official extractor key-threshold32, and look rows with official chroma-threshold32; source cyan backgrounds sampled near(0,252,253). Same component strategy and one transform per row.",
+  "cleanup": "Rebuilt raw atlas and applied bundled despill once to that raw atlas. No stacked cleanup passes, no weakened validation flags.",
+  "result": "Final official atlas validator ok:true, no errors/warnings; lamp highlights preserved.",
+  "final_sha256": "70e29571e915275e687dd7618b0a47c2733779722b7b145fe3dd5d1e2dcdf3e5"
+}

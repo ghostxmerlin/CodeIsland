@@ -1,0 +1,973 @@
+{
+  "ok": true,
+  "frames_root": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames",
+  "states": [
+    "idle",
+    "running-right",
+    "running-left",
+    "waving",
+    "jumping",
+    "failed",
+    "waiting",
+    "running",
+    "review"
+  ],
+  "errors": [],
+  "warnings": [],
+  "rows": [
+    {
+      "state": "idle",
+      "expected_frames": 6,
+      "actual_frames": 6,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/idle/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11733,
+          "bbox": [
+            31,
+            49,
+            185,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 385
+        },
+        {
+          "index": 1,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/idle/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11955,
+          "bbox": [
+            31,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 364
+        },
+        {
+          "index": 2,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/idle/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12523,
+          "bbox": [
+            31,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 405
+        },
+        {
+          "index": 3,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/idle/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11785,
+          "bbox": [
+            31,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 353
+        },
+        {
+          "index": 4,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/idle/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11758,
+          "bbox": [
+            31,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 352
+        },
+        {
+          "index": 5,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/idle/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11721,
+          "bbox": [
+            31,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 343
+        }
+      ]
+    },
+    {
+      "state": "running-right",
+      "expected_frames": 8,
+      "actual_frames": 8,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-right/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12038,
+          "bbox": [
+            27,
+            50,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 647
+        },
+        {
+          "index": 1,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-right/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12234,
+          "bbox": [
+            28,
+            50,
+            185,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 645
+        },
+        {
+          "index": 2,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-right/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11899,
+          "bbox": [
+            28,
+            50,
+            185,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 678
+        },
+        {
+          "index": 3,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-right/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12523,
+          "bbox": [
+            28,
+            50,
+            185,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 714
+        },
+        {
+          "index": 4,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-right/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12255,
+          "bbox": [
+            28,
+            50,
+            185,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 639
+        },
+        {
+          "index": 5,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-right/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12245,
+          "bbox": [
+            28,
+            50,
+            185,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 687
+        },
+        {
+          "index": 6,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-right/06.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11985,
+          "bbox": [
+            28,
+            50,
+            185,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 673
+        },
+        {
+          "index": 7,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-right/07.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12111,
+          "bbox": [
+            27,
+            50,
+            185,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 666
+        }
+      ]
+    },
+    {
+      "state": "running-left",
+      "expected_frames": 8,
+      "actual_frames": 8,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-left/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12465,
+          "bbox": [
+            26,
+            50,
+            180,
+            193
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 715
+        },
+        {
+          "index": 1,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-left/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12484,
+          "bbox": [
+            24,
+            50,
+            183,
+            193
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 731
+        },
+        {
+          "index": 2,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-left/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12196,
+          "bbox": [
+            22,
+            50,
+            184,
+            194
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 677
+        },
+        {
+          "index": 3,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-left/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12769,
+          "bbox": [
+            21,
+            50,
+            186,
+            193
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 680
+        },
+        {
+          "index": 4,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-left/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12094,
+          "bbox": [
+            23,
+            50,
+            184,
+            194
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 629
+        },
+        {
+          "index": 5,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-left/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12801,
+          "bbox": [
+            21,
+            50,
+            185,
+            193
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 708
+        },
+        {
+          "index": 6,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-left/06.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12585,
+          "bbox": [
+            22,
+            50,
+            184,
+            194
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 722
+        },
+        {
+          "index": 7,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running-left/07.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12576,
+          "bbox": [
+            23,
+            50,
+            184,
+            194
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 794
+        }
+      ]
+    },
+    {
+      "state": "waving",
+      "expected_frames": 4,
+      "actual_frames": 4,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/waving/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11848,
+          "bbox": [
+            19,
+            50,
+            185,
+            193
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 295
+        },
+        {
+          "index": 1,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/waving/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12009,
+          "bbox": [
+            20,
+            50,
+            185,
+            193
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 307
+        },
+        {
+          "index": 2,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/waving/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11951,
+          "bbox": [
+            19,
+            50,
+            186,
+            193
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 226
+        },
+        {
+          "index": 3,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/waving/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11635,
+          "bbox": [
+            21,
+            50,
+            184,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 197
+        }
+      ]
+    },
+    {
+      "state": "jumping",
+      "expected_frames": 5,
+      "actual_frames": 5,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/jumping/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12261,
+          "bbox": [
+            24,
+            49,
+            183,
+            191
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 305
+        },
+        {
+          "index": 1,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/jumping/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12768,
+          "bbox": [
+            23,
+            29,
+            184,
+            169
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 427
+        },
+        {
+          "index": 2,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/jumping/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 13001,
+          "bbox": [
+            21,
+            13,
+            186,
+            154
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 434
+        },
+        {
+          "index": 3,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/jumping/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12951,
+          "bbox": [
+            21,
+            29,
+            185,
+            169
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 429
+        },
+        {
+          "index": 4,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/jumping/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12586,
+          "bbox": [
+            21,
+            49,
+            185,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 338
+        }
+      ]
+    },
+    {
+      "state": "failed",
+      "expected_frames": 8,
+      "actual_frames": 8,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/failed/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12707,
+          "bbox": [
+            29,
+            50,
+            180,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 537
+        },
+        {
+          "index": 1,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/failed/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12629,
+          "bbox": [
+            28,
+            50,
+            182,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 464
+        },
+        {
+          "index": 2,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/failed/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12514,
+          "bbox": [
+            27,
+            50,
+            183,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 503
+        },
+        {
+          "index": 3,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/failed/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12523,
+          "bbox": [
+            26,
+            50,
+            183,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 534
+        },
+        {
+          "index": 4,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/failed/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12327,
+          "bbox": [
+            26,
+            50,
+            183,
+            193
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 541
+        },
+        {
+          "index": 5,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/failed/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12648,
+          "bbox": [
+            25,
+            50,
+            184,
+            193
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 540
+        },
+        {
+          "index": 6,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/failed/06.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12872,
+          "bbox": [
+            24,
+            50,
+            186,
+            193
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 549
+        },
+        {
+          "index": 7,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/failed/07.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12560,
+          "bbox": [
+            29,
+            50,
+            180,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 493
+        }
+      ]
+    },
+    {
+      "state": "waiting",
+      "expected_frames": 6,
+      "actual_frames": 6,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/waiting/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11627,
+          "bbox": [
+            35,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 284
+        },
+        {
+          "index": 1,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/waiting/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11768,
+          "bbox": [
+            34,
+            49,
+            187,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 310
+        },
+        {
+          "index": 2,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/waiting/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12074,
+          "bbox": [
+            34,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 322
+        },
+        {
+          "index": 3,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/waiting/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11702,
+          "bbox": [
+            35,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 296
+        },
+        {
+          "index": 4,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/waiting/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11703,
+          "bbox": [
+            34,
+            49,
+            187,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 308
+        },
+        {
+          "index": 5,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/waiting/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11764,
+          "bbox": [
+            34,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 336
+        }
+      ]
+    },
+    {
+      "state": "running",
+      "expected_frames": 6,
+      "actual_frames": 6,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11930,
+          "bbox": [
+            32,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 473
+        },
+        {
+          "index": 1,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11856,
+          "bbox": [
+            32,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 446
+        },
+        {
+          "index": 2,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11965,
+          "bbox": [
+            32,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 423
+        },
+        {
+          "index": 3,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11988,
+          "bbox": [
+            32,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 532
+        },
+        {
+          "index": 4,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11985,
+          "bbox": [
+            32,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 491
+        },
+        {
+          "index": 5,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/running/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12000,
+          "bbox": [
+            32,
+            49,
+            186,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 454
+        }
+      ]
+    },
+    {
+      "state": "review",
+      "expected_frames": 6,
+      "actual_frames": 6,
+      "extraction_method": "components",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "frames": [
+        {
+          "index": 0,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/review/00.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11627,
+          "bbox": [
+            33,
+            48,
+            183,
+            191
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 345
+        },
+        {
+          "index": 1,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/review/01.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11771,
+          "bbox": [
+            32,
+            48,
+            185,
+            193
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 320
+        },
+        {
+          "index": 2,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/review/02.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 12228,
+          "bbox": [
+            31,
+            48,
+            186,
+            193
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 386
+        },
+        {
+          "index": 3,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/review/03.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11780,
+          "bbox": [
+            32,
+            48,
+            185,
+            192
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 418
+        },
+        {
+          "index": 4,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/review/04.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11756,
+          "bbox": [
+            32,
+            48,
+            185,
+            193
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 335
+        },
+        {
+          "index": 5,
+          "file": "/Users/ghostxmerlin/tab5/starlight/white-cat-signal-openai/frames/review/05.png",
+          "width": 192,
+          "height": 208,
+          "nontransparent_pixels": 11847,
+          "bbox": [
+            32,
+            48,
+            185,
+            191
+          ],
+          "edge_pixels": 0,
+          "chroma_adjacent_pixels": 346
+        }
+      ]
+    }
+  ]
+}

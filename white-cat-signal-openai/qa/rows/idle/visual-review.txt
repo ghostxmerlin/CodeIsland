@@ -1,0 +1,12 @@
+Idle source visual review
+Source: decoded/idle.png
+Dimensions: 2172x724
+Generator: built-in image_gen, grounded with pet reference, canonical identity reference and six-slot idle layout guide.
+
+Observed: exactly six complete cat+signal pairs in one horizontal row. All cats are plump white, sleeping with closed crescent eyes, front paws and wrapped tail. Signals remain screen-right and have red top / green middle / blue bottom, with only blue visibly illuminated. No clipped subject, duplicate signal or extra effects are visible. Background is cyan and component extraction succeeds.
+
+Motion evidence from ordered stills: chest/back rises visibly toward frame 3 and returns; ear/head contours shift gently, frame 4 includes a small tail-end curl variation; frame 6 closely returns to frame 1. Signal remains stationary. This is still-frame visual inspection; parent will inspect motion preview.
+
+Official checks: extract_strip_frames.py --method components --chroma-key #00FFFF returned ok:true. inspect_frames.py --require-components returned ok:true with no errors or warnings. Extracted 192x208 frames 00,02,03,05 were visually inspected.
+
+Limitations: signal-to-cat height appears approximately 1.8–2.0, exceeding requested approximately 1.6; parent notified for acceptance/regeneration decision. Thin cyan edge contamination visible before the planned final single despill pass. No visual claim of final-atlas acceptance.
