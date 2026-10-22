@@ -141,6 +141,9 @@ final class BuddyLink: Identifiable {
     fileprivate(set) var status: ESP32BridgeStatus = .searchingSelected
     fileprivate(set) var lastError: String?
     fileprivate(set) var usesLegacyPairingFallback = false
+    /// Fingerprint channel while this link is paired; `nil` before pairing
+    /// and on legacy firmware.
+    fileprivate(set) var fingerprint: BuddyFingerprintChannel?
 
     var displayName: String { name ?? id.uuidString }
 
@@ -193,6 +196,8 @@ final class BuddyLink: Identifiable {
 
     /// Drop everything tied to the current GATT connection.
     fileprivate func clearConnection() {
+        fingerprint?.connectionDropped()
+        fingerprint = nil
         cancelPairingTimers()
         pendingResponseWrite = nil
         peripheral = nil
@@ -558,6 +563,30 @@ final class ESP32BridgeManager: NSObject {
             guard let frame = link.writeQueue.popNext() else { break }
             peripheral.writeValue(frame.data, for: writeChar, type: .withoutResponse)
         }
+    }
+
+    /// Queue a `0xD0` frame for one paired link; the write queue sends it
+    /// ahead of everything else and never drops it.
+    private func sendFingerprint(_ data: Data, on link: BuddyLink) {
+        guard link.status == .connected, link.writeChar != nil else { return }
+        enqueueWrite(data, priority: .control, on: link)
+    }
+
+    private func startFingerprintChannel(on link: BuddyLink) {
+        link.fingerprint?.connectionDropped()
+        let channel = BuddyFingerprintChannel(linkId: link.id, send: { [weak self, weak link] data in
+            guard let self, let link else { return }
+            self.sendFingerprint(data, on: link)
+        }, schedule: Self.fingerprintSchedule)
+        link.fingerprint = channel
+        channel.start()
+    }
+
+    private static let fingerprintSchedule: BuddyFingerprintSchedule = { delay, action in
+        let timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { _ in
+            Task { @MainActor in action() }
+        }
+        return { timer.invalidate() }
     }
 
     private static let hostIdDefaultsKey = "buddyHostIdentifier"
@@ -1077,8 +1106,8 @@ extension ESP32BridgeManager: CBPeripheralDelegate {
             case .command(let command):
                 Self.log.info("Buddy control event from \(link.displayName): command=\(String(describing: command)) raw=\(command.rawValue)")
                 self.onControlCommand?(command)
-            case .fingerprint:
-                break
+            case .fingerprint(let frame):
+                link.fingerprint?.handle(frame)
             }
         }
     }
@@ -1093,6 +1122,7 @@ extension ESP32BridgeManager: CBPeripheralDelegate {
             link.lastError = nil
             link.usesLegacyPairingFallback = false
             link.status = .connected
+            startFingerprintChannel(on: link)
             onConnected?()
         case .rejected:
             Self.log.error("Pair rejected or not completed by \(link.displayName)")
