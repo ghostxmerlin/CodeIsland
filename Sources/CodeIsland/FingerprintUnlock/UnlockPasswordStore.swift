@@ -56,9 +56,14 @@ enum UnlockPasswordStore {
         }
     }
 
+    /// Looks the item up without reading the secret.
     static func hasPassword() -> Bool {
-        guard var data = try? read() else { return false }
-        data.resetBytes(in: 0..<data.count)
-        return true
+        var item = query
+        item[kSecReturnAttributes as String] = true
+        item[kSecMatchLimit as String] = kSecMatchLimitOne
+        let context = LAContext()
+        context.interactionNotAllowed = true
+        item[kSecUseAuthenticationContext as String] = context
+        return SecItemCopyMatching(item as CFDictionary, nil) == errSecSuccess
     }
 }

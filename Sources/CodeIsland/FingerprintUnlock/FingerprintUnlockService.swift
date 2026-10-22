@@ -27,19 +27,26 @@ final class LiveFingerprintUnlockSystem: FingerprintUnlockSystem {
 }
 
 /// Runs fingerprint unlock while the app is up. The lock state is polled
-/// every 0.25 s only from a screen-lock (or wake) notification until the
-/// screen is unlocked again, so an unlocked Mac pays nothing for it.
+/// only from a screen-lock (or wake) notification until the screen is
+/// unlocked again, so an unlocked Mac pays nothing for it: every 0.25 s
+/// while a round runs or just after the notification, every 1 s otherwise.
 @MainActor
 @Observable
 final class FingerprintUnlockService {
     static let shared = FingerprintUnlockService()
 
-    private static let pollInterval: TimeInterval = 0.25
+    private static let fastPollInterval: TimeInterval = 0.25
+    private static let slowPollInterval: TimeInterval = 1
+    /// The session can still read unlocked for a moment after the lock
+    /// notification; keep polling at least this long before giving up.
+    private static let graceSeconds: TimeInterval = 5
 
     let controller: FingerprintUnlockController
 
     @ObservationIgnored private let system: LiveFingerprintUnlockSystem
     @ObservationIgnored private var timer: Timer?
+    @ObservationIgnored private var timerInterval: TimeInterval = 0
+    @ObservationIgnored private var graceUntil: TimeInterval = 0
     @ObservationIgnored private var observers: [(NotificationCenter, NSObjectProtocol)] = []
     @ObservationIgnored private var enabledObservation: NSKeyValueObservation?
     /// Held strongly so a reconnect's new channel can't reuse its address.
@@ -93,12 +100,7 @@ final class FingerprintUnlockService {
     }
 
     private func startPolling() {
-        guard timer == nil else { return }
-        let timer = Timer(timeInterval: Self.pollInterval, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.poll() }
-        }
-        RunLoop.main.add(timer, forMode: .common)
-        self.timer = timer
+        graceUntil = system.now() + Self.graceSeconds
         poll()
     }
 
@@ -108,10 +110,28 @@ final class FingerprintUnlockService {
             if lastDevice != nil { controller.deviceDidReconnect() }
             lastDevice = device
         }
-        controller.tick()
-        if (!system.isEnabled || system.lockState() == false) && !controller.isBusy {
+        let locked = controller.tick()
+        let inGrace = system.now() < graceUntil
+        if controller.isBusy || inGrace {
+            schedule(every: Self.fastPollInterval)
+        } else if system.isEnabled && locked == true {
+            schedule(every: Self.slowPollInterval)
+        } else {
+            // Unlocked, unknown (e.g. fast user switching) or turned off:
+            // the next lock or wake notification starts polling again.
             timer?.invalidate()
             timer = nil
         }
+    }
+
+    private func schedule(every interval: TimeInterval) {
+        guard timer == nil || timerInterval != interval else { return }
+        timer?.invalidate()
+        let timer = Timer(timeInterval: interval, repeats: true) { [weak self] _ in
+            Task { @MainActor in self?.poll() }
+        }
+        RunLoop.main.add(timer, forMode: .common)
+        self.timer = timer
+        timerInterval = interval
     }
 }

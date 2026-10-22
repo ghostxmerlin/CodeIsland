@@ -91,8 +91,10 @@ final class FingerprintUnlockController {
 
     // MARK: - Driving
 
-    /// Call every 0.25 s while the screen may be locked.
-    func tick() {
+    /// Call periodically while the screen may be locked. Returns the lock
+    /// state it acted on.
+    @discardableResult
+    func tick() -> Bool? {
         let locked = system.lockState()
         if let deadline = submitDeadline {
             if locked == false {
@@ -105,9 +107,9 @@ final class FingerprintUnlockController {
                 phase = .stopped(.notConfirmed)
                 Self.log.info("Screen still locked after submitting; not retrying")
             }
-            return
+            return locked
         }
-        guard system.isEnabled else { return }
+        guard system.isEnabled else { return locked }
 
         if locked == false {
             armedThisLock = false
@@ -129,6 +131,7 @@ final class FingerprintUnlockController {
         case .fire:
             submit()
         }
+        return locked
     }
 
     func screenDidWake() {
@@ -153,8 +156,9 @@ final class FingerprintUnlockController {
 
     // MARK: - Round
 
+    /// Cheapest first: while Atom isn't ready, the keychain isn't touched.
     private func preconditionsMet() -> Bool {
-        system.isAccessibilityTrusted && system.hasPassword() && device()?.canUnlock == true
+        device()?.canUnlock == true && system.isAccessibilityTrusted && system.hasPassword()
     }
 
     private func challenge() {
@@ -171,9 +175,19 @@ final class FingerprintUnlockController {
         Self.log.info("Screen locked; sending an unlock challenge to Atom")
         target.startUnlock(nonce: nonce, onEvent: { [weak self] result in
             self?.handle(result, token: token)
-        }, completion: { [weak self] result in
-            guard let self, self.round?.token == token, case .failure(let error) = result else { return }
-            self.round?.open = false
+        }, completion: { [weak self, weak target] result in
+            guard let self else { return }
+            guard self.round?.token == token else {
+                // The round ended while the challenge was still going out.
+                // CANCEL may have overtaken its last frame, which then started
+                // a round on Atom anyway; stop that one too.
+                if Self.mayHaveStartedOnDevice(result) { target?.cancel() }
+                return
+            }
+            guard case .failure(let error) = result else { return }
+            // A timed-out reply may only be late: keep the round open so
+            // ending it sends CANCEL. A refusal or a dropped link started nothing.
+            self.round?.open = error == .timeout
             self.gate.fail()
             self.endRound(Self.reason(for: error))
         })
@@ -249,6 +263,13 @@ final class FingerprintUnlockController {
         gate.cancel()
         verified = false
         armedThisLock = false
+    }
+
+    private static func mayHaveStartedOnDevice(_ result: Result<UInt8, BuddyFingerprintError>) -> Bool {
+        switch result {
+        case .success, .failure(.timeout): return true
+        case .failure: return false
+        }
     }
 
     private static func reason(for error: BuddyFingerprintError) -> StopReason {

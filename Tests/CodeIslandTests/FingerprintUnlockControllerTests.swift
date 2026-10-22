@@ -11,9 +11,13 @@ private final class FakeSystem: FingerprintUnlockSystem {
     var typeError: Error?
     var typed: [Data] = []
     var clock: TimeInterval = 0
+    var passwordChecks = 0
 
     func lockState() -> Bool? { locked }
-    func hasPassword() -> Bool { password != nil }
+    func hasPassword() -> Bool {
+        passwordChecks += 1
+        return password != nil
+    }
     func readPassword() throws -> Data {
         guard let password else { throw UnlockPasswordStoreError.missing }
         return password
@@ -275,5 +279,66 @@ final class FingerprintUnlockControllerTests: XCTestCase {
         XCTAssertEqual(device.cancels, 0, "Atom already ended this round")
         device.validTag()
         XCTAssertTrue(system.typed.isEmpty)
+    }
+
+    func testKeychainIsNotTouchedWhileAtomIsNotReady() {
+        available = false
+        system.locked = true
+        for _ in 0..<8 { controller.tick() }
+        device.canUnlock = false
+        available = true
+        for _ in 0..<8 { controller.tick() }
+        XCTAssertEqual(system.passwordChecks, 0)
+    }
+}
+
+/// The controller against a real channel, so the channel's request line is
+/// in play: CANCEL can overtake a challenge that hasn't fully gone out.
+@MainActor
+final class FingerprintUnlockChannelIntegrationTests: XCTestCase {
+    private var system: FakeSystem!
+    private var h: FingerprintChannelHarness!
+    private var controller: FingerprintUnlockController!
+
+    override func setUp() async throws {
+        try await super.setUp()
+        system = FakeSystem()
+        h = FingerprintChannelHarness()
+        h.startSupported()
+        controller = FingerprintUnlockController(system: system) { [unowned self] in h.channel }
+    }
+
+    private var ops: [UInt8] { h.sent.map { $0[1] } }
+
+    func testRoundStoppedBeforeSecondChunkIsCancelledAfterIt() {
+        system.locked = true
+        controller.tick()
+        XCTAssertEqual(ops, [0x43])
+        let id = h.lastReqId
+
+        system.locked = false                      // unlocked another way mid-challenge
+        controller.tick()
+        h.receive(String(format: "d0 c3 %02x 00 10", id))   // frame 2 goes out after the CANCEL
+        h.receive(String(format: "d0 c3 %02x 00", id))      // Atom now waits for a finger
+
+        XCTAssertEqual(ops.last, 0x22, "Atom must be told to stop the round frame 2 started")
+        XCTAssertGreaterThan(ops.lastIndex(of: 0x22)!, ops.lastIndex(of: 0x43)!)
+    }
+
+    func testChallengeReplyTimeoutSendsCancel() {
+        system.locked = true
+        controller.tick()
+        h.clock.fireNext()                         // 8 s without a reply
+        XCTAssertEqual(ops.last, 0x22)
+        XCTAssertEqual(controller.phase, .stopped(.deviceLost))
+    }
+
+    func testRefusedChallengeSendsNoCancel() {
+        system.locked = true
+        controller.tick()
+        let id = h.lastReqId
+        h.receive(String(format: "d0 c3 %02x 00 10", id))
+        h.receive(String(format: "d0 c3 %02x 10", id))      // NoBinding: no round started
+        XCTAssertFalse(ops.contains(0x22))
     }
 }
