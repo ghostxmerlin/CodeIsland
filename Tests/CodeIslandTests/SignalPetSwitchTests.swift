@@ -2,7 +2,7 @@ import XCTest
 @testable import CodeIsland
 
 /// Settings → General → Desktop Pet shows or hides the signal-cat while the
-/// app runs; it is on unless the user turned it off.
+/// app runs; it is off until the user turns it on.
 @MainActor
 final class SignalPetSwitchTests: XCTestCase {
     private final class FakePet: SignalPetPresenting {
@@ -39,21 +39,21 @@ final class SignalPetSwitchTests: XCTestCase {
         for _ in 0..<20 { await Task.yield() }
     }
 
-    func testPetIsOnByDefault() {
-        XCTAssertTrue(SettingsDefaults.showSignalPet)
-        let toggle = makeSwitch()
-        toggle.start()
-        XCTAssertEqual(made.count, 1)
-        XCTAssertTrue(made[0].shown)
-    }
-
-    func testTurnedOffAtLaunchShowsNothing() {
-        defaults.set(false, forKey: SettingsKey.showSignalPet)
+    func testPetIsOffByDefault() {
+        XCTAssertFalse(SettingsDefaults.showSignalPet)
         makeSwitch().start()
         XCTAssertTrue(made.isEmpty)
     }
 
+    func testTurnedOnAtLaunchShowsThePet() {
+        defaults.set(true, forKey: SettingsKey.showSignalPet)
+        makeSwitch().start()
+        XCTAssertEqual(made.count, 1)
+        XCTAssertTrue(made[0].shown)
+    }
+
     func testTogglingWhileRunningHidesAndBringsThePetBack() async {
+        defaults.set(true, forKey: SettingsKey.showSignalPet)
         let toggle = makeSwitch()
         toggle.start()
 

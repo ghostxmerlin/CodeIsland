@@ -179,7 +179,7 @@ struct SettingsDefaults {
     static let displayChoice = "auto"
     static let allowHorizontalDrag = false
     static let avoidMenuBarIcons = true  // #219: dodge Bartender & friends on external screens
-    static let showSignalPet = true
+    static let showSignalPet = false
     static let panelHorizontalOffset = 0.0
     static let hideInFullscreen = true
     static let hideWhenNoSession = false
