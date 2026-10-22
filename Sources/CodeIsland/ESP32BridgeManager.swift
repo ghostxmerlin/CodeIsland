@@ -1077,6 +1077,8 @@ extension ESP32BridgeManager: CBPeripheralDelegate {
             case .command(let command):
                 Self.log.info("Buddy control event from \(link.displayName): command=\(String(describing: command)) raw=\(command.rawValue)")
                 self.onControlCommand?(command)
+            case .fingerprint:
+                break
             }
         }
     }

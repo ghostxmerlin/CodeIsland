@@ -137,9 +137,15 @@ public enum BuddyUplinkEvent: Equatable, Sendable {
     case focus(MascotID)
     case command(BuddyControlCommand)
     case pairResponse(BuddyPairResponse)
+    case fingerprint(BuddyFingerprintFrame)
 
     public init?(payload: Data) {
         guard let first = payload.first else { return nil }
+        if first == ESP32Protocol.fingerprintMarker {
+            guard let frame = BuddyFingerprintFrame(payload: payload) else { return nil }
+            self = .fingerprint(frame)
+            return
+        }
         // Pair responses (0xE0–0xE2) are checked first. This is safe because
         // MascotID raw values are 0..15, well below the 0xE0 reserved range.
         // If MascotID ever grows past 0xDF this ordering MUST be revisited.
