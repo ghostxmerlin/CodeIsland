@@ -33,6 +33,7 @@ enum SettingsKey {
     static let allowHorizontalDrag = "allowHorizontalDrag"
     static let avoidMenuBarIcons = "avoidMenuBarIcons"
     static let showSignalPet = "showSignalPet"             // desktop signal-cat window
+    static let fingerprintUnlockEnabled = "buddyFingerprintUnlockEnabled"  // phase-1 test feature, see FingerprintUnlockService
     static let panelHorizontalOffset = "panelHorizontalOffset"
 
     // General - Behavior
@@ -180,6 +181,7 @@ struct SettingsDefaults {
     static let allowHorizontalDrag = false
     static let avoidMenuBarIcons = true  // #219: dodge Bartender & friends on external screens
     static let showSignalPet = false
+    static let fingerprintUnlockEnabled = false
     static let panelHorizontalOffset = 0.0
     static let hideInFullscreen = true
     static let hideWhenNoSession = false
@@ -287,6 +289,7 @@ class SettingsManager {
             SettingsKey.allowHorizontalDrag: SettingsDefaults.allowHorizontalDrag,
             SettingsKey.avoidMenuBarIcons: SettingsDefaults.avoidMenuBarIcons,
             SettingsKey.showSignalPet: SettingsDefaults.showSignalPet,
+            SettingsKey.fingerprintUnlockEnabled: SettingsDefaults.fingerprintUnlockEnabled,
             SettingsKey.panelHorizontalOffset: SettingsDefaults.panelHorizontalOffset,
             SettingsKey.hideInFullscreen: SettingsDefaults.hideInFullscreen,
             SettingsKey.hideWhenNoSession: SettingsDefaults.hideWhenNoSession,

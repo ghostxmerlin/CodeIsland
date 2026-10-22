@@ -96,6 +96,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             // id on the wire, so it keeps acting on the head of the queue.
             appState.handleBuddyControlCommand(command)
         }
+        FingerprintUnlockService.shared.start()
         AppleCompanionPublisher.shared.attach(appState)
         AppleCompanionPublisher.shared.onFocusRequest = { [weak appState] mascot in
             guard let appState else { return }

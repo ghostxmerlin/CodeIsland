@@ -1973,6 +1973,7 @@ private struct BuddyPage: View {
     @AppStorage(SettingsKey.buddyScreenBrightnessPercent) private var brightness: Double = SettingsDefaults.buddyScreenBrightnessPercent
     @AppStorage(SettingsKey.buddyScreenOrientation) private var screenOrientation: String = SettingsDefaults.buddyScreenOrientation
     @AppStorage(SettingsKey.appleCompanionEnabled) private var appleCompanionEnabled: Bool = SettingsDefaults.appleCompanionEnabled
+    @AppStorage(SettingsKey.fingerprintUnlockEnabled) private var fingerprintUnlockEnabled = SettingsDefaults.fingerprintUnlockEnabled
     @AppStorage(SettingsKey.appleCompanionHeartbeatSeconds) private var appleCompanionHeartbeat: Double = SettingsDefaults.appleCompanionHeartbeatSeconds
     @ObservedObject private var appleCompanion = AppleCompanionPublisher.shared
     @State private var refreshTick = 0
@@ -2138,6 +2139,11 @@ private struct BuddyPage: View {
                     BuddyFingerprintSection(channel: channel, buddyName: link.displayName)
                         .id(ObjectIdentifier(channel))
                 }
+            }
+
+            // Stays visible while on, so it can be turned off with Atom away.
+            if !bridge.fingerprintChannels.isEmpty || fingerprintUnlockEnabled {
+                FingerprintUnlockSection()
             }
 
             Section(l10n["buddy_select_section"]) {
