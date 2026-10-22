@@ -621,6 +621,8 @@ final class L10n: ObservableObject {
         "reply_failed_placeholder": "Reply failed",
         "reply_aborted_placeholder": "Reply interrupted",
         "hosted_by_harness_hint": "Running under %@",
+        "fp_approve_hint_finger": "Approve with your fingerprint on Atom (its button can only deny)",
+        "fp_approve_hint_mac": "No fingerprint ready on Atom — approve on the Mac",
     ]
 
     private static let de: [String: String] = en.merging([
@@ -1201,6 +1203,8 @@ final class L10n: ObservableObject {
         "reply_failed_placeholder": "Antwort fehlgeschlagen",
         "reply_aborted_placeholder": "Antwort abgebrochen",
         "hosted_by_harness_hint": "Läuft unter %@",
+        "fp_approve_hint_finger": "Mit dem Fingerabdruck auf Atom freigeben (die Taste kann nur ablehnen)",
+        "fp_approve_hint_mac": "Kein Fingerabdruck auf Atom bereit – auf dem Mac freigeben",
     ]) { _, localized in localized }
 
     private static let zh: [String: String] = [
@@ -1781,6 +1785,8 @@ final class L10n: ObservableObject {
         "reply_failed_placeholder": "回复失败",
         "reply_aborted_placeholder": "回复已中断",
         "hosted_by_harness_hint": "运行在 %@ 中",
+        "fp_approve_hint_finger": "在 Atom 上按指纹批准（按键只能拒绝）",
+        "fp_approve_hint_mac": "Atom 上没有可用的指纹，请在 Mac 上批准",
     ]
 
     private static let zhHant: [String: String] = [
@@ -2361,6 +2367,8 @@ final class L10n: ObservableObject {
         "reply_failed_placeholder": "回覆失敗",
         "reply_aborted_placeholder": "回覆已中斷",
         "hosted_by_harness_hint": "執行於 %@ 中",
+        "fp_approve_hint_finger": "在 Atom 上按指紋核准（按鍵只能拒絕）",
+        "fp_approve_hint_mac": "Atom 上沒有可用的指紋，請在 Mac 上核准",
     ]
 
     private static let ja: [String: String] = [
@@ -2941,6 +2949,8 @@ final class L10n: ObservableObject {
         "reply_failed_placeholder": "返信失敗",
         "reply_aborted_placeholder": "返信中断",
         "hosted_by_harness_hint": "%@ 上で実行中",
+        "fp_approve_hint_finger": "Atom で指紋をタッチして承認（ボタンは拒否のみ）",
+        "fp_approve_hint_mac": "Atom に使える指紋がありません。Mac で承認してください",
     ]
 
     private static let ko: [String: String] = [
@@ -3521,6 +3531,8 @@ final class L10n: ObservableObject {
         "reply_failed_placeholder": "답변 실패",
         "reply_aborted_placeholder": "답변 중단",
         "hosted_by_harness_hint": "%@에서 실행 중",
+        "fp_approve_hint_finger": "Atom에서 지문으로 승인하세요 (버튼은 거부만 가능)",
+        "fp_approve_hint_mac": "Atom에 사용할 수 있는 지문이 없습니다. Mac에서 승인하세요",
     ]
 
     private static let tr: [String: String] = [
@@ -4101,5 +4113,7 @@ final class L10n: ObservableObject {
         "reply_failed_placeholder": "Yanıt başarısız",
         "reply_aborted_placeholder": "Yanıt kesildi",
         "hosted_by_harness_hint": "%@ altında çalışıyor",
+        "fp_approve_hint_finger": "Atom'da parmak izinle onayla (düğme yalnızca reddeder)",
+        "fp_approve_hint_mac": "Atom'da hazır parmak izi yok — Mac'te onayla",
     ]
 }

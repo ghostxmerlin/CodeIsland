@@ -257,6 +257,20 @@ final class ESP32BridgeManager: NSObject {
         links.contains { $0.usesLegacyPairingFallback }
     }
 
+    /// Fingerprint channels of connected Buddies that support them.
+    var fingerprintChannels: [BuddyFingerprintChannel] {
+        links.compactMap(\.fingerprint).filter { $0.support == .supported }
+    }
+
+    var fingerprintApprovalHint: FingerprintApprovalHint? {
+        FingerprintApprovalHint.resolve(fingerprintChannels.map(\.status))
+    }
+
+    /// Re-read STATUS so the approval hint notices a sensor unplugged mid-wait.
+    func refreshFingerprintStatus() {
+        fingerprintChannels.forEach { $0.refreshStatus() }
+    }
+
     func isSelected(_ buddyId: UUID) -> Bool {
         links.contains { $0.id == buddyId }
     }

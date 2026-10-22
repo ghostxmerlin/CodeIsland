@@ -123,6 +123,7 @@ final class ESP32StatePublisher {
             if (currentStatus == .waitingApproval || currentStatus == .waitingQuestion)
                 && prev != .waitingApproval && prev != .waitingQuestion {
                 bridge.sendEvent(.approval)
+                bridge.refreshFingerprintStatus()
             }
         }
         lastSentDisplay = SentDisplayState(identity: displayIdentity, status: currentStatus)

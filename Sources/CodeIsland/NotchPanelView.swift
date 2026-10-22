@@ -2054,6 +2054,12 @@ private struct ApprovalBar: View {
                 .onTapGesture { handleCardClick() }
             }
 
+            if let hint = ESP32BridgeManager.shared.fingerprintApprovalHint {
+                Label(L10n.shared[hint.l10nKey], systemImage: "touchid")
+                    .font(.system(size: type.link))
+                    .foregroundStyle(Color.white.opacity(0.6))
+            }
+
             actionRow(type)
         }
         .padding(.horizontal, 14)
