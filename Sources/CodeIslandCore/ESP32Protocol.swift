@@ -82,6 +82,8 @@ public enum ESP32Protocol {
     public static let eventFrameMarker: UInt8 = 0xF7
     public static let timeHintFrameMarker: UInt8 = 0xF6
     public static let toolHistoryFrameMarker: UInt8 = 0xF5
+    /// First byte of every fingerprint-channel frame, in both directions.
+    public static let fingerprintMarker: UInt8 = 0xD0
     public static let maxToolHistoryNameBytes = 11
     public static let approveCurrentPermissionMarker: UInt8 = 0xF0
     public static let denyCurrentPermissionMarker: UInt8 = 0xF1

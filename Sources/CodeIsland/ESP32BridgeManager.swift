@@ -5,62 +5,6 @@ import os
 import Security
 import CodeIslandCore
 
-enum BuddyWritePriority: Int, Comparable {
-    case auxiliary = 0
-    case normal = 1
-    case primary = 2
-    case control = 3
-
-    static func < (lhs: BuddyWritePriority, rhs: BuddyWritePriority) -> Bool {
-        lhs.rawValue < rhs.rawValue
-    }
-}
-
-struct BuddyQueuedWrite: Equatable {
-    let data: Data
-    let priority: BuddyWritePriority
-}
-
-struct BuddyWriteQueue {
-    private let capacity: Int
-    private var frames: [BuddyQueuedWrite] = []
-
-    init(capacity: Int) {
-        self.capacity = max(1, capacity)
-    }
-
-    var count: Int { frames.count }
-    var isEmpty: Bool { frames.isEmpty }
-    var contents: [BuddyQueuedWrite] { frames }
-
-    mutating func append(_ data: Data, priority: BuddyWritePriority) -> Int {
-        frames.append(BuddyQueuedWrite(data: data, priority: priority))
-        var dropped = 0
-        while frames.count > capacity {
-            frames.remove(at: lowestPriorityOldestIndex())
-            dropped += 1
-        }
-        return dropped
-    }
-
-    mutating func popFirst() -> BuddyQueuedWrite? {
-        guard !frames.isEmpty else { return nil }
-        return frames.removeFirst()
-    }
-
-    mutating func removeAll(keepingCapacity keepCapacity: Bool = false) {
-        frames.removeAll(keepingCapacity: keepCapacity)
-    }
-
-    private func lowestPriorityOldestIndex() -> Int {
-        var result = frames.startIndex
-        for index in frames.indices.dropFirst() where frames[index].priority < frames[result].priority {
-            result = index
-        }
-        return result
-    }
-}
-
 /// Connection lifecycle state for the Buddy Bluetooth bridge. Each selected
 /// Buddy has its own link state; the bridge-level `status` folds them together.
 enum ESP32BridgeStatus: Equatable {
@@ -611,7 +555,7 @@ final class ESP32BridgeManager: NSObject {
     private func drainPendingWrites(on link: BuddyLink) {
         guard let peripheral = link.peripheral, let writeChar = link.writeChar, link.status == .connected else { return }
         while !link.writeQueue.isEmpty, peripheral.canSendWriteWithoutResponse {
-            guard let frame = link.writeQueue.popFirst() else { break }
+            guard let frame = link.writeQueue.popNext() else { break }
             peripheral.writeValue(frame.data, for: writeChar, type: .withoutResponse)
         }
     }
