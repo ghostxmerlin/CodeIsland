@@ -2133,6 +2133,13 @@ private struct BuddyPage: View {
                 }
             }
 
+            ForEach(bridge.links.filter { $0.fingerprint?.support == .supported }) { link in
+                if let channel = link.fingerprint {
+                    BuddyFingerprintSection(channel: channel, buddyName: link.displayName)
+                        .id(ObjectIdentifier(channel))
+                }
+            }
+
             Section(l10n["buddy_select_section"]) {
                 Text(l10n["buddy_select_multi_hint"])
                     .font(.caption)
