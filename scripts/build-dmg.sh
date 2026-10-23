@@ -19,10 +19,12 @@ fi
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BUILD_DIR="$REPO_ROOT/.build"
 RELEASE_DIR="$BUILD_DIR/release"
+APP_NAME="AISM"              # bundle, executable and DMG name the user sees
+PRODUCT_NAME="CodeIsland"    # SwiftPM executable product
 STAGING_DIR="$BUILD_DIR/dmg-staging"
-APP_DIR="$STAGING_DIR/CodeIsland.app"
+APP_DIR="$STAGING_DIR/$APP_NAME.app"
 CONTENTS_DIR="$APP_DIR/Contents"
-OUTPUT_DMG="$BUILD_DIR/CodeIsland.dmg"
+OUTPUT_DMG="$BUILD_DIR/$APP_NAME.dmg"
 BUILD_ARCH="${BUILD_ARCH:-universal}"
 
 case "$BUILD_ARCH" in
@@ -34,22 +36,44 @@ case "$BUILD_ARCH" in
         ;;
 esac
 
-echo "==> Building CodeIsland ${VERSION} (${BUILD_ARCH})"
+echo "==> Building $APP_NAME ${VERSION} (${BUILD_ARCH})"
 
 cd "$REPO_ROOT"
+
+# Where SwiftPM writes products depends on its build system: the native one
+# uses .build/<triple>/release, swiftbuild uses .build/out/Products/Release for
+# every arch. Ask SwiftPM rather than guess — a guessed path can still hold an
+# old build and silently ship a stale binary — and stash each arch's products
+# before the next arch's build overwrites them.
+PRODUCTS_DIR="$BUILD_DIR/dmg-products"
+rm -rf "$PRODUCTS_DIR"
+
+build_arch() {
+    local arch="$1"
+    local bin_dir
+    swift build -c release --arch "$arch"
+    bin_dir="$(swift build -c release --arch "$arch" --show-bin-path)"
+    mkdir -p "$PRODUCTS_DIR/$arch"
+    cp "$bin_dir/$PRODUCT_NAME" "$bin_dir/codeisland-bridge" "$PRODUCTS_DIR/$arch/"
+    for bundle in "$bin_dir"/*.bundle; do
+        [ -e "$bundle" ] || continue
+        cp -R "$bundle" "$PRODUCTS_DIR/$arch/"
+    done
+}
+
 case "$BUILD_ARCH" in
     universal)
         # Build for both architectures
-        swift build -c release --arch arm64
-        swift build -c release --arch x86_64
+        build_arch arm64
+        build_arch x86_64
         ;;
     arm64)
-        swift build -c release --arch arm64
+        build_arch arm64
         ;;
 esac
 
-ARM_DIR="$BUILD_DIR/arm64-apple-macosx/release"
-X86_DIR="$BUILD_DIR/x86_64-apple-macosx/release"
+ARM_DIR="$PRODUCTS_DIR/arm64"
+X86_DIR="$PRODUCTS_DIR/x86_64"
 
 echo "==> Assembling .app bundle"
 
@@ -62,17 +86,17 @@ mkdir -p "$CONTENTS_DIR/Resources"
 case "$BUILD_ARCH" in
     universal)
         # Create universal binaries
-        lipo -create "$ARM_DIR/CodeIsland" "$X86_DIR/CodeIsland" \
-             -output "$CONTENTS_DIR/MacOS/CodeIsland"
+        lipo -create "$ARM_DIR/$PRODUCT_NAME" "$X86_DIR/$PRODUCT_NAME" \
+             -output "$CONTENTS_DIR/MacOS/$APP_NAME"
         lipo -create "$ARM_DIR/codeisland-bridge" "$X86_DIR/codeisland-bridge" \
              -output "$CONTENTS_DIR/Helpers/codeisland-bridge"
         ;;
     arm64)
-        cp "$ARM_DIR/CodeIsland" "$CONTENTS_DIR/MacOS/CodeIsland"
+        cp "$ARM_DIR/$PRODUCT_NAME" "$CONTENTS_DIR/MacOS/$APP_NAME"
         cp "$ARM_DIR/codeisland-bridge" "$CONTENTS_DIR/Helpers/codeisland-bridge"
         ;;
 esac
-chmod +x "$CONTENTS_DIR/MacOS/CodeIsland" "$CONTENTS_DIR/Helpers/codeisland-bridge"
+chmod +x "$CONTENTS_DIR/MacOS/$APP_NAME" "$CONTENTS_DIR/Helpers/codeisland-bridge"
 
 # Write Info.plist (use the root Info.plist as base, update version)
 CURRENT_VER=$(defaults read "$REPO_ROOT/Info.plist" CFBundleShortVersionString)
@@ -109,12 +133,16 @@ fi
 # Copy SPM resource bundles into Contents/Resources/ — putting them at the .app
 # root breaks Developer ID signing with "unsealed contents present in the bundle
 # root". Bundle.module already checks resourceURL, so this layout loads fine.
-for bundle in "$BUILD_DIR"/*/release/*.bundle; do
+for bundle in "$ARM_DIR"/*.bundle; do
     if [ -e "$bundle" ]; then
         cp -R "$bundle" "$CONTENTS_DIR/Resources/"
         break
     fi
 done
+if ! ls "$CONTENTS_DIR/Resources/"*.bundle >/dev/null 2>&1; then
+    echo "ERROR: no SwiftPM resource bundle found in $ARM_DIR" >&2
+    exit 1
+fi
 
 # ---------------------------------------------------------------------------
 # Embed Sparkle.framework. The default release build keeps Sparkle universal;
@@ -147,8 +175,8 @@ echo "==> Embedded Sparkle.framework from $SPARKLE_SRC"
 # /Frameworks explicitly. Changing the load commands invalidates any prior
 # signature — we re-sign below.
 install_name_tool -add_rpath "@executable_path/../Frameworks" \
-    "$CONTENTS_DIR/MacOS/CodeIsland"
-echo "==> Added @executable_path/../Frameworks rpath to CodeIsland binary"
+    "$CONTENTS_DIR/MacOS/$APP_NAME"
+echo "==> Added @executable_path/../Frameworks rpath to $APP_NAME binary"
 
 echo "==> App bundle assembled at $APP_DIR"
 
@@ -246,12 +274,12 @@ rm -f "$OUTPUT_DMG"
 
 if command -v create-dmg >/dev/null 2>&1; then
     create-dmg \
-        --volname "CodeIsland ${VERSION}" \
+        --volname "$APP_NAME ${VERSION}" \
         --window-pos 200 120 \
         --window-size 600 400 \
         --icon-size 100 \
-        --icon "CodeIsland.app" 175 190 \
-        --hide-extension "CodeIsland.app" \
+        --icon "$APP_NAME.app" 175 190 \
+        --hide-extension "$APP_NAME.app" \
         --app-drop-link 425 190 \
         --no-internet-enable \
         --sandbox-safe \
@@ -261,7 +289,7 @@ else
     echo "==> create-dmg not found — using hdiutil fallback"
     ln -sfn /Applications "$STAGING_DIR/Applications"
     hdiutil create \
-        -volname "CodeIsland ${VERSION}" \
+        -volname "$APP_NAME ${VERSION}" \
         -srcfolder "$STAGING_DIR" \
         -format UDZO \
         -ov \

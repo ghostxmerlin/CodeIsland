@@ -139,26 +139,26 @@ jobs:
 
       - name: Verify ARM64 app binary
         run: |
-          APP_ARCHS="$(lipo -archs .build/dmg-staging/CodeIsland.app/Contents/MacOS/CodeIsland)"
-          HELPER_ARCHS="$(lipo -archs .build/dmg-staging/CodeIsland.app/Contents/Helpers/codeisland-bridge)"
-          SPARKLE_ARCHS="$(lipo -archs .build/dmg-staging/CodeIsland.app/Contents/Frameworks/Sparkle.framework/Sparkle)"
+          APP_ARCHS="$(lipo -archs .build/dmg-staging/AISM.app/Contents/MacOS/AISM)"
+          HELPER_ARCHS="$(lipo -archs .build/dmg-staging/AISM.app/Contents/Helpers/codeisland-bridge)"
+          SPARKLE_ARCHS="$(lipo -archs .build/dmg-staging/AISM.app/Contents/Frameworks/Sparkle.framework/Sparkle)"
           test "$APP_ARCHS" = "arm64"
           test "$HELPER_ARCHS" = "arm64"
           test "$SPARKLE_ARCHS" = "arm64"
-          test -s .build/dmg-staging/CodeIsland.app/Contents/Resources/AppIcon.icns
-          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIconFile' .build/dmg-staging/CodeIsland.app/Contents/Info.plist)" = "AppIcon"
-          codesign --verify --deep --strict --verbose=2 .build/dmg-staging/CodeIsland.app
-          ls -lh .build/CodeIsland.dmg
+          test -s .build/dmg-staging/AISM.app/Contents/Resources/AppIcon.icns
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIconFile' .build/dmg-staging/AISM.app/Contents/Info.plist)" = "AppIcon"
+          codesign --verify --deep --strict --verbose=2 .build/dmg-staging/AISM.app
+          ls -lh .build/AISM.dmg
 
       - name: Verify notarized app launch policy
         if: ${{ inputs.sign_and_notarize }}
         run: |
-          spctl --assess --type execute --verbose=4 .build/dmg-staging/CodeIsland.app
-          xcrun stapler validate .build/CodeIsland.dmg
+          spctl --assess --type execute --verbose=4 .build/dmg-staging/AISM.app
+          xcrun stapler validate .build/AISM.dmg
 
       - name: Upload DMG artifact
         uses: actions/upload-artifact@v4
         with:
-          name: CodeIsland-macos-arm64-dmg
-          path: .build/CodeIsland.dmg
+          name: AISM-macos-arm64-dmg
+          path: .build/AISM.dmg
           if-no-files-found: error
