@@ -27,6 +27,17 @@ let package = Package(
                 .copy("Resources")
             ]
         ),
+        // 美玲输入法 (luna-work spec 2026-10-24-meiling-design §6.1): bundled by scripts/build-meiling-ime.sh.
+        .executableTarget(
+            name: "MeilingInputMethod",
+            path: "Sources/MeilingInputMethod",
+            exclude: ["Info.plist"]
+        ),
+        .executableTarget(
+            name: "meiling-sim",
+            dependencies: ["CodeIslandCore"],
+            path: "Sources/MeilingSim"
+        ),
         .executableTarget(
             name: "codeisland-bridge",
             dependencies: ["CodeIslandCore"],
@@ -41,7 +52,8 @@ let package = Package(
         .testTarget(
             name: "CodeIslandCoreTests",
             dependencies: ["CodeIslandCore", "TestDefaultsReset"],
-            path: "Tests/CodeIslandCoreTests"
+            path: "Tests/CodeIslandCoreTests",
+            resources: [.copy("Fixtures")]
         ),
         .testTarget(
             name: "CodeIslandTests",

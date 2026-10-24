@@ -96,6 +96,11 @@ final class StatusItemController: NSObject {
         menu.addItem(settingsItem)
 
         menu.addItem(.separator())
+        let meiling = NSMenuItem(title: "美玲", action: nil, keyEquivalent: "")
+        meiling.submenu = MeilingMenu.shared.menu
+        menu.addItem(meiling)
+
+        menu.addItem(.separator())
 
         let quitItem = NSMenuItem(
             title: L10n.shared["quit"],

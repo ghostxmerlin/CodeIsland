@@ -131,6 +131,10 @@ build_mac() {
         fi
     done
 
+    # 美玲输入法 (scripts/build-meiling-ime.sh), installed into ~/Library/Input Methods from the 美玲 menu.
+    ./scripts/build-meiling-ime.sh
+    cp -R ".build/release/MeilingInputMethod.app" "$APP_BUNDLE/Contents/Resources/"
+
     ENTITLEMENTS="CodeIsland.entitlements"
 
     # Use SIGN_ID env var, or auto-detect: prefer "Developer ID Application" for distribution,
@@ -147,6 +151,7 @@ build_mac() {
     fi
 
     echo "Code signing ($SIGN_ID)..."
+    codesign --force --sign "$SIGN_ID" "$APP_BUNDLE/Contents/Resources/MeilingInputMethod.app"
     # Sign embedded frameworks first (inside-out).
     SPARKLE_FW="$APP_BUNDLE/Contents/Frameworks/Sparkle.framework"
     # Sign nested helpers inside Sparkle before the framework itself.
