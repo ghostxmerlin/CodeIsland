@@ -15,6 +15,7 @@ enum SettingsPage: String, Identifiable, Hashable {
     case remote
     case hooks
     case buddy
+    case meyrin
     case about
 
     var id: String { rawValue }
@@ -30,6 +31,7 @@ enum SettingsPage: String, Identifiable, Hashable {
         case .remote: return "network"
         case .hooks: return "link.circle.fill"
         case .buddy: return "dot.radiowaves.left.and.right"
+        case .meyrin: return "waveform"
         case .about: return "info.circle.fill"
         }
     }
@@ -45,6 +47,7 @@ enum SettingsPage: String, Identifiable, Hashable {
         case .remote: return .mint
         case .hooks: return .purple
         case .buddy: return .red
+        case .meyrin: return .teal
         case .about: return .cyan
         }
     }
@@ -57,7 +60,7 @@ private struct SidebarGroup: Hashable {
 
 private let sidebarGroups: [SidebarGroup] = [
     SidebarGroup(title: nil, pages: [.general, .behavior, .appearance, .mascots, .sound, .shortcuts]),
-    SidebarGroup(title: AppBrand.name, pages: [.remote, .hooks, .buddy, .about]),
+    SidebarGroup(title: AppBrand.name, pages: [.remote, .hooks, .buddy, .meyrin, .about]),
 ]
 
 // MARK: - Main View
@@ -104,6 +107,7 @@ struct SettingsView: View {
                 case .remote: RemoteHostsPage()
                 case .hooks: HooksPage(appState: appState)
                 case .buddy: BuddyPage()
+                case .meyrin: MeilingSettingsPage()
                 case .about: AboutPage()
                 }
             }
@@ -308,7 +312,7 @@ private struct SidebarRow: View {
 
     var body: some View {
         Label {
-            Text(l10n[page.rawValue])
+            Text(page == .meyrin ? "Meyrin" : l10n[page.rawValue])  // 美玲 UI is English-only
                 .font(.system(size: 13))
                 .padding(.leading, 2)
         } icon: {

@@ -29,6 +29,15 @@ final class MeilingInputSwitcher {
         return TISSelectInputSource(meiling) == noErr
     }
 
+    /// Leaves 美玲 for the remembered source (or ABC), keeping it remembered: the commit retry switches away and
+    /// back so the focused client activates the input method again.
+    func selectOther() {
+        if let previous = remembered ?? Self.source(withID: "com.apple.keylayout.ABC") {
+            if remembered == nil { remembered = previous }
+            TISSelectInputSource(previous)
+        }
+    }
+
     func restore() {
         guard let previous = remembered else { return }
         remembered = nil

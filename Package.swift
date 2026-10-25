@@ -19,6 +19,7 @@ let package = Package(
             name: "CodeIsland",
             dependencies: [
                 "CodeIslandCore",
+                "MeilingSoftKit",
                 .product(name: "Sparkle", package: "Sparkle"),
                 .product(name: "Yams", package: "Yams"),
             ],
@@ -31,7 +32,18 @@ let package = Package(
         .executableTarget(
             name: "MeilingInputMethod",
             path: "Sources/MeilingInputMethod",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist", "InfoPlist.strings"]
+        ),
+        // 美玲 without the Tab5 (docs/meiling-soft-design.md): Gemini Live, mic, virtual mic, system audio tap.
+        .target(
+            name: "MeilingSoftKit",
+            dependencies: ["CodeIslandCore"],
+            path: "Sources/MeilingSoftKit"
+        ),
+        .executableTarget(
+            name: "meiling-soft",
+            dependencies: ["CodeIslandCore", "MeilingSoftKit"],
+            path: "Sources/MeilingSoftCLI"
         ),
         .executableTarget(
             name: "meiling-sim",

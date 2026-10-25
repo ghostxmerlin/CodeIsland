@@ -21,14 +21,20 @@ final class MeilingIMEClient {
     }
 }
 
-/// Receives the input method's "activated" message on the main run loop.
+/// Receives the input method's "activated" message on the main run loop. One port per process (the name is
+/// global), shared by the Tab5 key-frame coordinator and the Mac-only dictation (MeilingSoft).
 final class MeilingAppPort {
+    static let shared = MeilingAppPort()
     private var port: CFMessagePort?
     private var source: CFRunLoopSource?
-    fileprivate let onActivated: (String) -> Void
+    private var observers: [(String) -> Void] = []
 
-    init(onActivated: @escaping (String) -> Void) {
-        self.onActivated = onActivated
+    func addObserver(_ observer: @escaping (String) -> Void) {
+        observers.append(observer)
+    }
+
+    fileprivate func onActivated(_ bundle: String) {
+        observers.forEach { $0(bundle) }
     }
 
     func start() {

@@ -29,6 +29,10 @@
 	</dict>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>CodeIsland needs to control terminal apps to jump to the correct window and tab when you click a session.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Meyrin dictation and meeting interpretation use the microphone: what you say is sent to Gemini to transcribe or translate.</string>
+	<key>NSAudioCaptureUsageDescription</key>
+	<string>Meyrin meeting interpretation records the sound your meeting app plays and translates it into captions only you can see.</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>CodeIsland uses Bluetooth to mirror the island onto Buddy.</string>
 	<key>NSBonjourServices</key>

@@ -3,8 +3,8 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key><string>com.aism.inputmethod.Meiling</string>
-	<key>CFBundleName</key><string>美玲</string>
-	<key>CFBundleDisplayName</key><string>美玲</string>
+	<key>CFBundleName</key><string>Meyrin</string>
+	<key>CFBundleDisplayName</key><string>Meyrin</string>
 	<key>CFBundleExecutable</key><string>MeilingInputMethod</string>
 	<key>CFBundlePackageType</key><string>APPL</string>
 	<key>CFBundleShortVersionString</key><string>0.1</string>

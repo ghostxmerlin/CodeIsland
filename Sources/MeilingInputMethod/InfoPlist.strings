@@ -1,0 +1,5 @@
+/* Names shown in the input menu and System Settings → Keyboard → Input Sources. */
+"CFBundleName" = "Meyrin";
+"CFBundleDisplayName" = "Meyrin";
+"com.aism.inputmethod.Meiling" = "Meyrin";
+"com.aism.inputmethod.Meiling.Meiling" = "Meyrin";

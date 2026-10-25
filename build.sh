@@ -131,7 +131,7 @@ build_mac() {
         fi
     done
 
-    # 美玲输入法 (scripts/build-meiling-ime.sh), installed into ~/Library/Input Methods from the 美玲 menu.
+    # 美玲输入法 (scripts/build-meiling-ime.sh), installed into ~/Library/Input Methods from the Meyrin menu.
     ./scripts/build-meiling-ime.sh
     cp -R ".build/release/MeilingInputMethod.app" "$APP_BUNDLE/Contents/Resources/"
 
@@ -144,6 +144,11 @@ build_mac() {
     fi
     if [ -z "$SIGN_ID" ]; then
         SIGN_ID=$(security find-identity -v -p codesigning | grep -v "REVOKED" | grep '"' | head -1 | sed 's/.*"\(.*\)".*/\1/' 2>/dev/null || true)
+    fi
+    # A local self-signed identity (not trusted, so -v leaves it out): it keeps the signature stable across
+    # rebuilds, so macOS privacy grants (Input Monitoring, Microphone) survive. Delete it in Keychain Access to drop it.
+    if [ -z "$SIGN_ID" ] && security find-identity -p codesigning | grep -q '"AISM Local Signing"'; then
+        SIGN_ID="AISM Local Signing"
     fi
     if [ -z "$SIGN_ID" ]; then
         echo "No developer certificate found, using ad-hoc signing..."

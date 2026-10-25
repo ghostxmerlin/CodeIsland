@@ -14,7 +14,7 @@ final class MeilingCoordinator {
     private let ack = MeilingLedAck()
     private let switcher = MeilingInputSwitcher()
     private let ime = MeilingIMEClient()
-    private lazy var appPort = MeilingAppPort { [unowned self] bundle in self.imeActivated(bundle) }
+    private var observingIME = false
     private var ticker: Timer?
     private var pendingDictation: (seq: UInt16, openedMs: UInt64)?
     private let log = MeilingLog()
@@ -24,9 +24,13 @@ final class MeilingCoordinator {
 
     func start() {
         guard !tap.running else { return }
-        appPort.start()
+        if !observingIME {
+            MeilingAppPort.shared.addObserver { [unowned self] bundle in self.imeActivated(bundle) }
+            observingIME = true
+        }
+        MeilingAppPort.shared.start()
         guard tap.start() else {
-            lastError = "键盘截取被拒：请在“隐私与安全性 → 输入监控”里允许 AISM"
+            lastError = "Key capture denied: allow AISM in Privacy & Security → Input Monitoring"
             log.write("tap refused")
             return
         }
@@ -66,18 +70,23 @@ final class MeilingCoordinator {
                 if switcher.meilingActive {
                     acknowledge("dictation (already active)")
                 } else if !switcher.selectMeiling() {
-                    log.write("dictation: 美玲输入法未安装或未启用; no ack")
+                    log.write("dictation: Meyrin input method not installed or not enabled; no ack")
                 }
             case .opened(.caption):
                 acknowledge("caption")
-            case let .completed(.dictation, seq, text):
+            case let .completed(.dictation, seq, heard):
+                let text = MeilingCorrectionStore.shared.apply(heard)
                 // Off the key tap: the commit waits on the input method (≤1 s) and must not stall every keyboard
                 // event system-wide, nor time the tap out (review I10). Commit, then restore, in order.
                 pendingDictation = nil
                 DispatchQueue.main.async { [self] in
+                    let history = MeilingDictationHistory.shared
+                    let id = history.add(text, source: "Tab5")
                     let result = ime.commit(text)
+                    if result == .ok { history.mark(id, .typed) }
+                    else { history.mark(id, .notTyped, note: result == .inactive ? "no text field" : "input method not responding") }
                     log.write("dictation \(seq) commit \(result) scalars=\(text.unicodeScalars.count)")
-                    if result != .ok { MeilingCaptionWindow.shared.appendError("听写未上屏：美玲输入法\(result == .inactive ? "未激活" : "无响应")") }
+                    if result != .ok { MeilingCaptionWindow.shared.appendError("Dictation not typed: Meyrin input method \(result == .inactive ? "not active" : "not responding")") }
                     switcher.restore()
                 }
             case let .completed(.caption, seq, text):

@@ -9,7 +9,7 @@ enum MeilingInputMethodInstaller {
     static func install() -> String {
         guard let source = Bundle.main.resourceURL?.appendingPathComponent(bundleName),
               FileManager.default.fileExists(atPath: source.path) else {
-            return "这个 AISM 没有内嵌 \(bundleName)。先运行 scripts/build-meiling-ime.sh，再运行 build.sh。"
+            return "This AISM has no embedded \(bundleName). Run scripts/build-meiling-ime.sh, then build.sh."
         }
         let folder = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Input Methods")
         let target = folder.appendingPathComponent(bundleName)
@@ -18,16 +18,17 @@ enum MeilingInputMethodInstaller {
             if FileManager.default.fileExists(atPath: target.path) { try FileManager.default.removeItem(at: target) }
             try FileManager.default.copyItem(at: source, to: target)
         } catch {
-            return "复制失败：\(error.localizedDescription)"
+            return "Copy failed: \(error.localizedDescription)"
         }
         let status = TISRegisterInputSource(target as CFURL)
-        guard status == noErr else { return "已复制到 \(target.path)，但注册失败（\(status)）。请注销后再登录。" }
-        let filter = [kTISPropertyInputSourceID as String: MeilingInputSwitcher.sourceID] as CFDictionary
+        guard status == noErr else { return "Copied to \(target.path), but registration failed (\(status)). Log out and back in." }
+        // Both the input method and its mode: with only the mode enabled, the mode never shows up as enabled.
+        let filter = [kTISPropertyBundleID as String: "com.aism.inputmethod.Meiling"] as CFDictionary
         if let list = TISCreateInputSourceList(filter, true)?.takeRetainedValue() as? [TISInputSource] {
             list.forEach { TISEnableInputSource($0) }
         }
         return MeilingInputSwitcher.installed
-            ? "已安装并启用“美玲”输入法。平时不用选它，听写时 AISM 会自动切换。"
-            : "已安装。请到“系统设置 → 键盘 → 输入法”里添加“美玲”。"
+            ? "Installed and enabled the Meyrin input method. No need to select it: AISM switches to it while dictating."
+            : "Installed. Add \"Meyrin\" in System Settings → Keyboard → Input Sources."
     }
 }

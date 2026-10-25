@@ -198,7 +198,7 @@ final class UIGalleryHarness: XCTestCase {
     }
 
     private func renderSettings(_ lang: GalleryLang) throws {
-        let pages: [SettingsPage] = [.general, .behavior, .appearance, .mascots, .sound, .shortcuts, .remote, .hooks, .buddy, .about]
+        let pages: [SettingsPage] = [.general, .behavior, .appearance, .mascots, .sound, .shortcuts, .remote, .hooks, .buddy, .meyrin, .about]
         let appearances: [NSAppearance.Name] = lang == .en ? [.darkAqua, .aqua] : [.darkAqua]
         // SettingsWindowController: min(660, w/2) × min(540, h/0.6) on a 14" display.
         let size = CGSize(width: 660, height: 540)
