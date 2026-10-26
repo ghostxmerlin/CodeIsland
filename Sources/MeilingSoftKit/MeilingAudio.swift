@@ -341,12 +341,20 @@ public final class MeilingVirtualMic: @unchecked Sendable {
     private var device: AudioDeviceID = 0
     private var observer: NSObjectProtocol?
     private var restarts = MeilingRestartLimit()
-    private var ring: [Float] = []
-    private var readIndex = 0
+    // A fixed ring (allocated once, larger than the 1.5 s cap) and two running frame counts.
+    static let ringMask: UInt64 = (1 << 17) - 1
+    private let buffer = UnsafeMutablePointer<Float>.allocate(capacity: 1 << 17)
+    private var written: UInt64 = 0, consumed: UInt64 = 0
     private var primed = false
     private let lock = NSLock()
 
-    public init() {}
+    public init() {
+        buffer.initialize(repeating: 0, count: 1 << 17)
+    }
+
+    deinit {
+        buffer.deallocate()
+    }
 
     public func start(deviceName wanted: String = defaultDeviceName) throws {
         guard !running else { return }
@@ -419,14 +427,16 @@ public final class MeilingVirtualMic: @unchecked Sendable {
     }
 
     public func write48k(_ samples: [Float]) {
+        let keep = samples.suffix(Self.maxFrames)  // more than the cap at once: only its newest part can play
         lock.lock()
         defer { lock.unlock() }
-        ring.append(contentsOf: samples)
-        let queued = ring.count - readIndex
-        if queued > Self.maxFrames {
-            readIndex += queued - Self.maxFrames
+        var w = written
+        for x in keep {
+            buffer[Int(w & Self.ringMask)] = x
+            w &+= 1
         }
-        compact()
+        written = w
+        if written - consumed > UInt64(Self.maxFrames) { consumed = written - UInt64(Self.maxFrames) }  // oldest dropped
     }
 
     /// Gemini's 24 kHz PCM16, upsampled 2x (linear, as the Tab5 does).
@@ -442,8 +452,7 @@ public final class MeilingVirtualMic: @unchecked Sendable {
 
     public func clear() {
         lock.lock()
-        ring.removeAll()
-        readIndex = 0
+        consumed = written
         primed = false
         lock.unlock()
     }
@@ -451,31 +460,27 @@ public final class MeilingVirtualMic: @unchecked Sendable {
     public var queuedMs: Int {
         lock.lock()
         defer { lock.unlock() }
-        return (ring.count - readIndex) / 48
+        return Int(written - consumed) / 48
     }
 
+    /// The render thread: copies out of the preallocated ring, never allocates or moves memory.
     private func read(into out: UnsafeMutablePointer<Float>, count: Int) {
         lock.lock()
         defer { lock.unlock() }
-        let queued = ring.count - readIndex
+        let queued = Int(written - consumed)
         if !primed, queued >= Self.startFrames { primed = true }
         let n = primed ? min(count, queued) : 0
+        var r = consumed
         for i in 0..<n {
-            let x = ring[readIndex + i]
+            let x = buffer[Int(r & Self.ringMask)]
+            r &+= 1
             out[i] = x
             if abs(x) > 0.01 { voicedFrames += 1 }
             renderedPeak = max(renderedPeak, abs(x))
         }
         for i in n..<count { out[i] = 0 }
-        readIndex += n
+        consumed = r
         if primed, n < count { primed = false }  // ran dry: re-prime before playing again
-        compact()
     }
 
-    private func compact() {
-        if readIndex > 48000 {
-            ring.removeFirst(readIndex)
-            readIndex = 0
-        }
-    }
 }

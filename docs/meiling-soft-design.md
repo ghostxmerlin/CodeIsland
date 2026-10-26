@@ -188,3 +188,11 @@ cd ~/tab5/starlight && swift build --product meiling-soft
 - `Sources/CodeIsland/MeilingSoft/`：**Mac 软件模式**（说话键、听写、会议同传、自己的两个字幕窗、提示条、设置 → Meyrin 页、历史、修正）。
 - `Sources/CodeIsland/MeilingShared/`：两者真正共用的：Meyrin 输入法的客户端和“已激活”端口（一个进程只能有一个）、输入法切换、安装、日志（2 MB 轮换）。
 - 审查建议的“两条路合成一个打字流程”不做。
+
+## 15. 结构整理（2026-10-26，审查第二、三步）
+
+- 软件模式控制器拆成 `MeilingSoftSettings`（文件、key、词表、设置项）、`MeilingSoftDictation`（听写和打字流程）、`MeilingSoftMeeting`（会议，一个状态：关闭 / 启动中 / 进行中）和只管开关、说话键、分发的 `MeilingSoftController`。
+- 引擎的所有回调都经由各自的 `callbackQueue`（默认主线程）按产生顺序送出，App 层不再到处 `Task { @MainActor }`，字幕不会乱序。
+- 设置页的权限、输入法、虚拟麦克风状态改为打开时读一次、之后每 3 秒读一次，不在每次重绘时遍历设备。
+- 虚拟麦克风和耳返的缓冲改成一次分配好的固定环形缓冲，音频线程不再分配或搬移内存。
+- 输入法连接的端口名和消息号放在单独的 `MeilingIPC` 模块里，App 和输入法共用。提示条分“错误”（红）和“提示”（白）。

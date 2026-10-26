@@ -76,7 +76,7 @@ final class MeilingSoftMeeting {
         MeilingSoftCaptionWindow.mine.show()
         MeilingSoftCaptionWindow.theirs.show()
         log.write("soft: meeting started vmic=\(engine.virtualMic.deviceName) mic=\(engine.mic.deviceName) monitor=\(engine.monitoring ? engine.monitor.deviceName : "off")")
-        MeilingSoftHUD.shared.error("Meeting interpretation on: pick \"\(engine.virtualMic.micNameForApps)\" as the microphone in your meeting app; hold \(MeilingSoftHotkey.current.name) while you talk")
+        MeilingSoftHUD.shared.notice("Meeting interpretation on: pick \"\(engine.virtualMic.micNameForApps)\" as the microphone in your meeting app; hold \(MeilingSoftHotkey.current.name) while you talk")
         checkTapSoon(engine)
     }
 
@@ -138,26 +138,27 @@ final class MeilingSoftMeeting {
 
     // MARK: engine
 
+    /// The engine's callbacks arrive on the main queue in order (its callbackQueue), hence assumeIsolated.
     private func makeEngine(_ key: String) -> MeilingMeetingEngine {
         let engine = MeilingMeetingEngine(apiKey: key)
-        engine.mic.onLevel = { level in Task { @MainActor in MeilingSoftHUD.shared.level(level) } }
+        engine.mic.onLevel = { level in DispatchQueue.main.async { MainActor.assumeIsolated { MeilingSoftHUD.shared.level(level) } } }
         // Lines flushed after the meeting stopped are dropped: the windows are closed by then.
         engine.onCaption = { [weak self] caption in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 guard self?.engine === engine else { return }
                 let window = caption.mine ? MeilingSoftCaptionWindow.mine : MeilingSoftCaptionWindow.theirs
                 window.append(text: caption.text, original: caption.original)
             }
         }
         engine.onPending = { [weak self] caption in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 guard self?.engine === engine else { return }
                 let window = caption.mine ? MeilingSoftCaptionWindow.mine : MeilingSoftCaptionWindow.theirs
                 window.setPending(text: caption.text, original: caption.original)
             }
         }
         engine.onStatus = { [weak self] status in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 self?.log.write("soft: meeting \(status)")
                 if status.hasPrefix("WARN: ") { MeilingSoftHUD.shared.error(String(status.dropFirst(6))) }
             }

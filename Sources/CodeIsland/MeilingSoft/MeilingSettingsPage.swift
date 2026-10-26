@@ -11,6 +11,9 @@ struct MeilingSettingsPage: View {
     @AppStorage(MeilingSoftHotkey.keyDefault) private var talkKey = 54
     @AppStorage(MeilingSoftSettings.allowSpeakerKey) private var allowSpeaker = false
     @State private var tick = 0
+    /// Permissions, the input method and the virtual mic: costly to read (TIS list, every Core Audio device), so
+    /// read on appear and every 3 s, not on every render.
+    @State private var status = SystemStatus.read()
     @ObservedObject private var history = MeilingDictationHistory.shared
     @ObservedObject private var corrections = MeilingCorrectionStore.shared
     @State private var recording = false
@@ -51,8 +54,8 @@ struct MeilingSettingsPage: View {
                     Button("Set…") { promptAPIKey(); hasKey = MeilingSoftSettings.apiKey() != nil }
                 }
                 if let error = soft.lastError { problem(error) }
-                permissionRow("Input Monitoring", CGPreflightListenEventAccess(), "Privacy_ListenEvent")
-                permissionRow("Microphone", AVCaptureDevice.authorizationStatus(for: .audio) == .authorized, "Privacy_Microphone")
+                permissionRow("Input Monitoring", status.listen, "Privacy_ListenEvent")
+                permissionRow("Microphone", status.microphone, "Privacy_Microphone")
             }
 
             Section("Meeting Interpretation") {
@@ -81,7 +84,7 @@ struct MeilingSettingsPage: View {
                 HStack {
                     Text("Virtual Mic")
                     Spacer()
-                    Text(virtualMicStatus).foregroundStyle(.secondary)
+                    Text(status.virtualMic).foregroundStyle(.secondary)
                 }
                 Toggle("Allow on built-in speakers (echo risk)", isOn: $allowSpeaker)
                 Button("Show Their Captions") { MeilingSoftCaptionWindow.theirs.show() }
@@ -120,15 +123,18 @@ struct MeilingSettingsPage: View {
                 HStack {
                     Text("Meyrin Input Method")
                     Spacer()
-                    Text(MeilingInputSwitcher.installed ? "Enabled" : "Not installed or not enabled")
-                        .foregroundStyle(MeilingInputSwitcher.installed ? .green : .red)
+                    Text(status.inputMethod ? "Enabled" : "Not installed or not enabled")
+                        .foregroundStyle(status.inputMethod ? .green : .red)
                     Button("Install…") { install() }
                 }
             }
 
         }
         .formStyle(.grouped)
-        .onReceive(timer) { _ in tick += 1 }
+        .onReceive(timer) { _ in
+            tick += 1
+            if tick % 3 == 0 { status = SystemStatus.read() }
+        }
         .onDisappear { stopRecording() }
     }
 
@@ -193,7 +199,18 @@ struct MeilingSettingsPage: View {
         }
     }
 
-    private var virtualMicStatus: String {
+    private struct SystemStatus {
+        var listen = false, microphone = false, inputMethod = false
+        var virtualMic = ""
+
+        static func read() -> SystemStatus {
+            SystemStatus(listen: CGPreflightListenEventAccess(),
+                         microphone: AVCaptureDevice.authorizationStatus(for: .audio) == .authorized,
+                         inputMethod: MeilingInputSwitcher.installed, virtualMic: virtualMicStatus)
+        }
+    }
+
+    private static var virtualMicStatus: String {
         if MeilingAudioDevices.find(uid: MeilingVirtualMic.defaultDeviceName) != nil {
             let name = MeilingAudioDevices.find(uid: MeilingVirtualMic.visibleMicUID)?.name ?? "Meyrin Virtual Mic"
             return name == "Meyrin Virtual Mic" ? name : "\(name) (old driver: run drivers/MeyrinMic/install.sh again)"
@@ -224,7 +241,7 @@ struct MeilingSettingsPage: View {
 
     private func install() {
         alert("Meyrin Input Method", MeilingInputMethodInstaller.install())
-        tick += 1
+        status = SystemStatus.read()
     }
 
     private func alert(_ title: String, _ message: String) {

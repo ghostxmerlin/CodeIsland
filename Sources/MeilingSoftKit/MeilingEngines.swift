@@ -20,6 +20,20 @@ public final class MeilingDictationEngine: @unchecked Sendable {
     /// One line per press for the log: the mic, how much it heard and how loud (no text).
     public var onTalkSummary: ((String) -> Void)?
 
+    /// Every callback goes through `callbackQueue` (main by default), in the order it was produced: from the
+    /// session queue, the mic's audio thread and the notification thread alike.
+    public var callbackQueue: DispatchQueue = .main
+
+    private func post<T>(_ callback: ((T) -> Void)?, _ value: T) {
+        guard let callback else { return }
+        callbackQueue.async { callback(value) }
+    }
+
+    private func postFinal(_ text: String, _ session: ObjectIdentifier) {
+        guard let onFinal else { return }
+        callbackQueue.async { onFinal(text, session) }
+    }
+
     public let mic = MeilingMicCapture()
     private var talkStarted = Date()
     private var pendingEnd: DispatchWorkItem?
@@ -68,11 +82,11 @@ public final class MeilingDictationEngine: @unchecked Sendable {
         talking = true
         talkStarted = Date()
         guard useMic else { return }
-        mic.onRestart = { [weak self] why in self?.onTalkSummary?(why) }
+        mic.onRestart = { [weak self] why in self?.post(self?.onTalkSummary, why) }
         do { try mic.start(deviceName: micName) } catch {
             talking = false
             scheduleIdleClose()  // no press may follow: do not leave the session reconnecting forever
-            onError?("\(error)")
+            post(onError, "\(error)")
         }
     }
 
@@ -97,11 +111,11 @@ public final class MeilingDictationEngine: @unchecked Sendable {
         if mic.running {
             let (frames, peak) = mic.snapshot()
             let seconds = Date().timeIntervalSince(talkStarted)
-            onTalkSummary?(String(format: "talk %.1f s: mic %@ at %.0f Hz, %.1f s heard, peak %.3f",
-                                  seconds, mic.deviceName, mic.inputRate, Double(frames) / 16000, peak))
+            post(onTalkSummary, String(format: "talk %.1f s: mic %@ at %.0f Hz, %.1f s heard, peak %.3f",
+                                       seconds, mic.deviceName, mic.inputRate, Double(frames) / 16000, peak))
             if seconds > 1.5, frames == 0 || peak < 0.002 {
-                onError?(frames == 0 ? "No sound from the microphone (\(mic.deviceName))"
-                                     : "The microphone (\(mic.deviceName)) only heard silence")
+                post(onError, frames == 0 ? "No sound from the microphone (\(mic.deviceName))"
+                                          : "The microphone (\(mic.deviceName)) only heard silence")
             }
         }
         mic.stop()
@@ -138,13 +152,13 @@ public final class MeilingDictationEngine: @unchecked Sendable {
     private func makeSession() -> MeilingLiveSession {
         let s = MeilingLiveSession(label: "dictation", kind: .transcribe(vocabulary: vocabulary), apiKey: apiKey)
         s.reconnectWhenIdle = false
-        s.onState = { [weak self] state in self?.onState?(state) }
+        s.onState = { [weak self] state in self?.post(self?.onState, state) }
         let id = ObjectIdentifier(s)
         s.onMessage = { [weak self] m in
             guard let self else { return }
-            if !m.interimInput.isEmpty { self.onInterim?(MeilingText.compactCjkSpaces(m.interimInput)) }
+            if !m.interimInput.isEmpty { self.post(self.onInterim, MeilingText.compactCjkSpaces(m.interimInput)) }
             if m.finalInputPresent, !MeilingText.isBlank(m.finalInput) {
-                self.onFinal?(MeilingText.compactCjkSpaces(m.finalInput).trimmingCharacters(in: .whitespaces), id)
+                self.postFinal(MeilingText.compactCjkSpaces(m.finalInput).trimmingCharacters(in: .whitespaces), id)
             }
         }
         return s
@@ -171,6 +185,15 @@ public final class MeilingMeetingEngine: @unchecked Sendable {
     public var onCaption: ((Caption) -> Void)?
     public var onPending: ((Caption) -> Void)?   // the line still being assembled (for a live preview)
     public var onStatus: ((String) -> Void)?
+
+    /// Every callback goes through `callbackQueue` (main by default), in the order it was produced: from the
+    /// session queue, the mic's audio thread and the notification thread alike.
+    public var callbackQueue: DispatchQueue = .main
+
+    private func post<T>(_ callback: ((T) -> Void)?, _ value: T) {
+        guard let callback else { return }
+        callbackQueue.async { callback(value) }
+    }
 
     public let mic = MeilingMicCapture()
     public let virtualMic = MeilingVirtualMic()
@@ -217,9 +240,9 @@ public final class MeilingMeetingEngine: @unchecked Sendable {
             if through { self.virtualMic.write48k(samples) }
         }
         tap.on16k = { [weak self] pcm in self?.incoming.send(pcm) }
-        mic.onRestart = { [weak self] why in self?.onStatus?(why) }
-        virtualMic.onRestart = { [weak self] why in self?.onStatus?("virtual mic: \(why)") }
-        monitor.onRestart = { [weak self] why in self?.onStatus?("monitor: \(why)") }
+        mic.onRestart = { [weak self] why in self?.post(self?.onStatus, why) }
+        virtualMic.onRestart = { [weak self] why in self?.post(self?.onStatus, "virtual mic: \(why)") }
+        monitor.onRestart = { [weak self] why in self?.post(self?.onStatus, "monitor: \(why)") }
     }
 
     /// `systemAudio` false: the caller feeds the other side itself (`feedIncoming`), e.g. from a WAV file.
@@ -273,8 +296,8 @@ public final class MeilingMeetingEngine: @unchecked Sendable {
         setMonitor(false)
         outgoing.close()
         incoming.close()
-        if let a { onCaption?(Caption(mine: true, text: a.text, original: a.original)) }
-        if let b { onCaption?(Caption(mine: false, text: b.text, original: b.original)) }
+        if let a { post(onCaption, Caption(mine: true, text: a.text, original: a.original)) }
+        if let b { post(onCaption, Caption(mine: false, text: b.text, original: b.original)) }
     }
 
     public func startTalk() {
@@ -325,11 +348,11 @@ public final class MeilingMeetingEngine: @unchecked Sendable {
             guard !monitor.running else { return }
             guard let uid = device ?? MeilingAudioDevices.defaultDevice(output: true).flatMap(MeilingAudioDevices.device)?.uid
             else {
-                onStatus?("Monitor: no default output device")  // review C8
+                post(onStatus, "Monitor: no default output device")  // review C8
                 return
             }
             do { try monitor.start(deviceName: uid) } catch {
-                onStatus?("Monitor: \(error)")
+                post(onStatus, "Monitor: \(error)")
                 return
             }
         } else {
@@ -389,12 +412,12 @@ public final class MeilingMeetingEngine: @unchecked Sendable {
                              Double(frames - talkFrames0) / 16000, peak, heardChars, Double(translatedSamples) / 24000)
         }
         lock.unlock()
-        if let warning { onStatus?("WARN: " + warning) }
-        if let summary { onStatus?(summary) }
+        if let warning { post(onStatus, "WARN: " + warning) }
+        if let summary { post(onStatus, summary) }
         if zeros > 0 { outgoing.send([Int16](repeating: 0, count: zeros)) }
         if end { outgoing.endAudio() }
-        if let a { onCaption?(Caption(mine: true, text: a.text, original: a.original)) }
-        if let b { onCaption?(Caption(mine: false, text: b.text, original: b.original)) }
+        if let a { post(onCaption, Caption(mine: true, text: a.text, original: a.original)) }
+        if let b { post(onCaption, Caption(mine: false, text: b.text, original: b.original)) }
     }
 
     private func outgoingMessage(_ m: MeilingServerMessage) {
@@ -413,9 +436,9 @@ public final class MeilingMeetingEngine: @unchecked Sendable {
         lock.unlock()
         if play { virtualMic.write24k(m.audio24k) }
         if hear { monitor.write24k(m.audio24k) }
-        if let line { onCaption?(Caption(mine: true, text: line.text, original: line.original)) }
+        if let line { post(onCaption, Caption(mine: true, text: line.text, original: line.original)) }
         else if let preview, !m.outputText.isEmpty || !m.finalInput.isEmpty {
-            onPending?(Caption(mine: true, text: preview.text, original: preview.original))
+            post(onPending, Caption(mine: true, text: preview.text, original: preview.original))
         }
     }
 
@@ -428,18 +451,18 @@ public final class MeilingMeetingEngine: @unchecked Sendable {
         let line = theirs.add(input: m.finalInput, output: m.outputText, atMs: Self.nowMs())
         let preview = theirs.pending
         lock.unlock()
-        if let line { onCaption?(Caption(mine: false, text: line.text, original: line.original)) }
+        if let line { post(onCaption, Caption(mine: false, text: line.text, original: line.original)) }
         else if let preview, !m.outputText.isEmpty || !m.finalInput.isEmpty {
-            onPending?(Caption(mine: false, text: preview.text, original: preview.original))
+            post(onPending, Caption(mine: false, text: preview.text, original: preview.original))
         }
     }
 
     private func report(_ side: String, _ state: MeilingLiveSession.State) {
         switch state {
-        case .ready: onStatus?("\(side): connected")
-        case .connecting: onStatus?("\(side): connecting")
-        case let .failed(why): onStatus?("\(side): \(why), retrying")
-        case let .gaveUp(why): onStatus?("\(side): \(why), stopped")
+        case .ready: post(onStatus, "\(side): connected")
+        case .connecting: post(onStatus, "\(side): connecting")
+        case let .failed(why): post(onStatus, "\(side): \(why), retrying")
+        case let .gaveUp(why): post(onStatus, "\(side): \(why), stopped")
         case .closed: break
         }
     }

@@ -15,10 +15,16 @@ let package = Package(
             name: "CodeIslandCore",
             path: "Sources/CodeIslandCore"
         ),
+        // The aism ⇄ Meyrin input method wire constants, shared by the app and the input method bundle.
+        .target(
+            name: "MeilingIPC",
+            path: "Sources/MeilingIPC"
+        ),
         .executableTarget(
             name: "CodeIsland",
             dependencies: [
                 "CodeIslandCore",
+                "MeilingIPC",
                 "MeilingSoftKit",
                 .product(name: "Sparkle", package: "Sparkle"),
                 .product(name: "Yams", package: "Yams"),
@@ -31,6 +37,7 @@ let package = Package(
         // 美玲输入法 (luna-work spec 2026-10-24-meiling-design §6.1): bundled by scripts/build-meiling-ime.sh.
         .executableTarget(
             name: "MeilingInputMethod",
+            dependencies: ["MeilingIPC"],
             path: "Sources/MeilingInputMethod",
             exclude: ["Info.plist", "InfoPlist.strings"]
         ),

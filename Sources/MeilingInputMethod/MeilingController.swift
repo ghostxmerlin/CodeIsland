@@ -1,5 +1,6 @@
 import AppKit
 import InputMethodKit
+import MeilingIPC
 
 /// One controller per client text view. The most recently activated one is the commit target.
 @objc(MeilingController)
@@ -31,30 +32,29 @@ final class MeilingController: IMKInputController {
     }
 }
 
-/// aism → IME "com.aism.meiling.ime" msgid 1 = commit (UTF-8), reply "ok" / "inactive".
-/// IME → aism "com.aism.meiling.app" msgid 2 = activated (client bundle id).
+/// The input method side of the wire (MeilingIPC): commit requests in, "activated" out.
 final class MeilingCommitPort {
     static let shared = MeilingCommitPort()
     private var port: CFMessagePort?
 
     func start() {
         let callback: CFMessagePortCallBack = { _, msgid, data, _ in
-            guard msgid == 1, let data = data as Data?, let text = String(data: data, encoding: .utf8) else { return nil }
+            guard msgid == MeilingIPC.commit, let data = data as Data?, let text = String(data: data, encoding: .utf8) else { return nil }
             let controller = MeilingController.active
             let ok = controller?.commit(text) ?? false
             IMELog.write("commit \(ok ? "ok" : controller == nil ? "inactive (no active controller)" : "inactive (no client)")")
-            return Unmanaged.passRetained(Data((ok ? "ok" : "inactive").utf8) as CFData)
+            return Unmanaged.passRetained(Data((ok ? MeilingIPC.ok : MeilingIPC.inactive).utf8) as CFData)
         }
         var shouldFree: DarwinBoolean = false
-        guard let local = CFMessagePortCreateLocal(nil, "com.aism.meiling.ime" as CFString, callback, nil, &shouldFree)
+        guard let local = CFMessagePortCreateLocal(nil, MeilingIPC.imePort as CFString, callback, nil, &shouldFree)
         else { return }
         port = local
         CFRunLoopAddSource(CFRunLoopGetMain(), CFMessagePortCreateRunLoopSource(nil, local, 0), .commonModes)
     }
 
     static func notifyActivated(bundle: String) {
-        guard let remote = CFMessagePortCreateRemote(nil, "com.aism.meiling.app" as CFString) else { return }
-        CFMessagePortSendRequest(remote, 2, Data(bundle.utf8) as CFData, 0.2, 0, nil, nil)
+        guard let remote = CFMessagePortCreateRemote(nil, MeilingIPC.appPort as CFString) else { return }
+        CFMessagePortSendRequest(remote, MeilingIPC.activated, Data(bundle.utf8) as CFData, 0.2, 0, nil, nil)
     }
 }
 

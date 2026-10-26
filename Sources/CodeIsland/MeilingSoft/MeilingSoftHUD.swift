@@ -13,6 +13,7 @@ final class MeilingSoftHUD {
         @Published var interim = ""
         @Published var committed = ""
         @Published var error = ""
+        @Published var errorIsNotice = false  // information (white), not a failure (red)
         @Published var startedAt: Date?
         @Published var level: Float = 0   // the mic's input level, 0…1
         @Published var micName = ""
@@ -56,6 +57,14 @@ final class MeilingSoftHUD {
 
     func error(_ text: String) {
         model.error = text
+        model.errorIsNotice = false
+        show(autoHide: !model.live, after: 6)
+    }
+
+    /// Information for the owner (what to pick, wait a moment): shown like an error but not in red.
+    func notice(_ text: String) {
+        model.error = text
+        model.errorIsNotice = true
         show(autoHide: !model.live, after: 6)
     }
 
@@ -140,7 +149,7 @@ final class MeilingSoftHUD {
                     .help("Dictation history: every sentence, including ones that were not typed")
                 }
                 if !model.error.isEmpty {
-                    Text(model.error).font(.system(size: 14)).foregroundColor(.red).lineLimit(2)
+                    Text(model.error).font(.system(size: 14)).foregroundColor(model.errorIsNotice ? .white : .red).lineLimit(2)
                 }
                 if !model.interim.isEmpty {
                     Text(model.interim).font(.system(size: 15)).foregroundColor(.white.opacity(0.55)).lineLimit(2)

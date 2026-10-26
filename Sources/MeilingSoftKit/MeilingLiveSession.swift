@@ -45,7 +45,9 @@ public final class MeilingLiveSession: NSObject, URLSessionWebSocketDelegate, @u
     private var resumeHandle: String?
     private var persistentFailures = 0, transientFailures = 0
     private var retry: DispatchWorkItem?
-    private(set) public var readySince: Date?
+    private var readyAt: Date?  // on `queue`
+    /// When setupComplete arrived (nil while not ready); read from any thread except `queue` itself.
+    public var readySince: Date? { queue.sync { readyAt } }
     private var lastAudio = Date.distantPast
 
     public init(label: String, kind: Kind, apiKey: String) {
@@ -174,7 +176,7 @@ public final class MeilingLiveSession: NSObject, URLSessionWebSocketDelegate, @u
         }
         if m.setupComplete {
             state = .ready
-            readySince = Date()
+            readyAt = Date()
             persistentFailures = 0
             transientFailures = 0
             let held = pending
@@ -231,7 +233,7 @@ public final class MeilingLiveSession: NSObject, URLSessionWebSocketDelegate, @u
         generation += 1
         task?.cancel(with: .normalClosure, reason: nil)
         task = nil
-        readySince = nil
+        readyAt = nil
     }
 
     // MARK: URLSessionWebSocketDelegate

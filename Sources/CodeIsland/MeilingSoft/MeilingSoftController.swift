@@ -88,7 +88,7 @@ final class MeilingSoftController {
             // The System Audio Recording prompt can hold the start for long: an edge routed to dictation would
             // open a mic the meeting never closes (review C1).
             hotkey.reset()
-            if edge == .start { MeilingSoftHUD.shared.error("Meeting interpretation is starting: wait a moment") }
+            if edge == .start { MeilingSoftHUD.shared.notice("Meeting interpretation is starting: wait a moment") }
         case .on:
             switch edge {
             case .start:

@@ -74,18 +74,19 @@ final class MeilingSoftDictation {
         self.engine = nil
     }
 
+    /// The engine's callbacks arrive on the main queue in order (its callbackQueue), hence assumeIsolated.
     private func makeEngine(_ key: String) -> MeilingDictationEngine {
         let engine = MeilingDictationEngine(
             apiKey: key, vocabulary: MeilingSoftSettings.vocabulary(corrections: MeilingCorrectionStore.shared.corrections))
-        engine.mic.onLevel = { level in Task { @MainActor in MeilingSoftHUD.shared.level(level) } }
+        engine.mic.onLevel = { level in DispatchQueue.main.async { MainActor.assumeIsolated { MeilingSoftHUD.shared.level(level) } } }
         engine.onInterim = { [weak self] text in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 guard let self, self.engine === engine, engine.talking else { return }
                 MeilingSoftHUD.shared.interim(text)
             }
         }
         engine.onFinal = { [weak self] text, session in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 // A cancelled talk's session is gone (cancel sets it to nil): its in-flight finals stop here.
                 guard let self, self.engine === engine, engine.currentSession == session else {
                     MeilingDictationHistory.shared.add(text, source: "Mac", status: .cancelled)
@@ -95,9 +96,9 @@ final class MeilingSoftDictation {
                 self.type(text)
             }
         }
-        engine.onTalkSummary = { [weak self] line in Task { @MainActor in self?.log.write("soft: dictation \(line)") } }
+        engine.onTalkSummary = { [weak self] line in MainActor.assumeIsolated { self?.log.write("soft: dictation \(line)") } }
         engine.onError = { [weak self] text in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 self?.onTalkEnded?()
                 MeilingSoftHUD.shared.stopped()  // not left "live" with a running timer (review C2)
                 MeilingSoftHUD.shared.error(text)
@@ -105,7 +106,7 @@ final class MeilingSoftDictation {
             }
         }
         engine.onState = { [weak self] state in
-            Task { @MainActor in
+            MainActor.assumeIsolated {
                 switch state {
                 case let .failed(why), let .gaveUp(why):
                     MeilingSoftHUD.shared.error("Gemini: \(why)")
