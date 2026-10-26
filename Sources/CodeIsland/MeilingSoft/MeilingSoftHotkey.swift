@@ -2,10 +2,10 @@ import AppKit
 import CodeIslandCore
 import CoreGraphics
 
-/// The Mac talk key for 美玲 without the Tab5: one lone modifier, fn or an F-key, recorded in Settings → Meyrin
-/// (right ⌘ by default). Other keys are refused: the tap only
-/// listens, so a letter key would also type. Tap = latch, hold ≥ 300 ms = push-to-talk; another key while it is down (⌘C …) makes it a
-/// shortcut and cancels; Esc while talking cancels. A listen-only tap: no event is ever swallowed or delayed.
+/// The Mac talk key for the software mode: one lone modifier, fn or an F-key, recorded in Settings → Meyrin (right
+/// ⌘ by default). Other keys are refused: the tap only listens, so a letter key would also type. Tap = latch, hold
+/// ≥ 300 ms = push-to-talk (hold only during a meeting); another key while it is down (⌘C …) makes it a shortcut
+/// and cancels; Esc while talking cancels. No event is ever swallowed or delayed.
 @MainActor
 final class MeilingSoftHotkey {
     struct Key {

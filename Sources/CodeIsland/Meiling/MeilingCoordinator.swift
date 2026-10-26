@@ -74,17 +74,12 @@ final class MeilingCoordinator {
                 }
             case .opened(.caption):
                 acknowledge("caption")
-            case let .completed(.dictation, seq, heard):
-                let text = MeilingCorrectionStore.shared.apply(heard)
+            case let .completed(.dictation, seq, text):
                 // Off the key tap: the commit waits on the input method (≤1 s) and must not stall every keyboard
                 // event system-wide, nor time the tap out (review I10). Commit, then restore, in order.
                 pendingDictation = nil
                 DispatchQueue.main.async { [self] in
-                    let history = MeilingDictationHistory.shared
-                    let id = history.add(text, source: "Tab5")
                     let result = ime.commit(text)
-                    if result == .ok { history.mark(id, .typed) }
-                    else { history.mark(id, .notTyped, note: result == .inactive ? "no text field" : "input method not responding") }
                     log.write("dictation \(seq) commit \(result) scalars=\(text.unicodeScalars.count)")
                     if result != .ok { MeilingCaptionWindow.shared.appendError("Dictation not typed: Meyrin input method \(result == .inactive ? "not active" : "not responding")") }
                     switcher.restore()
@@ -111,26 +106,5 @@ final class MeilingCoordinator {
     private func acknowledge(_ what: String) {
         let ok = ack.toggle()
         log.write("ack \(what) led=\(ok ? "ok" : (ack.lastError ?? "failed"))")
-    }
-}
-
-/// ~/Library/Logs/AISM/meiling.log — phases and latencies, never the dictated text.
-struct MeilingLog {
-    private let url: URL = {
-        let dir = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Logs/AISM")
-        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        return dir.appendingPathComponent("meiling.log")
-    }()
-
-    func write(_ line: String) {
-        let stamp = ISO8601DateFormatter().string(from: Date())
-        let text = "\(stamp) \(line)\n"
-        if let handle = try? FileHandle(forWritingTo: url) {
-            handle.seekToEndOfFile()
-            handle.write(Data(text.utf8))
-            try? handle.close()
-        } else {
-            try? Data(text.utf8).write(to: url)
-        }
     }
 }

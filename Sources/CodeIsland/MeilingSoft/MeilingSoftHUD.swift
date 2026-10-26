@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 
-/// A small non-activating pill at the bottom of the screen while 美玲 listens: state, the interim half sentence
+/// A small non-activating pill at the top centre of the screen while 美玲 listens: state, the interim half sentence
 /// (grey), the last sentence put at the cursor (green), or the error (red). It never takes focus, so the cursor
 /// stays where the text goes. Its History button opens the dictation history; it stays up while the pointer is
 /// over it.
@@ -73,9 +73,11 @@ final class MeilingSoftHUD {
             p.contentView = FirstClickHostingView(rootView: HUDView(model: model))
             panel = p
         }
+        // Top centre, just under the menu bar where the island's dialogs open: at the bottom it covered the
+        // terminal's input line (owner 2026-10-26).
         if let screen = NSScreen.main, let panel {
             let f = screen.visibleFrame
-            panel.setFrameOrigin(NSPoint(x: f.midX - panel.frame.width / 2, y: f.minY + 40))
+            panel.setFrameOrigin(NSPoint(x: f.midX - panel.frame.width / 2, y: f.maxY - panel.frame.height - 8))
         }
         panel?.orderFrontRegardless()
         hide?.cancel()

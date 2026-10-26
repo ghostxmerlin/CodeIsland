@@ -20,8 +20,9 @@ final class MeilingDictationHistory: ObservableObject {
 
     /// A final sentence arrived; returns its id for `mark`.
     @discardableResult
-    func add(_ text: String, source: String, status: MeilingHistoryEntry.Status = .pending, note: String? = nil) -> UUID {
-        let entry = MeilingHistoryEntry(text: text, source: source, status: status, note: note)
+    func add(_ heard: String, typed: String? = nil, source: String, status: MeilingHistoryEntry.Status = .pending,
+             note: String? = nil) -> UUID {
+        let entry = MeilingHistoryEntry(text: heard, typed: typed, source: source, status: status, note: note)
         entries.append(entry)
         if entries.count > file.maxEntries { entries.removeFirst(entries.count - file.maxEntries) }
         save()
@@ -45,7 +46,7 @@ final class MeilingDictationHistory: ObservableObject {
     func correct(_ id: UUID, to text: String) -> [MeilingCorrection] {
         guard let i = entries.firstIndex(where: { $0.id == id }) else { return [] }
         let corrected = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !corrected.isEmpty, corrected != (entries[i].corrected ?? entries[i].text) else { return [] }
+        guard !corrected.isEmpty, corrected != entries[i].shown else { return [] }
         let learned = MeilingCorrectionStore.shared.learn(heard: entries[i].text, corrected: corrected)
         entries[i].corrected = corrected
         save()
@@ -104,7 +105,7 @@ struct MeilingHistoryView: View {
                 HStack {
                     TextField("Search", text: $search).textFieldStyle(.roundedBorder)
                     Button("Copy Not Typed") {
-                        let lost = history.entries.filter { $0.status != .typed }.map { $0.corrected ?? $0.text }
+                        let lost = history.entries.filter { $0.status != .typed }.map(\.shown)
                         MeilingDictationHistory.copy(lost.joined(separator: "\n"))
                     }
                     .disabled(!history.entries.contains { $0.status != .typed })
@@ -144,8 +145,8 @@ struct MeilingHistoryView: View {
                         Button("Cancel") { editing = nil }
                     }
                 } else {
-                    Text(entry.corrected ?? entry.text).textSelection(.enabled)
-                    if entry.corrected != nil {
+                    Text(entry.shown).textSelection(.enabled)
+                    if entry.shown != entry.text {
                         Text("heard: \(entry.text)").font(.caption).foregroundStyle(.secondary).strikethrough()
                     }
                 }
@@ -156,12 +157,12 @@ struct MeilingHistoryView: View {
             Spacer()
             if editing != entry.id {
                 Button("Edit") {
-                    draft = entry.corrected ?? entry.text
+                    draft = entry.shown
                     editing = entry.id
                 }
                 .help("Correct what was misheard: the corrected words are learned and fixed from now on")
                 Button(copied == entry.id ? "Copied" : "Copy") {
-                    MeilingDictationHistory.copy(entry.corrected ?? entry.text)
+                    MeilingDictationHistory.copy(entry.shown)
                     copied = entry.id
                 }
             }

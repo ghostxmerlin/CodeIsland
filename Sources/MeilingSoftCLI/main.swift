@@ -30,7 +30,9 @@ func say(_ kind: String, _ detail: String = "") {
 }
 
 func apiKey() -> String {
-    let path = option("--env") ?? (FileManager.default.homeDirectoryForCurrentUser.path + "/tab5/luna-work/.env")
+    // The key file AISM uses (Settings → Meyrin → Gemini API Key), or --env FILE.
+    let path = option("--env")
+        ?? (FileManager.default.homeDirectoryForCurrentUser.path + "/Library/Application Support/AISM/meiling.env")
     guard let text = try? String(contentsOfFile: path, encoding: .utf8) else { fail("cannot read \(path)") }
     for line in text.split(separator: "\n") where line.hasPrefix("GEMINI_API_KEY=") {
         return String(line.dropFirst("GEMINI_API_KEY=".count)).trimmingCharacters(in: CharacterSet(charactersIn: "\"' \r"))

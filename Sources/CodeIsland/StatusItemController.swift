@@ -96,7 +96,7 @@ final class StatusItemController: NSObject {
         menu.addItem(settingsItem)
 
         menu.addItem(.separator())
-        let meiling = NSMenuItem(title: "Meyrin", action: nil, keyEquivalent: "")
+        let meiling = NSMenuItem(title: "Meyrin (Tab5)", action: nil, keyEquivalent: "")
         meiling.submenu = MeilingMenu.shared.menu
         menu.addItem(meiling)
 

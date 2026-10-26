@@ -174,6 +174,15 @@ final class MeilingSoftCoreTests: XCTestCase {
         XCTAssertEqual(mode, 0o600)
     }
 
+    func testHistoryKeepsWhatWasHeardBesideWhatWasTyped() {
+        var e = MeilingHistoryEntry(text: "然后看美林的同传", typed: "然后看美玲的同传", source: "Mac")
+        XCTAssertEqual(e.text, "然后看美林的同传")  // corrections are learned against the recognizer's own words
+        XCTAssertEqual(e.shown, "然后看美玲的同传")
+        e.corrected = "然后看美龄的同传"
+        XCTAssertEqual(e.shown, "然后看美龄的同传")
+        XCTAssertNil(MeilingHistoryEntry(text: "一样", typed: "一样", source: "Mac").typed)
+    }
+
     func testHistorySkipsABadLineAndKeepsTheNewest() throws {
         let file = historyFile(max: 3)
         try file.save((1...5).map { MeilingHistoryEntry(text: "句子 \($0)", source: "Mac") })

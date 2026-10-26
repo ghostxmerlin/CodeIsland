@@ -12,18 +12,24 @@ public struct MeilingHistoryEntry: Codable, Identifiable, Equatable, Sendable {
 
     public let id: UUID
     public let date: Date
-    public let text: String
+    public let text: String    // what the recognizer wrote: corrections are learned against this
     public let source: String  // "Mac" or "Tab5"
     public var status: Status
     public var note: String?
-    /// The owner's correction of `text` (History → Edit); the corrected words are learned (MeilingCorrections).
+    /// `text` after the learned corrections, when they changed it: what was typed.
+    public var typed: String?
+    /// The owner's correction (History → Edit); its words are learned against `text` (MeilingCorrections).
     public var corrected: String?
 
-    public init(id: UUID = UUID(), date: Date = Date(), text: String, source: String, status: Status = .pending,
-                note: String? = nil) {
+    /// What the sentence finally says: the owner's correction, else what was typed.
+    public var shown: String { corrected ?? typed ?? text }
+
+    public init(id: UUID = UUID(), date: Date = Date(), text: String, typed: String? = nil, source: String,
+                status: Status = .pending, note: String? = nil) {
         self.id = id
         self.date = date
         self.text = text
+        self.typed = typed == text ? nil : typed
         self.source = source
         self.status = status
         self.note = note

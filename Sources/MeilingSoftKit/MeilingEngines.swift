@@ -309,8 +309,8 @@ public final class MeilingMeetingEngine: @unchecked Sendable {
     }
 
     public func setPassthrough(_ on: Bool) {
+        if on, talking { stopTalk() }  // the clause in flight is still flushed and translated (review C5)
         lock.lock()
-        if on { talking = false }
         passthrough = on
         tailUntil = nil
         lock.unlock()
@@ -324,7 +324,10 @@ public final class MeilingMeetingEngine: @unchecked Sendable {
         if on {
             guard !monitor.running else { return }
             guard let uid = device ?? MeilingAudioDevices.defaultDevice(output: true).flatMap(MeilingAudioDevices.device)?.uid
-            else { return }
+            else {
+                onStatus?("Monitor: no default output device")  // review C8
+                return
+            }
             do { try monitor.start(deviceName: uid) } catch {
                 onStatus?("Monitor: \(error)")
                 return
@@ -366,7 +369,10 @@ public final class MeilingMeetingEngine: @unchecked Sendable {
         }
         if let until = tailUntil, Date() > until { tailUntil = nil }
         let now = Self.nowMs()
-        let a = mine.tick(atMs: now), b = theirs.tick(atMs: now)
+        // After release the model is still finishing the last sentence (until turnComplete or the tail cap):
+        // a pause then is not the end of the line.
+        let a = talking || tailUntil == nil ? mine.tick(atMs: now) : nil
+        let b = theirs.tick(atMs: now)
         var warning: String?, summary: String?
         if talking, mic.running, !silenceWarned, let talkStarted, Date().timeIntervalSince(talkStarted) > Self.silenceWarnAfter {
             let (frames, peak) = mic.snapshot()

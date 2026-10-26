@@ -175,7 +175,8 @@ public final class MeilingMicCapture: @unchecked Sendable {
     /// The device changed under the engine (a Bluetooth headset switching profile, a device unplugged) and the
     /// capture was restarted, or could not be: the reason, for the log.
     public var onRestart: ((String) -> Void)?
-    /// The input level of each buffer (~20 per second), 0…1 on a -55…-10 dBFS scale: the HUD's level meter.
+    /// The input level of each buffer (~20 per second), 0…1 on a -60…-15 dBFS scale, the loudest channel: a
+    /// two-channel receiver (RØDE Wireless GO II) may carry the voice on channel 2 only. The HUD's level meter.
     public var onLevel: ((Float) -> Void)?
     public private(set) var running = false
     public private(set) var deviceName = ""
@@ -215,9 +216,11 @@ public final class MeilingMicCapture: @unchecked Sendable {
         guard !running else { return }
         self.wanted = wanted
         restarts = MeilingRestartLimit()
-        try startEngine()
+        lock.lock()  // before the tap goes live (review C7)
         frames = 0
         peak = 0
+        lock.unlock()
+        try startEngine()
         running = true
     }
 
@@ -263,10 +266,13 @@ public final class MeilingMicCapture: @unchecked Sendable {
             if !pcm.isEmpty { self.on16k?(pcm) }
             if !hi.isEmpty { self.on48k?(hi) }
             if let onLevel = self.onLevel, let data = buffer.floatChannelData, buffer.frameLength > 0 {
-                let samples = UnsafeBufferPointer(start: data[0], count: Int(buffer.frameLength))
-                let rms = (samples.reduce(0) { $0 + $1 * $1 } / Float(samples.count)).squareRoot()
+                let count = Int(buffer.frameLength)
+                let rms = (0..<Int(buffer.format.channelCount)).map { channel -> Float in
+                    let samples = UnsafeBufferPointer(start: data[channel], count: count)
+                    return (samples.reduce(0) { $0 + $1 * $1 } / Float(count)).squareRoot()
+                }.max() ?? 0
                 let db = 20 * log10(max(rms, 1e-6))
-                onLevel(min(1, max(0, (db + 55) / 45)))
+                onLevel(min(1, max(0, (db + 60) / 45)))
             }
         }
         engine.prepare()

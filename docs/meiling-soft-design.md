@@ -180,3 +180,11 @@ cd ~/tab5/starlight && swift build --product meiling-soft
 - **改一次就生效**（负责人选）：之后每一句（Mac 和 Tab5）打出去前先替换（长的先换；已经是正确词的部分不动）；改对的词排在词表最前面。设置 → Meyrin → Corrections 可以逐条关掉或删除。
 - **词表约 150 条**（负责人选）：生效的 `meiling-terms.json` 153 条（项目名、型号、AI 工具、听错过的领域词），其余 488 条在 `vocab/meiling-terms-reserve.json`，不生效；AISM 最多取 150 条（修正词优先）。
 - **松键补录 0.5 秒**：松开说话键后麦克风再录 0.5 秒才结束（听写和会议同传都是），最后一个字不再被截断；0.5 秒内再按算同一段。
+
+## 14. 软件模式与硬件模式分开（2026-10-25 负责人要求）
+
+“不要和将来的硬件模式搞混”：
+- `Sources/CodeIsland/Meiling/`：**Tab5 硬件模式**（按键帧解码、LED 回执、Tab5 字幕窗、菜单栏 “Meyrin (Tab5)” 菜单）。不碰软件模式的历史、修正、词表。
+- `Sources/CodeIsland/MeilingSoft/`：**Mac 软件模式**（说话键、听写、会议同传、自己的两个字幕窗、提示条、设置 → Meyrin 页、历史、修正）。
+- `Sources/CodeIsland/MeilingShared/`：两者真正共用的：Meyrin 输入法的客户端和“已激活”端口（一个进程只能有一个）、输入法切换、安装、日志（2 MB 轮换）。
+- 审查建议的“两条路合成一个打字流程”不做。

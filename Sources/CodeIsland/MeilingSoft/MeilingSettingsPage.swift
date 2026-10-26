@@ -4,8 +4,8 @@ import Combine
 import MeilingSoftKit
 import SwiftUI
 
-/// Settings → Meyrin: Mac-only dictation and meeting interpretation (MeilingSoftController), the Tab5 key path
-/// (MeilingCoordinator), the input method and the captions. The controllers are not observable, so the page
+/// Settings → Meyrin: the software mode (Mac-only dictation and meeting interpretation, MeilingSoftController),
+/// its history and corrections, and the input method. The Tab5 hardware mode keeps its own "Meyrin (Tab5)" menu. The controllers are not observable, so the page
 /// re-reads them every second. English only, like the rest of the 美玲 UI.
 struct MeilingSettingsPage: View {
     @AppStorage(MeilingSoftHotkey.keyDefault) private var talkKey = 54
@@ -19,7 +19,6 @@ struct MeilingSettingsPage: View {
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     private var soft: MeilingSoftController { MeilingSoftController.shared }
-    private var tab5: MeilingCoordinator { MeilingCoordinator.shared }
 
     var body: some View {
         let _ = tick
@@ -48,7 +47,7 @@ struct MeilingSettingsPage: View {
                     Spacer()
                     Text(MeilingSoftController.apiKey() == nil ? "Not set" : "Set")
                         .foregroundStyle(MeilingSoftController.apiKey() == nil ? .red : .secondary)
-                    Button("Set…") { MeilingMenu.promptAPIKey(); tick += 1 }
+                    Button("Set…") { promptAPIKey(); tick += 1 }
                 }
                 if let error = soft.lastError { problem(error) }
                 permissionRow("Input Monitoring", CGPreflightListenEventAccess(), "Privacy_ListenEvent")
@@ -84,7 +83,7 @@ struct MeilingSettingsPage: View {
                     Text(virtualMicStatus).foregroundStyle(.secondary)
                 }
                 Toggle("Allow on built-in speakers (echo risk)", isOn: $allowSpeaker)
-                Button("Show Their Captions") { MeilingCaptionWindow.theirs.show() }
+                Button("Show Their Captions") { MeilingSoftCaptionWindow.theirs.show() }
             }
 
             Section("Dictation History") {
@@ -126,23 +125,6 @@ struct MeilingSettingsPage: View {
                 }
             }
 
-            Section("Tab5") {
-                Toggle("Capture Tab5 Keys", isOn: Binding(
-                    get: { tab5.running },
-                    set: { on in
-                        if on { tab5.start() } else { tab5.stop() }
-                        UserDefaults.standard.set(tab5.running, forKey: MeilingCoordinator.enabledKey)
-                        tick += 1
-                    }))
-                if let error = tab5.lastError { problem(error) }
-                HStack {
-                    Button("Show Captions") { MeilingCaptionWindow.shared.show() }
-                    Button("Larger") { MeilingCaptionWindow.shared.changeFont(by: 4) }
-                    Button("Smaller") { MeilingCaptionWindow.shared.changeFont(by: -4) }
-                    Spacer()
-                    Button("Test Keyboard LED Ack") { alert("Keyboard LED Ack", tab5.ledSelfTest()) }
-                }
-            }
         }
         .formStyle(.grouped)
         .onReceive(timer) { _ in tick += 1 }
@@ -191,6 +173,23 @@ struct MeilingSettingsPage: View {
         talkKey = Int(key.keyCode)
         recordNote = nil
         stopRecording()
+    }
+
+    private func promptAPIKey() {
+        let alert = NSAlert()
+        alert.messageText = "Gemini API Key"
+        alert.informativeText = "Saved in \(MeilingSoftController.keyFile.path) (readable only by you)."
+        let field = NSSecureTextField(frame: NSRect(x: 0, y: 0, width: 320, height: 24))
+        alert.accessoryView = field
+        alert.addButton(withTitle: "Save")
+        alert.addButton(withTitle: "Cancel")
+        NSApp.activate(ignoringOtherApps: true)
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+        let key = field.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !key.isEmpty else { return }
+        do { try MeilingSoftController.saveAPIKey(key) } catch {
+            self.alert("Could not save", error.localizedDescription)
+        }
     }
 
     private var virtualMicStatus: String {

@@ -2,7 +2,7 @@ import AppKit
 import Foundation
 
 /// Puts dictated sentences at the cursor through the 美玲 input method's standard commit (insertText) — never
-/// the clipboard, never AX value writes or synthetic paste (the WhisperPad problem this project exists for).
+/// the clipboard, never AX value writes or synthetic paste (unreliable insertion is why this project exists).
 /// One sentence at a time: select 美玲 → wait for its activation in the focused client (≤ 600 ms) → commit →
 /// restore the user's input source. An "inactive" answer (the input method has no client, e.g. it was not woken in
 /// the focused app) is retried, once with 美玲 selected again, before the sentence is given up (it stays in the

@@ -29,6 +29,7 @@ final class MeilingSoftController {
     /// Bumped by every cancel, disable, meeting start and meeting stop: a meeting start that lands in an older
     /// epoch is abandoned. (Dictation finals are matched to their session instead, see makeDictation.)
     private var epoch = 0
+    private var vocabularyDirty = false
 
     var enabled: Bool { hotkey.running }
     var meetingActive: Bool { meeting != nil }
@@ -42,7 +43,7 @@ final class MeilingSoftController {
         return dir
     }
 
-    /// GEMINI_API_KEY=... in a 0600 file, like WhisperPad's .env (an ad-hoc signed app would hit a Keychain prompt
+    /// GEMINI_API_KEY=... in a 0600 file, like luna-work's .env (an ad-hoc signed app would hit a Keychain prompt
     /// after every rebuild).
     static var keyFile: URL { supportDir.appendingPathComponent("meiling.env") }
     static var termsFile: URL { supportDir.appendingPathComponent("meiling-terms.json") }
@@ -65,7 +66,7 @@ final class MeilingSoftController {
     /// recognition that evening). The owner chose ~150: corrected words first, then the list (sorted by importance).
     static let maxVocabulary = 150
 
-    /// Learned corrections first, then terms.json (WhisperPad's [{"term": …}] format or a plain string array).
+    /// Learned corrections first, then terms.json (a plain string array, or [{"term": …}]).
     static func vocabulary() -> [String] {
         let data = try? Data(contentsOf: termsFile)
         let terms = data.flatMap { try? JSONDecoder().decode([[String: String]].self, from: $0) }?.compactMap { $0["term"] }
@@ -75,7 +76,11 @@ final class MeilingSoftController {
 
     /// A new correction or list: the next press opens a session with the new vocabulary (it is fixed at setup).
     func vocabularyChanged() {
-        guard let dictation, !dictation.talking else { return }
+        guard let dictation else { return }
+        guard !dictation.talking else {
+            vocabularyDirty = true  // rebuilt on the next press (review C4)
+            return
+        }
         dictation.shutdown()
         self.dictation = nil
     }
@@ -124,6 +129,13 @@ final class MeilingSoftController {
         case .stop: NSSound(named: "Pop")?.play()
         case .cancel, .none: break
         }
+        // While the meeting starts (the System Audio Recording prompt can hold it for long), edges are ignored:
+        // routed to dictation they opened a mic that the meeting never closed (review C1).
+        if meetingStarting {
+            hotkey.reset()
+            if edge == .start { MeilingSoftHUD.shared.error("Meeting interpretation is starting: wait a moment") }
+            return
+        }
         if let meeting {
             switch edge {
             case .start:
@@ -149,7 +161,6 @@ final class MeilingSoftController {
             dictation?.end()
             MeilingSoftHUD.shared.stopped()
         case .cancel:
-            epoch += 1
             dictation?.cancel()
             committer.cancelPending()
             MeilingSoftHUD.shared.interim("")
@@ -171,7 +182,8 @@ final class MeilingSoftController {
             MeilingSoftHUD.shared.error("No Gemini API key: Settings → Meyrin → Gemini API Key")
             return
         }
-        if dictation == nil || dictationKey != key {
+        if dictation == nil || dictationKey != key || vocabularyDirty {
+            vocabularyDirty = false
             dictation?.shutdown()
             dictation = makeDictation(key)
             dictationKey = key
@@ -205,6 +217,7 @@ final class MeilingSoftController {
         engine.onError = { [weak self] text in
             Task { @MainActor in
                 self?.hotkey.reset()
+                MeilingSoftHUD.shared.stopped()  // not left "live" with a running timer (review C2)
                 MeilingSoftHUD.shared.error(text)
                 self?.log.write("soft: dictation error \(text)")
             }
@@ -213,7 +226,7 @@ final class MeilingSoftController {
             Task { @MainActor in
                 switch state {
                 case let .failed(why), let .gaveUp(why):
-                    MeilingSoftHUD.shared.error("Gemini：\(why)")
+                    MeilingSoftHUD.shared.error("Gemini: \(why)")
                     self?.log.write("soft: dictation session \(state)")
                 case .ready, .connecting, .closed:
                     break
@@ -227,7 +240,7 @@ final class MeilingSoftController {
         let text = MeilingCorrectionStore.shared.apply(heard)
         if text != heard { log.write("soft: corrections applied") }
         let history = MeilingDictationHistory.shared
-        let id = history.add(text, source: "Mac")
+        let id = history.add(heard, typed: text, source: "Mac")
         let saved = "saved in Settings → Meyrin → History"
         committer.commit(text) { [weak self] outcome in
             switch outcome {
@@ -278,14 +291,14 @@ final class MeilingSoftController {
         engine.onCaption = { [weak self] caption in
             Task { @MainActor in
                 guard self?.meeting === engine else { return }
-                let window = caption.mine ? MeilingCaptionWindow.shared : MeilingCaptionWindow.theirs
+                let window = caption.mine ? MeilingSoftCaptionWindow.mine : MeilingSoftCaptionWindow.theirs
                 window.append(text: caption.text, original: caption.original)
             }
         }
         engine.onPending = { [weak self] caption in
             Task { @MainActor in
                 guard self?.meeting === engine else { return }
-                let window = caption.mine ? MeilingCaptionWindow.shared : MeilingCaptionWindow.theirs
+                let window = caption.mine ? MeilingSoftCaptionWindow.mine : MeilingSoftCaptionWindow.theirs
                 window.setPending(text: caption.text, original: caption.original)
             }
         }
@@ -311,8 +324,8 @@ final class MeilingSoftController {
                     self.meeting = engine
                     self.hotkey.holdOnly = true
                     self.lastError = nil
-                    MeilingCaptionWindow.shared.show()
-                    MeilingCaptionWindow.theirs.show()
+                    MeilingSoftCaptionWindow.mine.show()
+                    MeilingSoftCaptionWindow.theirs.show()
                     self.log.write("soft: meeting started vmic=\(engine.virtualMic.deviceName) mic=\(engine.mic.deviceName) monitor=\(engine.monitoring ? engine.monitor.deviceName : "off")")
                     MeilingSoftHUD.shared.error("Meeting interpretation on: pick \"\(engine.virtualMic.micNameForApps)\" as the microphone in your meeting app; hold \(MeilingSoftHotkey.current.name) while you talk")
                     self.checkTapSoon(engine)
@@ -343,8 +356,8 @@ final class MeilingSoftController {
         hotkey.reset()
         hotkey.holdOnly = false
         MeilingSoftHUD.shared.stopped()
-        MeilingCaptionWindow.shared.hide()
-        MeilingCaptionWindow.theirs.hide()
+        MeilingSoftCaptionWindow.mine.hide()
+        MeilingSoftCaptionWindow.theirs.hide()
         DispatchQueue.global(qos: .userInitiated).async { engine.stop() }
         log.write("soft: meeting stopped")
     }
