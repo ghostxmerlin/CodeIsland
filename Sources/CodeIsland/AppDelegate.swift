@@ -98,7 +98,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         FingerprintUnlockService.shared.start()
         if UserDefaults.standard.bool(forKey: MeilingCoordinator.enabledKey) { MeilingCoordinator.shared.start() }
-        if UserDefaults.standard.bool(forKey: MeilingSoftController.enabledKey) { MeilingSoftController.shared.enable() }
+        if UserDefaults.standard.bool(forKey: MeilingSoftSettings.enabledKey) { MeilingSoftController.shared.enable() }
         AppleCompanionPublisher.shared.attach(appState)
         AppleCompanionPublisher.shared.onFocusRequest = { [weak appState] mascot in
             guard let appState else { return }

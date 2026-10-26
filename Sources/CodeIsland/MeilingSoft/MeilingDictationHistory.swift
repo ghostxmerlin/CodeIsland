@@ -9,7 +9,7 @@ final class MeilingDictationHistory: ObservableObject {
     static let shared = MeilingDictationHistory()
 
     @Published private(set) var entries: [MeilingHistoryEntry]
-    private let file = MeilingHistoryFile(url: MeilingSoftController.supportDir.appendingPathComponent("dictation-history.jsonl"))
+    private let file = MeilingHistoryFile(url: MeilingSoftSettings.historyFile)
     private let log = MeilingLog()
 
     private init() {

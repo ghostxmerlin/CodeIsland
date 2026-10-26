@@ -152,6 +152,16 @@ final class MeilingSoftCoreTests: XCTestCase {
         XCTAssertEqual(vocab, ["美玲", "底板", "Tab5"])  // both learned (newest first, no repeat), then the list, capped
     }
 
+    // MARK: files
+
+    func testKeyFileAndTermsFileFormats() {
+        XCTAssertEqual(MeilingSoftFiles.apiKey(fromEnv: "# key\nGEMINI_API_KEY=\"abc123\"\r\nOTHER=1\n"), "abc123")
+        XCTAssertNil(MeilingSoftFiles.apiKey(fromEnv: "GEMINI_API_KEY=\n"))
+        XCTAssertEqual(MeilingSoftFiles.terms(from: Data(#"["Tab5","美玲"]"#.utf8)), ["Tab5", "美玲"])
+        XCTAssertEqual(MeilingSoftFiles.terms(from: Data(#"[{"term":"aism"},{"note":"x"}]"#.utf8)), ["aism"])
+        XCTAssertEqual(MeilingSoftFiles.terms(from: Data("not json".utf8)), [])
+    }
+
     // MARK: history
 
     private func historyFile(max: Int = 1000) -> MeilingHistoryFile {

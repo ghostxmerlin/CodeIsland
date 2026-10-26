@@ -34,16 +34,13 @@ func apiKey() -> String {
     let path = option("--env")
         ?? (FileManager.default.homeDirectoryForCurrentUser.path + "/Library/Application Support/AISM/meiling.env")
     guard let text = try? String(contentsOfFile: path, encoding: .utf8) else { fail("cannot read \(path)") }
-    for line in text.split(separator: "\n") where line.hasPrefix("GEMINI_API_KEY=") {
-        return String(line.dropFirst("GEMINI_API_KEY=".count)).trimmingCharacters(in: CharacterSet(charactersIn: "\"' \r"))
-    }
-    fail("GEMINI_API_KEY missing in \(path)")
+    guard let key = MeilingSoftFiles.apiKey(fromEnv: text) else { fail("GEMINI_API_KEY missing in \(path)") }
+    return key
 }
 
 func vocabulary() -> [String] {
     guard let path = option("--vocab"), let data = FileManager.default.contents(atPath: path) else { return [] }
-    if let terms = try? JSONDecoder().decode([[String: String]].self, from: data) { return terms.compactMap { $0["term"] } }
-    return (try? JSONDecoder().decode([String].self, from: data)) ?? []
+    return MeilingSoftFiles.terms(from: data)
 }
 
 func wav16k(_ path: String) -> [Int16] {

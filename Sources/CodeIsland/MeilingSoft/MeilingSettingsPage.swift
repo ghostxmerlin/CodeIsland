@@ -9,7 +9,7 @@ import SwiftUI
 /// re-reads them every second. English only, like the rest of the 美玲 UI.
 struct MeilingSettingsPage: View {
     @AppStorage(MeilingSoftHotkey.keyDefault) private var talkKey = 54
-    @AppStorage(MeilingSoftController.allowSpeakerKey) private var allowSpeaker = false
+    @AppStorage(MeilingSoftSettings.allowSpeakerKey) private var allowSpeaker = false
     @State private var tick = 0
     @ObservedObject private var history = MeilingDictationHistory.shared
     @ObservedObject private var corrections = MeilingCorrectionStore.shared
@@ -19,6 +19,8 @@ struct MeilingSettingsPage: View {
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     private var soft: MeilingSoftController { MeilingSoftController.shared }
+    private var meeting: MeilingSoftMeeting { soft.meeting }
+    @State private var hasKey = MeilingSoftSettings.apiKey() != nil
 
     var body: some View {
         let _ = tick
@@ -28,7 +30,6 @@ struct MeilingSettingsPage: View {
                     get: { soft.enabled },
                     set: { on in
                         if on { soft.enable() } else { soft.disable() }
-                        UserDefaults.standard.set(soft.enabled, forKey: MeilingSoftController.enabledKey)
                         tick += 1
                     }))
                 HStack {
@@ -45,9 +46,9 @@ struct MeilingSettingsPage: View {
                 HStack {
                     Text("Gemini API Key")
                     Spacer()
-                    Text(MeilingSoftController.apiKey() == nil ? "Not set" : "Set")
-                        .foregroundStyle(MeilingSoftController.apiKey() == nil ? .red : .secondary)
-                    Button("Set…") { promptAPIKey(); tick += 1 }
+                    Text(hasKey ? "Set" : "Not set")
+                        .foregroundStyle(hasKey ? Color.secondary : Color.red)
+                    Button("Set…") { promptAPIKey(); hasKey = MeilingSoftSettings.apiKey() != nil }
                 }
                 if let error = soft.lastError { problem(error) }
                 permissionRow("Input Monitoring", CGPreflightListenEventAccess(), "Privacy_ListenEvent")
@@ -56,14 +57,14 @@ struct MeilingSettingsPage: View {
 
             Section("Meeting Interpretation") {
                 HStack {
-                    Text(soft.meetingStarting ? "Starting…" : soft.meetingActive ? "On" : "Off")
-                        .foregroundStyle(soft.meetingActive ? .green : .secondary)
+                    Text(meeting.isStarting ? "Starting…" : meeting.engine != nil ? "On" : "Off")
+                        .foregroundStyle(meeting.engine != nil ? .green : .secondary)
                     Spacer()
-                    Button(soft.meetingActive ? "Stop" : "Start") {
-                        if soft.meetingActive { soft.stopMeeting() } else { soft.startMeeting() }
+                    Button(meeting.engine != nil ? "Stop" : "Start") {
+                        if meeting.engine != nil { soft.stopMeeting() } else { soft.startMeeting() }
                         tick += 1
                     }
-                    .disabled(!soft.enabled || soft.meetingStarting)
+                    .disabled(!soft.enabled || meeting.isStarting)
                 }
                 if !soft.enabled {
                     Text("Turn on Mac Dictation first: the meeting uses the same talk key.")
@@ -71,12 +72,12 @@ struct MeilingSettingsPage: View {
                         .foregroundStyle(.secondary)
                 }
                 Toggle("Passthrough (my own voice, untranslated)", isOn: Binding(
-                    get: { soft.passthrough },
-                    set: { _ in soft.togglePassthrough(); tick += 1 }))
-                    .disabled(!soft.meetingActive)
+                    get: { meeting.passthrough },
+                    set: { _ in meeting.togglePassthrough(); tick += 1 }))
+                    .disabled(meeting.engine == nil)
                 Toggle("Hear my translation in my headphones (monitor)", isOn: Binding(
-                    get: { MeilingSoftController.monitorOn },
-                    set: { soft.setMonitor($0); tick += 1 }))
+                    get: { MeilingSoftSettings.monitorOn },
+                    set: { meeting.setMonitor($0); tick += 1 }))
                 HStack {
                     Text("Virtual Mic")
                     Spacer()
@@ -178,7 +179,7 @@ struct MeilingSettingsPage: View {
     private func promptAPIKey() {
         let alert = NSAlert()
         alert.messageText = "Gemini API Key"
-        alert.informativeText = "Saved in \(MeilingSoftController.keyFile.path) (readable only by you)."
+        alert.informativeText = "Saved in \(MeilingSoftSettings.keyFile.path) (readable only by you)."
         let field = NSSecureTextField(frame: NSRect(x: 0, y: 0, width: 320, height: 24))
         alert.accessoryView = field
         alert.addButton(withTitle: "Save")
@@ -187,7 +188,7 @@ struct MeilingSettingsPage: View {
         guard alert.runModal() == .alertFirstButtonReturn else { return }
         let key = field.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !key.isEmpty else { return }
-        do { try MeilingSoftController.saveAPIKey(key) } catch {
+        do { try MeilingSoftSettings.saveAPIKey(key) } catch {
             self.alert("Could not save", error.localizedDescription)
         }
     }

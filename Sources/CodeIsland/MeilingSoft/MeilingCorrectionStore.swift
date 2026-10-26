@@ -3,13 +3,15 @@ import Foundation
 
 /// The owner's learned corrections (History → Edit), kept in ~/Library/Application Support/AISM/corrections.json
 /// (owner-only). Every dictated sentence, Mac or Tab5, passes `apply` before it is typed; the corrected words lead
-/// the vocabulary (MeilingSoftController.vocabulary).
+/// the vocabulary (MeilingSoftSettings.vocabulary). Changes are announced through `onChange` (the dictation
+/// rebuilds its session); the store itself knows nobody.
 @MainActor
 final class MeilingCorrectionStore: ObservableObject {
     static let shared = MeilingCorrectionStore()
 
     @Published private(set) var corrections: [MeilingCorrection]
-    private let url = MeilingSoftController.supportDir.appendingPathComponent("corrections.json")
+    var onChange: (() -> Void)?
+    private let url = MeilingSoftSettings.correctionsFile
     private let log = MeilingLog()
 
     private init() {
@@ -27,7 +29,7 @@ final class MeilingCorrectionStore: ObservableObject {
         MeilingCorrections.learn(found, into: &corrections)
         save()
         log.write("corrections: learned \(found.count), \(corrections.count) in all")
-        MeilingSoftController.shared.vocabularyChanged()
+        onChange?()
         return corrections.filter { c in found.contains { $0.heard == c.heard && $0.right == c.right } }
     }
 
@@ -35,13 +37,13 @@ final class MeilingCorrectionStore: ObservableObject {
         guard let i = corrections.firstIndex(where: { $0.id == id }) else { return }
         corrections[i].enabled = on
         save()
-        MeilingSoftController.shared.vocabularyChanged()
+        onChange?()
     }
 
     func remove(_ id: String) {
         corrections.removeAll { $0.id == id }
         save()
-        MeilingSoftController.shared.vocabularyChanged()
+        onChange?()
     }
 
     private func save() {
