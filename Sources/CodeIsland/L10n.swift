@@ -399,6 +399,11 @@ final class L10n: ObservableObject {
 
         // Sound
         "enable_sound": "Enable Sound Effects",
+        "sound_style": "Sound style",
+        "sound_style_original": "Original sounds",
+        "sound_style_luna": "Luna voice",
+        "sound_style_luna_hint": "Luna (the X10A Tab5's voice) speaks for approvals, errors and finished tasks, and at launch; session start and prompt submit stay silent.",
+        "sound_luna_preview": "Hear Luna",
         "volume": "Volume",
         "session_start": "Session Start",
         "new_claude_session": "New Claude Code session",
@@ -1059,6 +1064,11 @@ final class L10n: ObservableObject {
 
         // Sound
         "enable_sound": "Soundeffekte aktivieren",
+        "sound_style": "Klangstil",
+        "sound_style_original": "Originalklänge",
+        "sound_style_luna": "Lunas Stimme",
+        "sound_style_luna_hint": "Luna (die Stimme des X10A Tab5) spricht bei Freigaben, Fehlern, fertigen Aufgaben und beim Start; Sitzungsstart und Prompt-Senden bleiben stumm.",
+        "sound_luna_preview": "Luna anhören",
         "volume": "Lautstärke",
         "session_start": "Sitzungsstart",
         "new_claude_session": "Neue Claude-Code-Sitzung",
@@ -1719,6 +1729,11 @@ final class L10n: ObservableObject {
 
         // Sound
         "enable_sound": "启用音效",
+        "sound_style": "提示音风格",
+        "sound_style_original": "原始提示音",
+        "sound_style_luna": "Luna 语音",
+        "sound_style_luna_hint": "Luna（X10A Tab5 的语音）会在需要审批、出错、任务完成和启动时说话；会话开始和提交提示词时不出声。",
+        "sound_luna_preview": "试听 Luna",
         "volume": "音量",
         "session_start": "会话开始",
         "new_claude_session": "新的 Claude Code 会话",
@@ -2379,6 +2394,11 @@ final class L10n: ObservableObject {
 
         // Sound
         "enable_sound": "啟用音效",
+        "sound_style": "提示音風格",
+        "sound_style_original": "原始提示音",
+        "sound_style_luna": "Luna 語音",
+        "sound_style_luna_hint": "Luna（X10A Tab5 的語音）會在需要審批、出錯、任務完成和啟動時說話；工作階段開始和送出提示詞時不出聲。",
+        "sound_luna_preview": "試聽 Luna",
         "volume": "音量",
         "session_start": "會話開始",
         "new_claude_session": "新的 Claude Code 會話",
@@ -3039,6 +3059,11 @@ final class L10n: ObservableObject {
 
         // Sound
         "enable_sound": "効果音を有効化",
+        "sound_style": "サウンドスタイル",
+        "sound_style_original": "オリジナルの効果音",
+        "sound_style_luna": "ルナの声",
+        "sound_style_luna_hint": "ルナ（X10A Tab5 の声）が承認待ち・エラー・タスク完了・起動時に話します。セッション開始とプロンプト送信は無音です。",
+        "sound_luna_preview": "ルナを試聴",
         "volume": "音量",
         "session_start": "セッション開始",
         "new_claude_session": "新しい Claude Code セッション",
@@ -3699,6 +3724,11 @@ final class L10n: ObservableObject {
 
         // Sound
         "enable_sound": "사운드 효과 사용",
+        "sound_style": "사운드 스타일",
+        "sound_style_original": "기본 효과음",
+        "sound_style_luna": "루나 음성",
+        "sound_style_luna_hint": "루나(X10A Tab5의 목소리)가 승인 요청, 오류, 작업 완료, 시작 시 말합니다. 세션 시작과 프롬프트 제출은 소리가 나지 않습니다.",
+        "sound_luna_preview": "루나 미리 듣기",
         "volume": "볼륨",
         "session_start": "세션 시작",
         "new_claude_session": "새 Claude Code 세션",
@@ -4359,6 +4389,11 @@ final class L10n: ObservableObject {
 
         // Sound
         "enable_sound": "Ses Efektlerini Etkinleştir",
+        "sound_style": "Ses stili",
+        "sound_style_original": "Orijinal sesler",
+        "sound_style_luna": "Luna'nın sesi",
+        "sound_style_luna_hint": "Luna (X10A Tab5'in sesi) onay isteklerinde, hatalarda, biten görevlerde ve açılışta konuşur; oturum başlangıcı ve istem gönderme sessiz kalır.",
+        "sound_luna_preview": "Luna'yı dinle",
         "volume": "Ses Düzeyi",
         "session_start": "Oturum Başlangıcı",
         "new_claude_session": "Yeni Claude Code oturumu",

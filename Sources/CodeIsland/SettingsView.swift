@@ -1779,6 +1779,7 @@ private struct SoundPage: View {
     @AppStorage(SettingsKey.soundApprovalNeeded) private var soundApprovalNeeded = SettingsDefaults.soundApprovalNeeded
     @AppStorage(SettingsKey.soundPromptSubmit) private var soundPromptSubmit = SettingsDefaults.soundPromptSubmit
     @AppStorage(SettingsKey.soundBoot) private var soundBoot = SettingsDefaults.soundBoot
+    @AppStorage(SettingsKey.soundStyle) private var soundStyle = SettingsDefaults.soundStyle
     @AppStorage(SettingsKey.quietHoursEnabled) private var quietHoursEnabled = SettingsDefaults.quietHoursEnabled
     @AppStorage(SettingsKey.quietHoursStart) private var quietHoursStart = SettingsDefaults.quietHoursStart
     @AppStorage(SettingsKey.quietHoursEnd) private var quietHoursEnd = SettingsDefaults.quietHoursEnd
@@ -1834,6 +1835,22 @@ private struct SoundPage: View {
             }
 
             if soundEnabled {
+                Section {
+                    Picker(l10n["sound_style"], selection: $soundStyle) {
+                        Text(l10n["sound_style_original"]).tag(SoundStyle.original.rawValue)
+                        Text(l10n["sound_style_luna"]).tag(SoundStyle.luna.rawValue)
+                    }
+                    if soundStyle == SoundStyle.luna.rawValue {
+                        HStack(alignment: .top) {
+                            Text(l10n["sound_style_luna_hint"])
+                                .font(.system(size: 11))
+                                .foregroundStyle(.tertiary)
+                            Spacer()
+                            Button(l10n["sound_luna_preview"]) { LunaVoicePlayer.shared.preview(LunaVoiceRules.red) }
+                        }
+                    }
+                }
+
                 Section(l10n["sessions"]) {
                     SoundEventRow(title: l10n["session_start"], subtitle: l10n["new_claude_session"], soundName: "8bit_start", isOn: $soundSessionStart)
                     SoundEventRow(title: l10n["task_complete"], subtitle: l10n["ai_completed_reply"], soundName: "8bit_complete", isOn: $soundTaskComplete)

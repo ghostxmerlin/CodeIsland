@@ -1,7 +1,12 @@
 import AppKit
 import CodeIslandCore
 
-/// Plays 8-bit sound effects in response to hook events
+/// The voice of event sounds: the 8-bit effects, or Luna's spoken lines (LunaVoicePlayer, the Tab5's rules).
+enum SoundStyle: String, CaseIterable {
+    case original, luna
+}
+
+/// Plays 8-bit sound effects (or Luna's lines) in response to hook events
 @MainActor
 class SoundManager {
     static let shared = SoundManager()
@@ -48,6 +53,19 @@ class SoundManager {
         play(soundName)
     }
 
+    var style: SoundStyle {
+        SoundStyle(rawValue: defaults.string(forKey: SettingsKey.soundStyle) ?? "") ?? .original
+    }
+
+    /// Luna's line for a voice group; through the sink as "luna:<group>" under test.
+    private func emitLuna(_ group: String) {
+        if let playSink {
+            playSink("luna:" + group)
+            return
+        }
+        LunaVoicePlayer.shared.speak(group)
+    }
+
     private init() {
         // Pre-load all sounds into cache
         for entry in Self.eventSounds {
@@ -68,6 +86,11 @@ class SoundManager {
            !turnFailureDebouncer.shouldPlay(key: sessionId ?? "", now: now) {
             return
         }
+        if style == .luna {
+            // Luna speaks only where the Tab5 does (approval, error, finish); the rest stays silent.
+            if let group = LunaVoiceRules.group(forEvent: eventName) { emitLuna(group) }
+            return
+        }
         emit(entry.sound)
     }
 
@@ -76,6 +99,10 @@ class SoundManager {
         guard defaults.bool(forKey: SettingsKey.soundEnabled) else { return }
         guard !isEventSoundDeferred else { return }
         guard defaults.bool(forKey: SettingsKey.soundBoot) else { return }
+        if style == .luna {
+            emitLuna(LunaVoiceRules.boot)
+            return
+        }
         emit("8bit_boot")
     }
 

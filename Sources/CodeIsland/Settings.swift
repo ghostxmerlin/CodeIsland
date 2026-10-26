@@ -74,6 +74,8 @@ enum SettingsKey {
     static let soundApprovalNeeded = "soundApprovalNeeded"
     static let soundPromptSubmit = "soundPromptSubmit"
     static let soundBoot = "soundBoot"
+    /// "original" (the 8-bit effects) or "luna" (Luna's spoken lines, the Tab5's voice pack)
+    static let soundStyle = "soundStyle"
     // Quiet hours — minutes since midnight; start > end spans midnight
     static let quietHoursEnabled = "quietHoursEnabled"
     static let quietHoursStart = "quietHoursStart"
@@ -217,6 +219,7 @@ struct SettingsDefaults {
     static let soundApprovalNeeded = true
     static let soundPromptSubmit = false
     static let soundBoot = true
+    static let soundStyle = SoundStyle.original.rawValue
     static let quietHoursEnabled = false
     static let quietHoursStart = 22 * 60
     static let quietHoursEnd = 8 * 60

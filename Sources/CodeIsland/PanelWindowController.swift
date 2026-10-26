@@ -193,9 +193,17 @@ class PanelWindowController: NSObject, NSWindowDelegate {
     private var lastNotchHeightMode = SettingsDefaults.notchHeightMode
     private var lastCustomNotchHeight = SettingsDefaults.customNotchHeight
 
+    /// The island in use, so other floating windows (the Meyrin HUD, Luna's card) can sit on its screen.
+    private(set) static weak var current: PanelWindowController?
+
+    /// The screen the island panel is on now (it follows the display setting and, on "auto", the active screen);
+    /// while it is hidden, the screen it would use.
+    var islandScreen: NSScreen { panel?.screen ?? chosenScreen() }
+
     init(appState: AppState) {
         self.appState = appState
         super.init()
+        Self.current = self
     }
 
     /// Watch `sessions` / `surface` for changes that affect panel visibility.

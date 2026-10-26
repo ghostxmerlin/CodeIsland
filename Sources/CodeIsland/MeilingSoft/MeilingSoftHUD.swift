@@ -84,7 +84,7 @@ final class MeilingSoftHUD {
         }
         // Top centre, just under the menu bar where the island's dialogs open: at the bottom it covered the
         // terminal's input line (owner 2026-10-26).
-        if let screen = NSScreen.main, let panel {
+        if let screen = IslandScreen.current, let panel {  // the island's display, not the focused one
             let f = screen.visibleFrame
             panel.setFrameOrigin(NSPoint(x: f.midX - panel.frame.width / 2, y: f.maxY - panel.frame.height - 8))
         }

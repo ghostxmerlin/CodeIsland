@@ -1,0 +1,110 @@
+[
+ {
+  "id": "boot_1",
+  "event": "开机",
+  "zh": "露娜玛丽亚·霍克，扎古，出击了！",
+  "ja": "ルナマリア・ホーク、ザク、出るわよ！",
+  "source": "原作（出击台词，见 SRW Wiki / ガンダムWiki）",
+  "style": "energetic",
+  "group": "boot"
+ },
+ {
+  "id": "boot_2",
+  "event": "开机",
+  "zh": "露娜玛丽亚·霍克，出发了！",
+  "ja": "ルナマリア・ホーク、行くわよ！",
+  "source": "原作句式（インパルス搭乗时「行くわよ」）",
+  "style": "energetic",
+  "group": "boot"
+ },
+ {
+  "id": "boot_3",
+  "event": "开机",
+  "zh": "露娜玛丽亚·霍克，狙击目标！",
+  "ja": "ルナマリア・ホーク、狙い撃つぜ！",
+  "source": "改自《高达00》洛克昂·斯特拉托斯「ロックオン・ストラトス、狙い撃つぜ！」，名字换成露娜",
+  "style": "energetic",
+  "group": "boot"
+ },
+ {
+  "id": "approve_1",
+  "event": "有任务待批准 / 需要新助记词",
+  "zh": "舰长，敌机高速接近！",
+  "ja": "艦長、敵機、高速で接近中！",
+  "source": "舰桥报告用语撰写，未找到原文",
+  "style": "urgent",
+  "group": "blue"
+ },
+ {
+  "id": "approve_2",
+  "event": "有任务待批准 / 需要新助记词",
+  "zh": "队长，敌方阳电子炮进入发射状态！",
+  "ja": "隊長、敵艦、陽電子砲の発射態勢に入りました！",
+  "source": "按原作用语（陽電子砲・発射態勢）撰写，未找到原文",
+  "style": "urgent",
+  "group": "blue"
+ },
+ {
+  "id": "approve_3",
+  "event": "有任务待批准 / 需要新助记词",
+  "zh": "队长，请求掩护！",
+  "ja": "隊長、援護をお願いします！",
+  "source": "撰写，未找到原文",
+  "style": "urgent",
+  "group": "blue"
+ },
+ {
+  "id": "idle_1",
+  "event": "所有任务都在运行 / 没有 agent 启动",
+  "zh": "队长，休息一下吧。",
+  "ja": "隊長、少し休んでください。",
+  "source": "撰写，未找到原文",
+  "style": "gentle",
+  "group": "green"
+ },
+ {
+  "id": "idle_2",
+  "event": "Buddy 连接（Mac 配对上）",
+  "zh": "舰长，全系统 All Green！",
+  "ja": "艦長、全システム、オールグリーン！",
+  "source": "原作发进用语「システム、オールグリーン」",
+  "style": "bright",
+  "group": "boot"
+ },
+ {
+  "id": "alert_1",
+  "event": "有权限申请 / 有错误产生",
+  "zh": "发布红色状态！",
+  "ja": "コンディションレッド発令！",
+  "source": "原作（DESTINY 第28话，梅林广播）",
+  "style": "alarm",
+  "group": "red"
+ },
+ {
+  "id": "alert_2",
+  "event": "有权限申请 / 有错误产生",
+  "zh": "全员，第一战斗配置！",
+  "ja": "総員、第一戦闘配備！",
+  "source": "原作（SEED 第9话，拉米亚斯舰长）",
+  "style": "alarm",
+  "group": "red"
+ },
+ {
+  "id": "lost_1",
+  "event": "Buddy 断开（已配对的 Mac 断开）",
+  "zh": "高尔夫队，全灭？",
+  "ja": "ゴルフ隊、全滅！？",
+  "source": "SEED DESTINY 第39话「天空之基拉」ZAFT 队长的感慨（用户提供；原文未查到，按此撰写）",
+  "style": "stunned",
+  "group": "lost"
+ },
+ {
+  "id": "lost_2",
+  "event": "Buddy 断开（已配对的 Mac 断开）",
+  "zh": "敌方 MS 队正在撤退！",
+  "ja": "敵MS隊、撤退していきます！",
+  "source": "舰桥报告用语撰写，未找到原文",
+  "style": "report",
+  "group": "lost"
+ }
+]
