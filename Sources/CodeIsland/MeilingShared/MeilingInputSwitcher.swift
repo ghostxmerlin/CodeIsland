@@ -1,8 +1,16 @@
 import Carbon
 import Foundation
 
+/// What the software-mode committer needs from the input-source switch (a fake in the tests).
+protocol MeilingCommitSwitching: AnyObject {
+    var meilingActive: Bool { get }
+    func selectMeiling() -> Bool
+    func selectOther()
+    func restore()
+}
+
 /// Selects the 美玲 input method for one dictation frame and puts the user's own source back afterwards.
-final class MeilingInputSwitcher {
+final class MeilingInputSwitcher: MeilingCommitSwitching {
     static let sourceID = "com.aism.inputmethod.Meiling.Meiling"
     private var remembered: TISInputSource?
 

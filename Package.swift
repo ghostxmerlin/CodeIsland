@@ -78,6 +78,7 @@ let package = Package(
             name: "CodeIslandTests",
             dependencies: [
                 "CodeIsland",
+                "MeilingIPC",
                 "TestDefaultsReset",
                 .product(name: "Yams", package: "Yams"),
             ],

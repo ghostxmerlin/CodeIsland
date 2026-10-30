@@ -3,10 +3,13 @@ import Foundation
 
 /// Puts dictated sentences at the cursor through the 美玲 input method's standard commit (insertText) — never
 /// the clipboard, never AX value writes or synthetic paste (unreliable insertion is why this project exists).
-/// One sentence at a time: select 美玲 → wait for its activation in the focused client (≤ 600 ms) → commit →
-/// restore the user's input source. An "inactive" answer (the input method has no client, e.g. it was not woken in
-/// the focused app) is retried, once with 美玲 selected again, before the sentence is given up (it stays in the
-/// dictation history). Each sentence logs its steps.
+/// One sentence at a time: hand the text to the input method (prepare) → select 美玲 → the input method inserts it
+/// inside its activation and says "committed" (≤ 600 ms) → restore the user's input source.
+/// Why not "select, wait for activated, then commit" (until 2026-10-29): iTerm2 and Lark drop the input method about
+/// 2 ms after a programmatic switch, so a commit sent after the "activated" message often found no client (18 of
+/// 121 sentences lost on 2026-10-29). No "committed": ask the input method whether the text is still waiting
+/// (cancel); if it went in, that is a success (never typed twice); if not, switch away and back and try again, at
+/// most three times, then give the sentence up (it stays in the dictation history). Each sentence logs its steps.
 @MainActor
 final class MeilingSoftCommitter {
     enum Outcome: Equatable {
@@ -14,41 +17,58 @@ final class MeilingSoftCommitter {
         case notInstalled, inactive, unreachable, cancelled
     }
 
-    static let activationTimeout: TimeInterval = 0.6
-    static let inactiveRetries = 3, retryDelay: TimeInterval = 0.3
+    static let committedTimeout: TimeInterval = 0.6
+    static let attempts = 3, reselectDelay: TimeInterval = 0.1
 
-    private let switcher = MeilingInputSwitcher()
-    private let ime = MeilingIMEClient()
-    private let log = MeilingLog()
+    private let switcher: MeilingCommitSwitching
+    private let ime: MeilingCommitIME
+    private let observeCommitted: (@escaping () -> Void) -> Void
+    private let log: (String) -> Void
     private var queue: [(String, (Outcome) -> Void)] = []
     private var busy = false
-    private var waiting: (() -> Void)?
+    private var waiting: ((Bool) -> Void)?  // true: the input method said "committed"
+    private var waitID = 0                   // which wait the pending timeout belongs to
     private var observing = false
     private var abandoned = false
-    private var retrying = false  // between "inactive" retries of the sentence being written
 
-    /// Drops sentences not yet written (a cancelled talk). One already being written is let through only if its
-    /// commit has started; the activation wait is abandoned.
+    /// observeCommitted: registers the callback for the input method's "committed" message (once).
+    /// log: one line per sentence (the real one writes ~/Library/Logs/AISM/meiling.log; tests keep it quiet).
+    init(switcher: MeilingCommitSwitching, ime: MeilingCommitIME, log: @escaping (String) -> Void = { _ in },
+         observeCommitted: @escaping (@escaping () -> Void) -> Void) {
+        self.switcher = switcher
+        self.ime = ime
+        self.log = log
+        self.observeCommitted = observeCommitted
+    }
+
+    convenience init() {
+        let file = MeilingLog()
+        self.init(switcher: MeilingInputSwitcher(), ime: MeilingIMEClient(), log: { file.write($0) }) { committed in
+            MeilingAppPort.shared.addCommittedObserver { _ in committed() }
+            MeilingAppPort.shared.start()
+        }
+    }
+
+    /// Drops sentences not yet written (a cancelled talk). The one being written is abandoned: its prepared text is
+    /// withdrawn unless the input method already inserted it.
     func cancelPending() {
         queue.removeAll()
-        if retrying { abandoned = true }
         if let resume = waiting {
             waiting = nil
             abandoned = true
-            resume()
+            resume(false)
         }
     }
 
     func commit(_ text: String, done: @escaping (Outcome) -> Void) {
         if !observing {
-            MeilingAppPort.shared.addObserver { [weak self] _ in
+            observeCommitted { [weak self] in
                 MainActor.assumeIsolated {
                     let resume = self?.waiting
                     self?.waiting = nil
-                    resume?()
+                    resume?(true)
                 }
             }
-            MeilingAppPort.shared.start()
             observing = true
         }
         queue.append((text, done))
@@ -64,7 +84,8 @@ final class MeilingSoftCommitter {
         var trace: [String] = []  // for the log: steps and timings, never the text
         let note: (String) -> Void = { trace.append($0) }
         let finish: (Outcome) -> Void = { [weak self] outcome in
-            self?.log.write("commit: front=\(front) \(trace.joined(separator: " ")) -> \(outcome)")
+            self?.switcher.restore()
+            self?.log("commit: front=\(front) \(trace.joined(separator: " ")) -> \(outcome)")
             done(outcome)
             // Let TIS apply the restore before the next sentence checks which source is active.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
@@ -72,73 +93,71 @@ final class MeilingSoftCommitter {
                 self?.next()
             }
         }
-        // After an "inactive" answer: resend once, then switch away from 美玲 and back (the focused client then
-        // activates the input method again) and resend, then a last resend; only then give the sentence up.
-        var step = 0
-        var attempt: (() -> Void)!
-        attempt = { [weak self] in
-            guard let self else { return }
-            self.retrying = false
-            if self.abandoned {
-                self.abandoned = false
-                self.switcher.restore()
-                attempt = nil  // it captures itself: break the cycle once the sentence is done
-                finish(.cancelled)
-                return
-            }
-            let result = self.ime.commit(text)
-            note("try\(step)=\(result)")
-            if result == .inactive, step < Self.inactiveRetries {
-                step += 1
-                self.retrying = true
-                if step == 2 {
-                    self.switcher.selectOther()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        note("reselect=\(self.switcher.selectMeiling())")
-                        self.waitForActivation(note) { attempt?() }
-                    }
-                } else {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + Self.retryDelay) { attempt?() }
-                }
-                return
-            }
-            attempt = nil
-            self.switcher.restore()
-            let ms = Int(Date().timeIntervalSince(started) * 1000)
-            switch result {
-            case .ok: finish(.ok(ms: ms))
-            case .inactive: finish(.inactive)
-            case .unreachable: finish(.unreachable)
-            }
-        }
+        let ok = { finish(.ok(ms: Int(Date().timeIntervalSince(started) * 1000))) }
         note("wasActive=\(switcher.meilingActive)")
         if switcher.meilingActive {
-            attempt?()
-            return
+            // Already selected (and so already bound to the focused client): insert straight away.
+            let result = ime.commit(text)
+            note("direct=\(result)")
+            switch result {
+            case .ok: return ok()
+            case .unreachable: return finish(.unreachable)
+            case .inactive: break  // bound to nothing: go the prepared way, switching away and back first
+            }
+            attempt(text, 1, note, ok, finish)
+        } else {
+            attempt(text, 0, note, ok, finish)
         }
-        guard switcher.selectMeiling() else {
-            switcher.restore()
-            finish(.notInstalled)
-            return
-        }
-        waitForActivation(note) { attempt?() }
     }
 
-    /// Waits for the input method's "activated" message, at most `activationTimeout`. No message (the client was
-    /// already bound, or the IME is slow) still goes on: the IME answers "inactive" when it has no client.
-    private func waitForActivation(_ note: @escaping (String) -> Void, then go: @escaping () -> Void) {
-        let asked = Date()
-        var fired = false
-        let once: (String) -> Void = { how in
-            guard !fired else { return }
-            fired = true
-            note("activation=\(how)")
-            go()
+    /// One prepared try: hand the text over, select 美玲 (after switching away when n > 0), wait for "committed".
+    private func attempt(_ text: String, _ n: Int, _ note: @escaping (String) -> Void, _ ok: @escaping () -> Void,
+                         _ finish: @escaping (Outcome) -> Void) {
+        guard ime.prepare(text) == .ok else { return finish(.unreachable) }
+        let settle: (Bool) -> Void = { [weak self] committed in
+            guard let self else { return }
+            if committed && !self.abandoned {
+                note("try\(n)=committed")
+                return ok()
+            }
+            // No word from the input method: did the text go in anyway?
+            let state = self.ime.cancelPending()
+            note("try\(n)=\(committed ? "committed" : "silent")/\(state)")
+            if state == .consumed {
+                self.abandoned = false
+                return ok()
+            }
+            if state == .unreachable { return finish(.unreachable) }
+            if self.abandoned {
+                self.abandoned = false
+                return finish(.cancelled)
+            }
+            if n + 1 < Self.attempts { return self.attempt(text, n + 1, note, ok, finish) }
+            finish(.inactive)
         }
-        waiting = { once("\(Int(Date().timeIntervalSince(asked) * 1000))ms") }
-        DispatchQueue.main.asyncAfter(deadline: .now() + Self.activationTimeout) { [weak self] in
-            if !fired { self?.waiting = nil }  // a later sentence may already be waiting: leave its hook alone
-            once("timeout")
+        let started = Date()
+        let select = { [weak self] in
+            guard let self else { return }
+            self.waitID &+= 1
+            let id = self.waitID
+            self.waiting = { committed in
+                if committed { note("committed=\(Int(Date().timeIntervalSince(started) * 1000))ms") }
+                settle(committed)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + Self.committedTimeout) { [weak self] in
+                // Only this wait's own timeout: a later attempt or sentence has its own waiter.
+                guard let self, self.waitID == id, let resume = self.waiting else { return }
+                self.waiting = nil
+                resume(false)
+            }
+            guard self.switcher.selectMeiling() else {
+                self.waiting = nil
+                _ = self.ime.cancelPending()
+                return finish(.notInstalled)
+            }
         }
+        if n == 0 { return select() }
+        switcher.selectOther()
+        DispatchQueue.main.asyncAfter(deadline: .now() + Self.reselectDelay) { select() }
     }
 }

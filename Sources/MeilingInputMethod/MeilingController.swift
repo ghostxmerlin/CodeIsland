@@ -11,8 +11,20 @@ final class MeilingController: IMKInputController {
         super.activateServer(sender)
         Self.active = self
         let bundle = (sender as? IMKTextInput)?.bundleIdentifier() ?? ""
-        IMELog.write("activate \(bundle) \(ObjectIdentifier(self).hashValue)")
-        MeilingCommitPort.notifyActivated(bundle: bundle)
+        // A prepared sentence goes in here, inside the activation: some clients (iTerm2, Lark) drop the input
+        // method ~2 ms after a programmatic switch, before a separate commit request could arrive (2026-10-29).
+        if let text = MeilingCommitPort.shared.pending.take() {
+            let ok = commit(text)
+            IMELog.write("activate \(bundle) \(ObjectIdentifier(self).hashValue) prepared \(ok ? "ok" : "no client")")
+            if ok {
+                MeilingCommitPort.notify(MeilingIPC.committed, bundle: bundle)
+                return
+            }
+            MeilingCommitPort.shared.pending.set(text)  // no client after all: leave it for the app to withdraw
+        } else {
+            IMELog.write("activate \(bundle) \(ObjectIdentifier(self).hashValue)")
+        }
+        MeilingCommitPort.notify(MeilingIPC.activated, bundle: bundle)
     }
 
     override func deactivateServer(_ sender: Any!) {
@@ -36,14 +48,30 @@ final class MeilingController: IMKInputController {
 final class MeilingCommitPort {
     static let shared = MeilingCommitPort()
     private var port: CFMessagePort?
+    var pending = MeilingPendingText()  // main run loop only (port callbacks and activateServer)
 
     func start() {
         let callback: CFMessagePortCallBack = { _, msgid, data, _ in
-            guard msgid == MeilingIPC.commit, let data = data as Data?, let text = String(data: data, encoding: .utf8) else { return nil }
-            let controller = MeilingController.active
-            let ok = controller?.commit(text) ?? false
-            IMELog.write("commit \(ok ? "ok" : controller == nil ? "inactive (no active controller)" : "inactive (no client)")")
-            return Unmanaged.passRetained(Data((ok ? MeilingIPC.ok : MeilingIPC.inactive).utf8) as CFData)
+            let reply = { (text: String) in Unmanaged.passRetained(Data(text.utf8) as CFData) }
+            switch msgid {
+            case MeilingIPC.commit:
+                guard let data = data as Data?, let text = String(data: data, encoding: .utf8) else { return nil }
+                let controller = MeilingController.active
+                let ok = controller?.commit(text) ?? false
+                IMELog.write("commit \(ok ? "ok" : controller == nil ? "inactive (no active controller)" : "inactive (no client)")")
+                return reply(ok ? MeilingIPC.ok : MeilingIPC.inactive)
+            case MeilingIPC.prepare:
+                guard let data = data as Data?, let text = String(data: data, encoding: .utf8) else { return nil }
+                MeilingCommitPort.shared.pending.set(text)
+                IMELog.write("prepare")
+                return reply(MeilingIPC.ok)
+            case MeilingIPC.cancel:
+                let wasWaiting = MeilingCommitPort.shared.pending.clear()
+                IMELog.write("cancel \(wasWaiting ? "dropped" : "nothing waiting")")
+                return reply(wasWaiting ? MeilingIPC.pending : MeilingIPC.none)
+            default:
+                return nil
+            }
         }
         var shouldFree: DarwinBoolean = false
         guard let local = CFMessagePortCreateLocal(nil, MeilingIPC.imePort as CFString, callback, nil, &shouldFree)
@@ -52,9 +80,9 @@ final class MeilingCommitPort {
         CFRunLoopAddSource(CFRunLoopGetMain(), CFMessagePortCreateRunLoopSource(nil, local, 0), .commonModes)
     }
 
-    static func notifyActivated(bundle: String) {
+    static func notify(_ msgid: Int32, bundle: String) {
         guard let remote = CFMessagePortCreateRemote(nil, MeilingIPC.appPort as CFString) else { return }
-        CFMessagePortSendRequest(remote, MeilingIPC.activated, Data(bundle.utf8) as CFData, 0.2, 0, nil, nil)
+        CFMessagePortSendRequest(remote, msgid, Data(bundle.utf8) as CFData, 0.2, 0, nil, nil)
     }
 }
 
