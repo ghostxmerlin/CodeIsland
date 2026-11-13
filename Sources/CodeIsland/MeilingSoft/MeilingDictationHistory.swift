@@ -21,8 +21,9 @@ final class MeilingDictationHistory: ObservableObject {
     /// A final sentence arrived; returns its id for `mark`.
     @discardableResult
     func add(_ heard: String, typed: String? = nil, source: String, status: MeilingHistoryEntry.Status = .pending,
-             note: String? = nil) -> UUID {
-        let entry = MeilingHistoryEntry(text: heard, typed: typed, source: source, status: status, note: note)
+             note: String? = nil, language: String? = nil) -> UUID {
+        let entry = MeilingHistoryEntry(text: heard, typed: typed, source: source, status: status, note: note,
+                                        language: language)
         entries.append(entry)
         if entries.count > file.maxEntries { entries.removeFirst(entries.count - file.maxEntries) }
         save()
@@ -33,6 +34,13 @@ final class MeilingDictationHistory: ObservableObject {
         guard let i = entries.firstIndex(where: { $0.id == id }) else { return }
         entries[i].status = status
         entries[i].note = note
+        save()
+    }
+
+    /// A translated talk: the English that is about to be typed.
+    func setTyped(_ id: UUID, _ text: String) {
+        guard let i = entries.firstIndex(where: { $0.id == id }) else { return }
+        entries[i].typed = text
         save()
     }
 
@@ -95,7 +103,9 @@ struct MeilingHistoryView: View {
     @State private var learnedNote: String?
 
     private var shown: [MeilingHistoryEntry] {
-        let newest = history.entries.reversed().filter { search.isEmpty || $0.text.localizedCaseInsensitiveContains(search) }
+        let newest = history.entries.reversed().filter {
+            search.isEmpty || $0.text.localizedCaseInsensitiveContains(search) || $0.shown.localizedCaseInsensitiveContains(search)
+        }
         return limit.map { Array(newest.prefix($0)) } ?? Array(newest)
     }
 
@@ -146,21 +156,24 @@ struct MeilingHistoryView: View {
                     }
                 } else {
                     Text(entry.shown).textSelection(.enabled)
-                    if entry.shown != entry.text {
+                    if entry.language != nil {
+                        Text("said: \(entry.text)").font(.caption).foregroundStyle(.secondary).textSelection(.enabled)
+                    } else if entry.shown != entry.text {
                         Text("heard: \(entry.text)").font(.caption).foregroundStyle(.secondary).strikethrough()
                     }
                 }
-                Text("\(entry.date.formatted(date: .abbreviated, time: .standard)) · \(entry.source) · \(label(entry))")
+                Text("\(entry.date.formatted(date: .abbreviated, time: .standard)) · \(entry.source)\(entry.language == "en" ? " → English" : "") · \(label(entry))")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
             Spacer()
             if editing != entry.id {
-                Button("Edit") {
+                // A translated entry's words cannot be learned against what was heard: no Edit.
+                if entry.language == nil { Button("Edit") {
                     draft = entry.shown
                     editing = entry.id
                 }
-                .help("Correct what was misheard: the corrected words are learned and fixed from now on")
+                .help("Correct what was misheard: the corrected words are learned and fixed from now on") }
                 Button(copied == entry.id ? "Copied" : "Copy") {
                     MeilingDictationHistory.copy(entry.shown)
                     copied = entry.id

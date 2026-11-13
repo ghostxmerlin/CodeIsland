@@ -4,9 +4,9 @@ import CodeIslandCore
 import MeilingSoftKit
 
 /// The software mode (docs/meiling-soft-design.md): the Mac does what the Tab5 firmware does, without the Tab5.
-/// Turns the mode on and off, owns the talk key, and gives each edge to the meeting when one is on (or starting)
-/// and to dictation otherwise. The work itself is in MeilingSoftDictation and MeilingSoftMeeting; settings and files
-/// in MeilingSoftSettings. The Tab5 hardware mode (MeilingCoordinator) is separate.
+/// Turns the mode on and off, owns the two keys, and gives each talk-key edge to the meeting when one is on (or
+/// starting) and to dictation otherwise; the translate key dictates into English and rests during a meeting. The
+/// work itself is in MeilingSoftDictation and MeilingSoftMeeting; settings and files in MeilingSoftSettings. The Tab5 hardware mode (MeilingCoordinator) is separate.
 @MainActor
 final class MeilingSoftController {
     static let shared = MeilingSoftController()
@@ -14,7 +14,10 @@ final class MeilingSoftController {
 
     let dictation = MeilingSoftDictation()
     let meeting = MeilingSoftMeeting()
-    private let hotkey = MeilingSoftHotkey()
+    private let hotkey = MeilingSoftHotkey(slot: .talk)
+    private let translateKey = MeilingSoftHotkey(slot: .translate)
+    /// The key whose dictation is running: the other one is ignored until it ends.
+    private var talkingSlot: MeilingSoftHotkey.Slot?
     private let log = MeilingLog()
     private var enableError: String?
 
@@ -22,11 +25,12 @@ final class MeilingSoftController {
     var lastError: String? { enableError ?? meeting.lastError }
 
     private init() {
-        hotkey.onEdge = { [weak self] edge in self?.talk(edge) }
-        dictation.onTalkEnded = { [weak self] in self?.hotkey.reset() }
+        hotkey.onEdge = { [weak self] edge in self?.talk(edge, .talk) }
+        translateKey.onEdge = { [weak self] edge in self?.talk(edge, .translate) }
+        dictation.onTalkEnded = { [weak self] in self?.resetKeys() }
         meeting.onStateChange = { [weak self] state in
             guard let self else { return }
-            self.hotkey.reset()
+            self.resetKeys()
             if case .on = state { self.hotkey.holdOnly = true } else { self.hotkey.holdOnly = false }
         }
         MeilingCorrectionStore.shared.onChange = { [weak self] in self?.dictation.vocabularyChanged() }
@@ -38,7 +42,8 @@ final class MeilingSoftController {
         enableError = nil
         // Without Input Monitoring the tap may still be created but sees no keys.
         let listen = CGPreflightListenEventAccess()
-        guard listen, hotkey.start() else {
+        guard listen, hotkey.start(), translateKey.start() else {
+            hotkey.stop()
             if !listen { CGRequestListenEventAccess() }
             enableError = Self.inputMonitoringHint
             MeilingSoftHUD.shared.error(Self.inputMonitoringHint)
@@ -53,11 +58,13 @@ final class MeilingSoftController {
                 MeilingSoftController.shared.enableError = "No microphone access: allow AISM in Privacy & Security → Microphone"
             }
         }
-        log.write("soft: enabled key=\(MeilingSoftHotkey.current.name)")
+        log.write("soft: enabled key=\(MeilingSoftHotkey.current.name) translate=\(MeilingSoftHotkey.key(.translate).name)")
     }
 
     func disable() {
         hotkey.stop()
+        translateKey.stop()
+        talkingSlot = nil
         dictation.shutdown()
         meeting.stop()
         MeilingSoftHUD.shared.stopped()
@@ -74,10 +81,33 @@ final class MeilingSoftController {
 
     func stopMeeting() { meeting.stop() }
 
-    // MARK: talk key
+    // MARK: talk keys
 
-    private func talk(_ edge: MeilingTalkEdge) {
-        log.write("soft: talk key \(edge)")
+    private var meetingOff: Bool {
+        if case .off = meeting.state { return true }
+        return false
+    }
+
+    private func resetKeys() {
+        hotkey.reset()
+        translateKey.reset()
+        talkingSlot = nil
+    }
+
+    private func talk(_ edge: MeilingTalkEdge, _ slot: MeilingSoftHotkey.Slot) {
+        let key = slot == .talk ? hotkey : translateKey
+        if let busy = talkingSlot, busy != slot {
+            // The other key is dictating (e.g. right ⌘C while the translate key is latched): not a talk press.
+            key.reset()
+            log.write("soft: \(slot) key \(edge) ignored (\(busy) key talking)")
+            return
+        }
+        if slot == .translate, !meetingOff {
+            key.reset()
+            if edge == .start { MeilingSoftHUD.shared.notice("Meeting interpretation is on: the Translate Key rests until it stops") }
+            return
+        }
+        log.write(slot == .talk ? "soft: talk key \(edge)" : "soft: translate key \(edge)")
         switch edge {
         case .start: NSSound(named: "Tink")?.play()
         case .stop: NSSound(named: "Pop")?.play()
@@ -99,9 +129,18 @@ final class MeilingSoftController {
             }
         case .off:
             switch edge {
-            case .start: if !dictation.start() { hotkey.reset() }
-            case .stop: dictation.stop()
-            case .cancel: dictation.cancel()
+            case .start:
+                talkingSlot = slot
+                if !dictation.start(english: slot == .translate) {
+                    key.reset()
+                    talkingSlot = nil
+                }
+            case .stop:
+                talkingSlot = nil
+                dictation.stop()
+            case .cancel:
+                talkingSlot = nil
+                dictation.cancel()
             case .none: break
             }
         }

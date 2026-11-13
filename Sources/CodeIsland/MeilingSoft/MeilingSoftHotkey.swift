@@ -2,10 +2,11 @@ import AppKit
 import CodeIslandCore
 import CoreGraphics
 
-/// The Mac talk key for the software mode: one lone modifier, fn or an F-key, recorded in Settings → Meyrin (right
-/// ⌘ by default). Other keys are refused: the tap only listens, so a letter key would also type. Tap = latch, hold
-/// ≥ 300 ms = push-to-talk (hold only during a meeting); another key while it is down (⌘C …) makes it a shortcut
-/// and cancels; Esc while talking cancels. No event is ever swallowed or delayed.
+/// A Mac talk key for the software mode: one lone modifier, fn or an F-key, recorded in Settings → Meyrin. There
+/// are two, each with its own tap: the talk key (right ⌘ by default) dictates as said, the translate key (right ⌥)
+/// dictates into English. Other keys are refused: the tap only listens, so a letter key would also type. Tap =
+/// latch, hold ≥ 300 ms = push-to-talk (hold only during a meeting); another key while it is down (⌘C …) makes it
+/// a shortcut and cancels; Esc while talking cancels. No event is ever swallowed or delayed.
 @MainActor
 final class MeilingSoftHotkey {
     struct Key {
@@ -28,13 +29,43 @@ final class MeilingSoftHotkey {
     ] + [122, 120, 99, 118, 96, 97, 98, 100, 101, 109, 103, 111, 105, 107, 113, 106, 64, 79, 80, 90].enumerated().map {
         Key(keyCode: Int64($0.element), name: "F\($0.offset + 1)", deviceMask: 0)
     }
-    static let keyDefault = "meilingSoftTalkKey"
-    /// True while Settings records a new talk key: the key being pressed must not start a dictation.
+    enum Slot: CaseIterable {
+        case talk       // dictation as said
+        case translate  // dictation into English (MeilingTranslate)
+
+        var defaultsKey: String { self == .talk ? "meilingSoftTalkKey" : "meilingSoftTranslateKey" }
+        var other: Slot { self == .talk ? .translate : .talk }
+        var label: String { self == .talk ? "Talk Key" : "Translate Key" }
+    }
+
+    static let keyDefault = Slot.talk.defaultsKey
+    /// True while Settings records a new key: the key being pressed must not start a dictation.
     static var paused = false
 
-    static var current: Key {
-        let code = UserDefaults.standard.object(forKey: keyDefault) as? Int ?? 54
-        return keys.first { $0.keyCode == Int64(code) } ?? keys[0]
+    static var current: Key { key(.talk) }
+
+    /// The recorded key, else the default: right ⌘ to talk, right ⌥ to translate. The two never resolve to the same
+    /// key (Settings refuses it; a translate key left at its default steps aside when the talk key takes right ⌥).
+    static func key(_ slot: Slot, defaults: UserDefaults = .standard) -> Key {
+        let stored = (defaults.object(forKey: slot.defaultsKey) as? Int).flatMap { code in
+            keys.first { $0.keyCode == Int64(code) }
+        }
+        switch slot {
+        case .talk:
+            return stored ?? keys[0]
+        case .translate:
+            let talk = key(.talk, defaults: defaults)
+            if let stored, stored.keyCode != talk.keyCode { return stored }
+            let rightOption = keys[1], rightCommand = keys[0]
+            return talk.keyCode == rightOption.keyCode ? rightCommand : rightOption
+        }
+    }
+
+    let slot: Slot
+    var key: Key { Self.key(slot) }
+
+    init(slot: Slot = .talk) {
+        self.slot = slot
     }
 
     var onEdge: ((MeilingTalkEdge) -> Void)?
@@ -96,7 +127,7 @@ final class MeilingSoftHotkey {
         if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
             if let tap { CGEvent.tapEnable(tap: tap, enable: true) }
             // The key may have gone up while we were blind: a push-to-talk must not keep running.
-            let key = Self.current
+            let key = self.key
             let flags = CGEventSource.flagsState(.combinedSessionState)
             let held = !key.isModifier ? CGEventSource.keyState(.combinedSessionState, key: CGKeyCode(key.keyCode))
                 : key.deviceMask == 0 ? flags.contains(.maskSecondaryFn) : flags.rawValue & key.deviceMask != 0
@@ -114,7 +145,7 @@ final class MeilingSoftHotkey {
             down = false
             return
         }
-        let key = Self.current
+        let key = self.key
         let code = event.getIntegerValueField(.keyboardEventKeycode)
         if !key.isModifier, code == key.keyCode, type == .keyDown || type == .keyUp {  // an F-key
             if type == .keyDown, !down, event.getIntegerValueField(.keyboardEventAutorepeat) == 0 {

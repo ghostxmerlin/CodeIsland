@@ -8,7 +8,8 @@ import SwiftUI
 /// its history and corrections, and the input method. The Tab5 hardware mode keeps its own "Meyrin (Tab5)" menu. The controllers are not observable, so the page
 /// re-reads them every second. English only, like the rest of the 美玲 UI.
 struct MeilingSettingsPage: View {
-    @AppStorage(MeilingSoftHotkey.keyDefault) private var talkKey = 54
+    @AppStorage(MeilingSoftHotkey.Slot.talk.defaultsKey) private var talkKey = 54
+    @AppStorage(MeilingSoftHotkey.Slot.translate.defaultsKey) private var translateKey: Int?
     @AppStorage(MeilingSoftSettings.allowSpeakerKey) private var allowSpeaker = false
     @State private var tick = 0
     /// Permissions, the input method and the virtual mic: costly to read (TIS list, every Core Audio device), so
@@ -16,7 +17,8 @@ struct MeilingSettingsPage: View {
     @State private var status = SystemStatus.read()
     @ObservedObject private var history = MeilingDictationHistory.shared
     @ObservedObject private var corrections = MeilingCorrectionStore.shared
-    @State private var recording = false
+    /// The key being recorded, if any.
+    @State private var recording: MeilingSoftHotkey.Slot?
     @State private var recordMonitor: Any?
     @State private var recordNote: String?
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -35,15 +37,10 @@ struct MeilingSettingsPage: View {
                         if on { soft.enable() } else { soft.disable() }
                         tick += 1
                     }))
-                HStack {
-                    Text("Talk Key")
-                    Spacer()
-                    Text(recording ? "Press a key… (Esc to cancel)" : MeilingSoftHotkey.current.name)
-                        .foregroundStyle(recording ? .orange : .primary)
-                    Button(recording ? "Cancel" : "Record…") { recording ? stopRecording() : startRecording() }
-                }
+                keyRow(.talk)
+                keyRow(.translate)
                 if let recordNote { problem(recordNote) }
-                Text("Any single modifier (left or right ⌘ ⌥ ⌃ ⇧), fn, or F1–F20 (on a MacBook keyboard, F-keys need fn or the standard function keys setting). Tap to latch, hold to talk. Esc or any shortcut cancels. Each sentence is typed at the cursor through the Meyrin input method.")
+                Text("Any single modifier (left or right ⌘ ⌥ ⌃ ⇧), fn, or F1–F20 (on a MacBook keyboard, F-keys need fn or the standard function keys setting). Tap to latch, hold to talk. Esc or any shortcut cancels. Talk Key: each sentence is typed at the cursor through the Meyrin input method. Translate Key: speak Chinese; after you stop, the whole paragraph is translated into an English prompt and typed the same way.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 HStack {
@@ -138,11 +135,24 @@ struct MeilingSettingsPage: View {
         .onDisappear { stopRecording() }
     }
 
-    // MARK: talk key recording
+    // MARK: key recording
 
-    private func startRecording() {
+    private func keyRow(_ slot: MeilingSoftHotkey.Slot) -> some View {
+        let _ = (talkKey, translateKey)  // re-render when either is recorded
+        let isRecording = recording == slot
+        return HStack {
+            Text(slot.label)
+            Spacer()
+            Text(isRecording ? "Press a key… (Esc to cancel)" : MeilingSoftHotkey.key(slot).name)
+                .foregroundStyle(isRecording ? .orange : .primary)
+            Button(isRecording ? "Cancel" : "Record…") { isRecording ? stopRecording() : startRecording(slot) }
+                .disabled(recording != nil && !isRecording)
+        }
+    }
+
+    private func startRecording(_ slot: MeilingSoftHotkey.Slot) {
         recordNote = nil
-        recording = true
+        recording = slot
         MeilingSoftHotkey.paused = true
         recordMonitor = NSEvent.addLocalMonitorForEvents(matching: [.flagsChanged, .keyDown]) { event in
             record(event)
@@ -153,7 +163,7 @@ struct MeilingSettingsPage: View {
     private func stopRecording() {
         if let recordMonitor { NSEvent.removeMonitor(recordMonitor) }
         recordMonitor = nil
-        recording = false
+        recording = nil
         MeilingSoftHotkey.paused = false
     }
 
@@ -177,7 +187,12 @@ struct MeilingSettingsPage: View {
         } else if event.type != .keyDown {
             return
         }
-        talkKey = Int(key.keyCode)
+        guard let slot = recording else { return }
+        if key.keyCode == MeilingSoftHotkey.key(slot.other).keyCode {
+            recordNote = "\(key.name) is already the \(slot.other.label): pick another key."
+            return
+        }
+        if slot == .talk { talkKey = Int(key.keyCode) } else { translateKey = Int(key.keyCode) }
         recordNote = nil
         stopRecording()
     }

@@ -20,12 +20,15 @@ public struct MeilingHistoryEntry: Codable, Identifiable, Equatable, Sendable {
     public var typed: String?
     /// The owner's correction (History → Edit); its words are learned against `text` (MeilingCorrections).
     public var corrected: String?
+    /// "en" when the talk was dictated with the translate key: `text` is the Chinese heard (after the learned
+    /// corrections), `typed` the English reply, and nothing is learned from a correction.
+    public var language: String?
 
     /// What the sentence finally says: the owner's correction, else what was typed.
     public var shown: String { corrected ?? typed ?? text }
 
     public init(id: UUID = UUID(), date: Date = Date(), text: String, typed: String? = nil, source: String,
-                status: Status = .pending, note: String? = nil) {
+                status: Status = .pending, note: String? = nil, language: String? = nil) {
         self.id = id
         self.date = date
         self.text = text
@@ -33,6 +36,7 @@ public struct MeilingHistoryEntry: Codable, Identifiable, Equatable, Sendable {
         self.source = source
         self.status = status
         self.note = note
+        self.language = language
     }
 }
 

@@ -13,6 +13,7 @@ import MeilingSoftKit
 //                                                              voiced audio the device pulled)
 //   meiling-soft in --seconds N                                system audio → Chinese captions (play something)
 //   meiling-soft in --wav F.wav                                the other side from a WAV instead of the tap
+//   meiling-soft translate "中文" [--vocab terms.json]          the translate key's Gemini call alone
 let args = CommandLine.arguments
 func option(_ name: String) -> String? {
     guard let i = args.firstIndex(of: name), i + 1 < args.count else { return nil }
@@ -74,7 +75,7 @@ func run(for seconds: Double) {
     RunLoop.main.run(until: Date().addingTimeInterval(seconds))
 }
 
-guard args.count >= 2 else { fail("usage: meiling-soft devices|dictate|out|in ... (see the header of main.swift)") }
+guard args.count >= 2 else { fail("usage: meiling-soft devices|dictate|out|in|translate ... (see the header of main.swift)") }
 switch args[1] {
 case "mic":  // the capture alone: frames and peak after N seconds
     let mic = MeilingMicCapture()
@@ -171,6 +172,18 @@ case "in":
     }
     engine.stop()
     run(for: 0.2)
+
+case "translate":
+    guard args.count >= 3 else { fail("usage: meiling-soft translate \"中文\" [--vocab terms.json]") }
+    say("send", "\(args[2].unicodeScalars.count) scalars to \(MeilingTranslate.model)")
+    MeilingTranslateClient.translate(args[2], terminology: vocabulary(), apiKey: apiKey()) { result in
+        switch result {
+        case let .success(english): say("ENGLISH", english)
+        case let .failure(failure): say("error", failure.reason)
+        }
+        exit(0)
+    }
+    run(for: MeilingTranslate.timeout + 1)
 
 default:
     fail("unknown command \(args[1])")
