@@ -34,6 +34,12 @@ public enum LunaVoiceRules {
         default: return nil
         }
     }
+
+    /// Whether a Buddy with this advertised name speaks these cues itself: the X10A Tab5 ("X10A-Luna") does;
+    /// a plain Buddy ("Buddy-XXXXXX") has no speaker.
+    public static func speaks(buddyName: String?) -> Bool {
+        buddyName?.hasPrefix("X10A") ?? false
+    }
 }
 
 /// Which line to speak, and when: a random line of the group that is not the one just spoken (when there is a

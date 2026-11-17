@@ -257,6 +257,11 @@ final class ESP32BridgeManager: NSObject {
         links.contains { $0.usesLegacyPairingFallback }
     }
 
+    /// True while a connected Buddy speaks the event cues itself (the X10A Tab5), so the Mac stays quiet for them.
+    var hasSpeakingBuddy: Bool {
+        links.contains { $0.status == .connected && LunaVoiceRules.speaks(buddyName: $0.name) }
+    }
+
     /// Fingerprint channels of connected Buddies that support them.
     var fingerprintChannels: [BuddyFingerprintChannel] {
         links.compactMap(\.fingerprint).filter { $0.support == .supported }

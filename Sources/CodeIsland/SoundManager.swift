@@ -45,6 +45,9 @@ class SoundManager {
     /// presses as if they were event sounds.
     var playSink: ((String) -> Void)?
 
+    /// Whether a connected Buddy speaks the cues itself (the X10A Tab5); swapped under test.
+    var speakingBuddyConnected: () -> Bool = { ESP32BridgeManager.shared.hasSpeakingBuddy }
+
     private func emit(_ soundName: String) {
         if let playSink {
             playSink(soundName)
@@ -86,9 +89,12 @@ class SoundManager {
            !turnFailureDebouncer.shouldPlay(key: sessionId ?? "", now: now) {
             return
         }
+        let group = LunaVoiceRules.group(forEvent: eventName)
+        // A connected Tab5 speaks approval, error and finish itself; the Mac does not say them a second time.
+        if group != nil, speakingBuddyConnected() { return }
         if style == .luna {
             // Luna speaks only where the Tab5 does (approval, error, finish); the rest stays silent.
-            if let group = LunaVoiceRules.group(forEvent: eventName) { emitLuna(group) }
+            if let group { emitLuna(group) }
             return
         }
         emit(entry.sound)

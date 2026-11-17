@@ -42,4 +42,10 @@ final class LunaVoiceTests: XCTestCase {
         XCTAssertFalse(q.push("red", now: t))  // at most three waiting
         XCTAssertEqual(q.queued, ["blue", "blue", "red"])
     }
+
+    func testOnlyTheTab5SpeaksForItself() {
+        XCTAssertTrue(LunaVoiceRules.speaks(buddyName: "X10A-Luna"))
+        XCTAssertFalse(LunaVoiceRules.speaks(buddyName: "Buddy-1A2B3C"))
+        XCTAssertFalse(LunaVoiceRules.speaks(buddyName: nil))
+    }
 }
