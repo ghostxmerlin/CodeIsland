@@ -34,6 +34,7 @@ final class MeilingSoftController {
             if case .on = state { self.hotkey.holdOnly = true } else { self.hotkey.holdOnly = false }
         }
         MeilingCorrectionStore.shared.onChange = { [weak self] in self?.dictation.vocabularyChanged() }
+        MeilingTermStore.shared.onChange = { [weak self] in self?.dictation.vocabularyChanged() }
     }
 
     // MARK: on / off (the choice is remembered here, the one place that writes it)

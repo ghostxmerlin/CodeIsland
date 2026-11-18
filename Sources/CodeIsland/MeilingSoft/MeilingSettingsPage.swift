@@ -5,7 +5,7 @@ import MeilingSoftKit
 import SwiftUI
 
 /// Settings → Meyrin: the software mode (Mac-only dictation and meeting interpretation, MeilingSoftController),
-/// its history and corrections, and the input method. The Tab5 hardware mode keeps its own "Meyrin (Tab5)" menu. The controllers are not observable, so the page
+/// its history, corrections and vocabulary, and the input method. The Tab5 hardware mode keeps its own "Meyrin (Tab5)" menu. The controllers are not observable, so the page
 /// re-reads them every second. English only, like the rest of the 美玲 UI.
 struct MeilingSettingsPage: View {
     @AppStorage(MeilingSoftHotkey.Slot.talk.defaultsKey) private var talkKey = 54
@@ -17,6 +17,7 @@ struct MeilingSettingsPage: View {
     @State private var status = SystemStatus.read()
     @ObservedObject private var history = MeilingDictationHistory.shared
     @ObservedObject private var corrections = MeilingCorrectionStore.shared
+    @ObservedObject private var terms = MeilingTermStore.shared
     /// The key being recorded, if any.
     @State private var recording: MeilingSoftHotkey.Slot?
     @State private var recordMonitor: Any?
@@ -114,6 +115,18 @@ struct MeilingSettingsPage: View {
                         Button("Delete") { corrections.remove(c.id) }
                     }
                 }
+            }
+
+            Section("Vocabulary") {
+                HStack {
+                    let inUse = terms.list.inUse(corrections: corrections.corrections, limit: MeilingSoftSettings.maxVocabulary)
+                    Text("\(terms.list.terms.count) terms, \(inUse.count) in use")
+                    Spacer()
+                    Button("Edit…") { MeilingVocabularyWindow.shared.show() }
+                }
+                Text("Names and jargon the transcription should know. At most \(MeilingSoftSettings.maxVocabulary) are sent, corrected words first.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
 
             Section("Input Method") {
