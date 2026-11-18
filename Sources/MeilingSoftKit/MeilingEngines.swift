@@ -154,11 +154,16 @@ public final class MeilingDictationEngine: @unchecked Sendable {
         s.reconnectWhenIdle = false
         s.onState = { [weak self] state in self?.post(self?.onState, state) }
         let id = ObjectIdentifier(s)
+        var finals = MeilingCumulativeFinals()  // on the session queue, like every message
         s.onMessage = { [weak self] m in
             guard let self else { return }
+            if m.setupComplete { finals.reset() }  // a new connection starts its transcript from nothing
             if !m.interimInput.isEmpty { self.post(self.onInterim, MeilingText.compactCjkSpaces(m.interimInput)) }
             if m.finalInputPresent, !MeilingText.isBlank(m.finalInput) {
-                self.postFinal(MeilingText.compactCjkSpaces(m.finalInput).trimmingCharacters(in: .whitespaces), id)
+                // Each final repeats the session so far: only what is new goes on.
+                let whole = MeilingText.compactCjkSpaces(m.finalInput).trimmingCharacters(in: .whitespaces)
+                let fresh = finals.fresh(in: whole)
+                if !fresh.isEmpty { self.postFinal(fresh, id) }
             }
         }
         return s
