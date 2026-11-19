@@ -41,7 +41,7 @@ struct MeilingSettingsPage: View {
                 keyRow(.talk)
                 keyRow(.translate)
                 if let recordNote { problem(recordNote) }
-                Text("Any single modifier (left or right ⌘ ⌥ ⌃ ⇧), fn, or F1–F20 (on a MacBook keyboard, F-keys need fn or the standard function keys setting). Tap to latch, hold to talk. Esc or any shortcut cancels. Talk Key: each sentence is typed at the cursor through the Meyrin input method. Translate Key: speak Chinese; after you stop, the whole paragraph is translated into an English prompt and typed the same way.")
+                Text("Any single modifier (left or right ⌘ ⌥ ⌃ ⇧), fn, or F1–F20 (on a MacBook keyboard, F-keys need fn or the standard function keys setting). Tap to latch, hold to talk; a talk stops by itself after 60 s. Esc or any shortcut cancels. Talk Key: each sentence is typed at the cursor through the Meyrin input method. Translate Key: speak Chinese; after you stop, the whole paragraph is translated into an English prompt and typed the same way.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 HStack {

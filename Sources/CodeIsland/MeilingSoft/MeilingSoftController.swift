@@ -18,6 +18,9 @@ final class MeilingSoftController {
     private let translateKey = MeilingSoftHotkey(slot: .translate)
     /// The key whose dictation is running: the other one is ignored until it ends.
     private var talkingSlot: MeilingSoftHotkey.Slot?
+    /// A latched talk forgotten on: after this long it stops as if released (what was said is still typed).
+    static let maxTalk: TimeInterval = 60
+    private var talkLimit: DispatchWorkItem?
     private let log = MeilingLog()
     private var enableError: String?
 
@@ -66,6 +69,7 @@ final class MeilingSoftController {
         hotkey.stop()
         translateKey.stop()
         talkingSlot = nil
+        cancelTalkLimit()
         dictation.shutdown()
         meeting.stop()
         MeilingSoftHUD.shared.stopped()
@@ -93,6 +97,29 @@ final class MeilingSoftController {
         hotkey.reset()
         translateKey.reset()
         talkingSlot = nil
+        cancelTalkLimit()
+    }
+
+    private func cancelTalkLimit() {
+        talkLimit?.cancel()
+        talkLimit = nil
+    }
+
+    /// The dictation started by `slot` stops by itself after maxTalk, like a release of its key.
+    private func armTalkLimit(_ slot: MeilingSoftHotkey.Slot) {
+        cancelTalkLimit()
+        let item = DispatchWorkItem { [weak self] in
+            guard let self, self.talkingSlot == slot else { return }
+            self.talkLimit = nil
+            (slot == .talk ? self.hotkey : self.translateKey).reset()
+            self.talkingSlot = nil
+            NSSound(named: "Pop")?.play()
+            self.dictation.stop()
+            MeilingSoftHUD.shared.notice("Stopped after \(Int(Self.maxTalk)) s: what was said is typed")
+            self.log.write("soft: \(slot) key talk stopped at the \(Int(Self.maxTalk)) s limit")
+        }
+        talkLimit = item
+        DispatchQueue.main.asyncAfter(deadline: .now() + Self.maxTalk, execute: item)
     }
 
     private func talk(_ edge: MeilingTalkEdge, _ slot: MeilingSoftHotkey.Slot) {
@@ -132,15 +159,19 @@ final class MeilingSoftController {
             switch edge {
             case .start:
                 talkingSlot = slot
-                if !dictation.start(english: slot == .translate) {
+                if dictation.start(english: slot == .translate) {
+                    armTalkLimit(slot)
+                } else {
                     key.reset()
                     talkingSlot = nil
                 }
             case .stop:
                 talkingSlot = nil
+                cancelTalkLimit()
                 dictation.stop()
             case .cancel:
                 talkingSlot = nil
+                cancelTalkLimit()
                 dictation.cancel()
             case .none: break
             }
